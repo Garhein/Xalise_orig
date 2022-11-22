@@ -5,7 +5,7 @@ using System.Linq;
 namespace Xalise.Util.Extensions
 {
     /// <summary>
-    /// Extensions applicables aux <see cref="IEnumerable{T}"/> et <see cref="IDictionary{TKey, TValue}"/>.
+    /// Extensions applicables aux <see cref="IEnumerable{T}</T>"/> et <see cref="IDictionary{TKey, TValue}"/>.
     /// </summary>
     public static class IEnumerableExtension
     {
@@ -22,18 +22,17 @@ namespace Xalise.Util.Extensions
 
         /// <summary>
         /// Vérifie si <paramref name="source"/> n'est pas NULL et contient au moins une valeur.
-        /// Retourne l'inverse de <see cref="IsEmpty{T}(IEnumerable{T})"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
-        /// <returns></returns>
+        /// <returns>Inverse de <see cref="IsEmpty{T}(IEnumerable{T})"/></returns>
         public static bool IsNotEmpty<T>(this IEnumerable<T> source)
         {
             return !IsEmpty(source);
         }
 
         /// <summary>
-        /// Vérifie si <paramref name="dictionary"/> existe, si le dictionnaire contient des valeurs et si la clé existe.        
+        /// Vérifie si <paramref name="dictionary"/> existe, s'il contient des valeurs et si la clé existe.        
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
