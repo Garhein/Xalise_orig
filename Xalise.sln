@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xalise.Util", "Xalise.Util\Xalise.Util.csproj", "{BD771F18-1A08-4AF6-92B2-F90CC6F90192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xalise.Util", "Xalise.Util\Xalise.Util.csproj", "{BD771F18-1A08-4AF6-92B2-F90CC6F90192}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xalise.Interop", "Xalise.Interop\Xalise.Interop.csproj", "{3B18FBCD-A96B-460C-B75F-F89B0D4C40CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BD771F18-1A08-4AF6-92B2-F90CC6F90192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD771F18-1A08-4AF6-92B2-F90CC6F90192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD771F18-1A08-4AF6-92B2-F90CC6F90192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B18FBCD-A96B-460C-B75F-F89B0D4C40CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B18FBCD-A96B-460C-B75F-F89B0D4C40CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B18FBCD-A96B-460C-B75F-F89B0D4C40CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B18FBCD-A96B-460C-B75F-F89B0D4C40CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="HL7\Structure\Message\" />
+    <Folder Include="HL7\Structure\Segment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Xalise.Util\Xalise.Util.csproj" />
+  </ItemGroup>
+
+</Project>
