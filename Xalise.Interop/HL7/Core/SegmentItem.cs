@@ -23,7 +23,7 @@ namespace Xalise.Interop.HL7.Core
         /// <param name="type">Type du champ.</param>
         /// <param name="description">Description du champ.</param>
         /// <param name="maxLength">Longueur maximale de chaque répétition du champ.</param>
-        /// <param name="maxRepetitions">Nombre maximum de répétitions autorisées du champ.</param>
+        /// <param name="maxRepetitions">Nombre maximum de répétitions autorisées.</param>
         /// <param name="required">Indique si le champ est obligatoire.</param>
         public SegmentItem(Type type, string description, int maxLength, int maxRepetitions, bool required)
         {
@@ -85,13 +85,13 @@ namespace Xalise.Interop.HL7.Core
         }
     
         /// <summary>
-        /// Nombre maximum de répétitions autorisées du champ.
+        /// Nombre maximum de répétitions autorisées.
         /// </summary>
         public int MaxRepetitions
         {
             get
             {
-                return this._maxRepetitions;
+                return this._maxRepetitions > 0 ? this._maxRepetitions : int.MaxValue;
             }
         }
     
@@ -125,7 +125,7 @@ namespace Xalise.Interop.HL7.Core
                     }
                     else
                     {
-                        throw new DataTypeException($"L'accès à une répétition d'un champ doit être réalisé à partir de l'index 1 (index utilisé : {index}).");
+                        throw new DataTypeException($"L'accès à une répétition doit être réalisé à partir de l'index 1 (index utilisé : {index}).");
                     }
                 }
                 catch (ArgumentOutOfRangeException)
