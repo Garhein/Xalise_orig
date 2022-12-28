@@ -63,6 +63,7 @@ namespace Xalise.Interop.HL7.Core
             }
             set
             {
+                //TODO: tester si le type de table de données est correctement réalisé (type direct, type hérité)
                 if (value != null && !(this._typeTable.IsInstanceOfType(value) || value.GetType().IsSubclassOf(typeof(AbstractTable))))
                 {
                     throw new DataTypeException($"Le type '{this.TypeName}' attend une valeur de la table '{TypeHelper.GetTypeName(this._typeTable)}' (table utilisée : '{TypeHelper.GetTypeName(value)}').");

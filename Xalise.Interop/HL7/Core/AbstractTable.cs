@@ -14,7 +14,7 @@ namespace Xalise.Interop.HL7.Core
         /// <summary>
         /// Constructeur.
         /// </summary>
-        /// <param name="value">Valeur de la table.</param>
+        /// <param name="value">Valeur de la donnée.</param>
         /// <param name="description">Description de la donnée.</param>
         public AbstractTable(string value, string description)
         {
@@ -23,7 +23,7 @@ namespace Xalise.Interop.HL7.Core
         }
 
         /// <summary>
-        /// Valeur de la table.
+        /// Valeur de la donnée.
         /// </summary>
         public string Value
         {

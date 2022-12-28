@@ -1,7 +1,7 @@
 ﻿namespace Xalise.Interop.HL7.Core
 {
     /// <summary>
-    /// Définition des comportements communs aux types de données.
+    /// Déclaration des omportements communs aux types de données.
     /// </summary>
     public interface IType
     {

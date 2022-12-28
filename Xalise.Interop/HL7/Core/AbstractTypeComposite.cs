@@ -47,7 +47,7 @@ namespace Xalise.Interop.HL7.Core
         /// Les composants sont stockés à partir de l'indice 0 mais une base 1 est utilisée pour les accès.
         /// </summary>
         /// <param name="index">Index du composant.</param>
-        /// <exception cref="DataTypeException">Si l'index d'accès est inférieur ou égal à 0 ou que l'index est hors bornes.</exception>
+        /// <exception cref="DataTypeException">Si l'index d'accès est inférieur ou égal à 0 ou qu'il est hors bornes.</exception>
         /// <returns>Composant de type <see cref="IType"/>.</returns>
         public IType this[int index]
         {
