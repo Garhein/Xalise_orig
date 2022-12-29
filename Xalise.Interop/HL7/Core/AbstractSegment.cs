@@ -50,7 +50,7 @@ namespace Xalise.Interop.HL7.Core
         /// </summary>
         /// <param name="numField">Numéro du champ auquel ajouter la répétition.</param>
         /// <returns></returns>
-        private IType CreateNewSegmentItem(int numField)
+        private IType CreateNewField(int numField)
         {
             IType newType   = null;
             Type typeRep    = this._items[numField - 1].Type;
@@ -171,11 +171,11 @@ namespace Xalise.Interop.HL7.Core
                 }
                 else
                 {
-                    this._items[numField - 1].Repetitions.Add(this.CreateNewSegmentItem(numField));
+                    this._items[numField - 1].Repetitions.Add(this.CreateNewField(numField));
                 }
             }
 
-            return this._items[numField - 1][numRepetition];
+            return this._items[numField - 1][numRepetition - 1];
         }
 
         #endregion

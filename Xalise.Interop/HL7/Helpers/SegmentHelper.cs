@@ -12,7 +12,7 @@
         /// <returns></returns>
         public static bool IsSegmentDefDelimiters(string segmentName)
         {
-            // TODO: ne plus utiliser des valeurs en "dur"
+            //TODO: ne plus utiliser des valeurs en "dur"
             return segmentName.Equals("MSH") || segmentName.Equals("FHS") || segmentName.Equals("BHS");
         }
     }
