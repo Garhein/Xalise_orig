@@ -25,12 +25,12 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
             this[3]  = new ST("City", 50, false);
             this[4]  = new ST("State Or Province", 50, false);
             this[5]  = new ST("Zip Or Postal Code", 12, false);
-            this[6]  = new ID("Country", 3, false, typeof(CountryCode));
-            this[7]  = new ID("Address Type", 3, false, typeof(AddressType));
+            this[6]  = new ID("Country", 3, false);
+            this[7]  = new ID("Address Type", 3, false);
             this[8]  = new ST("Other Geographic Designation", 50, false);
-            this[9]  = new IS("County/Parish Code", 20, false, typeof(CountyParish));
-            this[10] = new IS("Census Tract", 20, false, typeof(CensusTract));
-            this[11] = new ID("Address Representation Code", 1, false, typeof(NameAddressRepresentation));
+            this[9]  = new IS("County/Parish Code", 20, false);
+            this[10] = new IS("Census Tract", 20, false);
+            this[11] = new ID("Address Representation Code", 1, false);
             this[12] = new DR("Address Validity Range", 53, false);
             this[13] = new TS("Effective Date", 26, false);
             this[14] = new TS("Expiration Date", 26, false);

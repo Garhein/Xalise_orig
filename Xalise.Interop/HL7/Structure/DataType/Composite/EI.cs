@@ -21,9 +21,9 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         public EI(string description, int maxLength, bool required) : base(description, maxLength, required, 4)
         {
             this[1] = new ST("Entity Identifier", 199, false);
-            this[2] = new IS("Namespace Id", 20, false, typeof(AssigningAuthority));
+            this[2] = new IS("Namespace Id", 20, false);
             this[3] = new ST("Universal Id", 199, false);
-            this[4] = new ID("Universal Id Type", 6, false, typeof(UniversalIDType));
+            this[4] = new ID("Universal Id Type", 6, false);
         }
 
         /// <summary>

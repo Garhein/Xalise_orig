@@ -24,11 +24,11 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
             this[2]  = new IS("Organization Name Type Code", 20, false);
             this[3]  = new NM("Id Number", 3, false);
             this[4]  = new NM("Check Digit", 1, false);
-            this[5]  = new ID("Check Digit Scheme", 3, false, typeof(CheckDigitScheme));
+            this[5]  = new ID("Check Digit Scheme", 3, false);
             this[6]  = new HD("Assigning Authority", 227, false);
-            this[7]  = new ID("Identifier Type Code", 5, false, typeof(IdentifierType));
+            this[7]  = new ID("Identifier Type Code", 5, false);
             this[8]  = new HD("Assigning Facility", 227, false);
-            this[9]  = new ID("Name Representation Code", 1, false, typeof(NameAddressRepresentation));
+            this[9]  = new ID("Name Representation Code", 1, false);
             this[10] = new ST("Organization Identifier", 20, false);
         }
 

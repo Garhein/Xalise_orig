@@ -21,7 +21,7 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         public TS(string description, int maxLength, bool required) : base(description, maxLength, required, 2)
         {
             this[1] = new DTM("Time", 24, true);
-            this[2] = new ID("Degree Of Precision", 1, false, typeof(Precision));
+            this[2] = new ID("Degree Of Precision", 1, false);
         }
 
         /// <summary>

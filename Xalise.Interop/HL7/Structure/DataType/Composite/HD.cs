@@ -20,9 +20,9 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         /// <param name="required">Indique si la donnée est obligatoire.</param>        
         public HD(string description, int maxLength, bool required) : base(description, maxLength, required, 3)
         {
-            this[1] = new IS("Namespace Id", 20, false, typeof(NamespaceID));
+            this[1] = new IS("Namespace Id", 20, false);
             this[2] = new ST("Universal Id", 199, false);
-            this[3] = new ID("Universal Id Type", 6, false, typeof(UniversalIDType));
+            this[3] = new ID("Universal Id Type", 6, false);
         }
 
         /// <summary>

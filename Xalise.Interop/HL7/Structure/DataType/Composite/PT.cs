@@ -20,8 +20,8 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         /// <param name="required">Indique si la donnée est obligatoire.</param>        
         public PT(string description, int maxLength, bool required) : base(description, maxLength, required, 2)
         {
-            this[1] = new ID("Processing Id", 1, false, typeof(ProcessingID));
-            this[2] = new ID("Processing Mode", 1, false, typeof(ProcessingMode));
+            this[1] = new ID("Processing Id", 1, false);
+            this[2] = new ID("Processing Mode", 1, false);
         }
 
         /// <summary>

@@ -22,10 +22,10 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         {
             this[1] = new ST("Identifier", 20, false);
             this[2] = new ST("Text", 199, false);
-            this[3] = new ID("Name Of Coding System", 20, false, typeof(CodingSystem));
+            this[3] = new ID("Name Of Coding System", 20, false);
             this[4] = new ST("Alternate Identifier", 20, false);
             this[5] = new ST("Alternate Text", 199, false);
-            this[6] = new ID("Name Of Alternate Coding System", 20, false, typeof(CodingSystem));
+            this[6] = new ID("Name Of Alternate Coding System", 20, false);
         }
 
         /// <summary>

@@ -4,17 +4,21 @@ using Xalise.Interop.HL7.Core;
 namespace Xalise.Interop.HL7.Structure.Table
 {
     /// <summary>
-    /// 0363 - Assigning authority.
+    /// 0103 - Processing ID.
     /// </summary>
     [Serializable]
-    public class AssigningAuthority : AbstractTable
+    public class T0103_ProcessingID : AbstractTable
     {
+        public static T0103_ProcessingID DEBUGGING    = new T0103_ProcessingID("D", "Debugging");
+        public static T0103_ProcessingID PRODUCTION   = new T0103_ProcessingID("P", "Production");
+        public static T0103_ProcessingID TRAINING     = new T0103_ProcessingID("T", "Training");
+
         /// <summary>
         /// Constructeur.
         /// </summary>
         /// <param name="value">Valeur de la table.</param>
         /// <param name="description">Description de la donnée.</param>
-        public AssigningAuthority(string value, string description) : base(value, description) { }
+        public T0103_ProcessingID(string value, string description) : base(value, description) { }
 
         /// <summary>
         /// Numéro de la table de données HL7.
@@ -23,7 +27,7 @@ namespace Xalise.Interop.HL7.Structure.Table
         {
             get
             {
-                return "0363";
+                return "0103";
             }
         }
     }

@@ -22,9 +22,9 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         {
             this[1]  = new ST("Id Number", 15, true);
             this[2]  = new ST("Check Digit", 1, false);
-            this[3]  = new ID("Check Digit Scheme", 3, false, typeof(CheckDigitScheme));
+            this[3]  = new ID("Check Digit Scheme", 3, false);
             this[4]  = new HD("Assigning Authority", 227, false);
-            this[5]  = new ID("Identifier Type Code", 5, false, typeof(IdentifierType));
+            this[5]  = new ID("Identifier Type Code", 5, false);
             this[6]  = new HD("Assigning Facility", 227, false);
             this[7]  = new DT("Effective Date", 8, false);
             this[8]  = new DT("Expiration Date", 8, false);

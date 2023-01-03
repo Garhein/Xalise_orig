@@ -25,12 +25,12 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
             this[3]  = new ST("Second And Further Given Names Or Initials Thereof", 30, false);
             this[4]  = new ST("Suffix (e.g., Jr Or Iii)", 20, false);
             this[5]  = new ST("Prefix (e.g., Dr)", 20, false);
-            this[6]  = new IS("Degree (e.g., Md)", 6, false, typeof(DegreeLicenseCertificate));
-            this[7]  = new ID("Name Type Code", 1, false, typeof(NameType));
-            this[8]  = new ID("Name Representation Code", 1, false, typeof(NameAddressRepresentation));
+            this[6]  = new IS("Degree (e.g., Md)", 6, false);
+            this[7]  = new ID("Name Type Code", 1, false);
+            this[8]  = new ID("Name Representation Code", 1, false);
             this[9]  = new CE("Name Context", 483, false);
             this[10] = new DR("Name Validity Range", 53, false);
-            this[11] = new ID("Name Assembly Order", 1, false, typeof(NameAssemblyOrder));
+            this[11] = new ID("Name Assembly Order", 1, false);
             this[12] = new TS("Effective Date", 26, false);
             this[13] = new TS("Expiration Date", 26, false);
             this[14] = new ST("Professional Suffix", 199, false);

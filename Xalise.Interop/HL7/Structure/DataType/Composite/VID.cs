@@ -20,7 +20,7 @@ namespace Xalise.Interop.HL7.Structure.DataType.Composite
         /// <param name="required">Indique si la donnée est obligatoire.</param>        
         public VID(string description, int maxLength, bool required) : base(description, maxLength, required, 3)
         {
-            this[1] = new ID("Version Id", 5, false, typeof(VersionID));
+            this[1] = new ID("Version Id", 5, false);
             this[2] = new CE("Internationalization Code", 483, false);
             this[3] = new CE("International Version Id", 483, false);
         }
