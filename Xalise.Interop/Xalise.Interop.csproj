@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="HL7\Parser\" />
-    <Folder Include="HL7\Structure\Message\" />
   </ItemGroup>
 
   <ItemGroup>
