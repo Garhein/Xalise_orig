@@ -175,7 +175,7 @@ namespace Xalise.Interop.HL7.Core
                 }
             }
 
-            return this._items[numField - 1][numRepetition - 1];
+            return this._items[numField - 1][numRepetition];
         }
 
         #endregion

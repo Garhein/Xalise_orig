@@ -156,7 +156,7 @@ namespace Xalise.Interop.HL7.Core
                 }
             }
 
-            return this._items[grpPosition][numRepetition - 1];
+            return this._items[grpPosition][numRepetition];
         }
 
         /// <summary>
