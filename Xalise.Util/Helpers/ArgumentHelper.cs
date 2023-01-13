@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Xalise.Util.Helpers
 {
@@ -57,6 +58,43 @@ namespace Xalise.Util.Helpers
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentNullException($"Le paramètre '{parameterName}' ne pas être composé uniquement d'espaces.");
+            }
+        }
+
+        #endregion
+
+        #region Répertoires et fichiers
+
+        /// <summary>
+        /// Vérifie si le répertoire n'existe pas.
+        /// </summary>
+        /// <param name="directory">Chemin du répertoire.</param>
+        /// <exception cref="DirectoryNotFoundException">Le répertoire n'a pas été trouvé.</exception>
+        public static void ThrowIfDirectoryNotFound(string directory)
+        {
+            if (!string.IsNullOrWhiteSpace(directory))
+            {
+
+                if (!Directory.Exists(directory))
+                {
+                    throw new DirectoryNotFoundException($"Le répertoire <{directory}> n'a pas été trouvé.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Vérifier si le répertoire n'existe pas.
+        /// </summary>
+        /// <param name="filePath">Chemin du fichier.</param>
+        /// <exception cref="FileNotFoundException">Le fichier n'a pas été trouvé.</exception>
+        public static void ThrowIfFileNotFound(string filePath)
+        {
+            if (!string.IsNullOrWhiteSpace(filePath))
+            {
+                if (!File.Exists(filePath))
+                {
+                    throw new FileNotFoundException($"Le fichier <{filePath}> n'a pas été trouvé.");
+                }
             }
         }
 
