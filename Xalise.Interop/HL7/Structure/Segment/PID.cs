@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xalise.Interop.HL7.Core;
 using Xalise.Interop.HL7.Exceptions;
 using Xalise.Interop.HL7.Structure.DataType.Composite;
@@ -7,7 +8,9 @@ using Xalise.Interop.HL7.Structure.DataType.Primitive;
 namespace Xalise.Interop.HL7.Structure.Segment
 {
     /// <summary>
-    /// PID - Patient Identification
+    /// Patient Identification.
+    /// Le segment PID est utilisé par toutes les applications comme principal moyen de communication des informations d'identification du patient.
+    /// Ce segment contient des informations permanentes d'identification du patient et démographiques qui, pour la plupart, ne sont pas susceptibles de changer fréquemment.
     /// </summary>
     [Serializable]
     public class PID : AbstractSegment
@@ -17,10 +20,10 @@ namespace Xalise.Interop.HL7.Structure.Segment
         /// </summary>
         public PID()
         {
-            this.InitField(typeof(SI), "Set ID - PID", 4, 1, false);
+            this.InitField(typeof(SI), "Set ID", 4, 1, false);
             this.InitField(typeof(CX), "Patient ID", 20, 1, false);
             this.InitField(typeof(CX), "Patient Identifier List", 250, 0, true);
-            this.InitField(typeof(CX), "Alternate Patient ID - PID", 20, 0, false);
+            this.InitField(typeof(CX), "Alternate Patient ID", 20, 0, false);
             this.InitField(typeof(XPN), "Patient Name", 250, 0, true);
             this.InitField(typeof(XPN), "Mother's Maiden Name", 250, 0, false);
             this.InitField(typeof(TS), "Date/Time of Birth", 26, 1, false);
@@ -35,8 +38,8 @@ namespace Xalise.Interop.HL7.Structure.Segment
             this.InitField(typeof(CE), "Marital Status", 250, 1, false);
             this.InitField(typeof(CE), "Religion", 250, 1, false);
             this.InitField(typeof(CX), "Patient Account Number", 250, 1, false);
-            this.InitField(typeof(ST), "SSN Number - Patient", 16, 1, false);
-            this.InitField(typeof(DLN), "Driver's License Number - Patient", 25, 1, false);
+            this.InitField(typeof(ST), "SSN Number", 16, 1, false);
+            this.InitField(typeof(DLN), "Driver's License Number", 25, 1, false);
             this.InitField(typeof(CX), "Mother's Identifier", 250, 0, false);
             this.InitField(typeof(CE), "Ethnic Group", 250, 0, false);
             this.InitField(typeof(ST), "Birth Place", 250, 1, false);
@@ -59,52 +62,58 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-1 - Set ID - PID.
+        /// PID-1
+        /// Set ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public SI SetIDPID()
+        public SI SetID
         {
-            SI ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(1, 1) as SI;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                SI ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(1, 1) as SI;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-2 - Patient ID.
+        /// PID-2
+        /// Patient ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CX PatientID()
+        public CX PatientID
         {
-            CX ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(2, 1) as CX;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CX ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(2, 1) as CX;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-3 - Patient Identifier List.
+        /// PID-3
+        /// Patient Identifier List.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public CX PatientIdentifierList(int numRepetition)
+        public CX GetPatientIdentifierList(int numRepetition)
         {
             CX ret = null;
 
@@ -121,39 +130,49 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-3 - Patient Identifier List.
+        /// PID-3
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CX[] PatientIdentifierList()
+        public CX PatientIdentifierList
         {
-            CX[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(3);
-                ret          = new CX[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as CX;
-                }
+                return this.GetPatientIdentifierList(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-4 - Alternate Patient ID - PID.
+        /// PID-3
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
         /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public CX AlternatePatientIDPID(int numRepetition)
+        public CX[] GetAllPatientIdentifierList
+        {
+            get
+            {
+                CX[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(3).Cast<CX>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-4
+        /// Alternate Patient ID.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public CX GetAlternatePatientID(int numRepetition)
         {
             CX ret = null;
 
@@ -170,39 +189,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-4 - Alternate Patient ID - PID.
+        /// PID-4
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CX[] AlternatePatientIDPID()
+        public CX AlternatePatientID
         {
-            CX[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(4);
-                ret          = new CX[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as CX;
-                }
+                return this.GetAlternatePatientID(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-5 - Patient Name.
+        /// PID-4
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public XPN PatientName(int numRepetition)
+        public CX[] GetAllAlternatePatientID
+        {
+            get
+            {
+                CX[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(4).Cast<CX>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-5
+        /// Patient Name.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public XPN GetPatientName(int numRepetition)
         {
             XPN ret = null;
 
@@ -219,39 +247,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-5 - Patient Name.
+        /// PID-5
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XPN[] PatientName()
+        public XPN PatientName
         {
-            XPN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(5);
-                ret          = new XPN[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as XPN;
-                }
+                return this.GetPatientName(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-6 - Mother's Maiden Name.
+        /// PID-5
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public XPN MothersMaidenName(int numRepetition)
+        public XPN[] GetAllPatientName
+        {
+            get
+            {
+                XPN[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(5).Cast<XPN>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-6
+        /// Mother's Maiden Name.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public XPN GetMothersMaidenName(int numRepetition)
         {
             XPN ret = null;
 
@@ -268,79 +305,94 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-6 - Mother's Maiden Name.
+        /// PID-6
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XPN[] MothersMaidenName()
+        public XPN MothersMaidenName
         {
-            XPN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(6);
-                ret          = new XPN[reps.Length];
+                return this.GetMothersMaidenName(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// PID-6
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public XPN[] GetAllMothersMaidenName
+        {
+            get
+            {
+                XPN[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as XPN;
+                    ret = this.GetField(6).Cast<XPN>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-7 - Date/Time of Birth.
+        /// PID-7
+        /// Date/Time of Birth.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS DateTimeBirth()
+        public TS DateTimeBirth
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(7, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(7, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-8 - Administrative Sex.
+        /// PID-8
+        /// Administrative Sex.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public IS AdministrativeSex()
+        public IS AdministrativeSex
         {
-            IS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(8, 1) as IS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                IS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(8, 1) as IS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-9 - Patient Alias.
+        /// PID-9
+        /// Patient Alias.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public XPN PatientAlias(int numRepetition)
+        public XPN GetPatientAlias(int numRepetition)
         {
             XPN ret = null;
 
@@ -357,39 +409,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-9 - Patient Alias.
+        /// PID-9
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XPN[] PatientAlias()
+        public XPN PatientAlias
         {
-            XPN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(9);
-                ret          = new XPN[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as XPN;
-                }
+                return this.GetPatientAlias(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-10 - Race.
+        /// PID-9
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public CE Race(int numRepetition)
+        public XPN[] GetAllPatientAlias
+        {
+            get
+            {
+                XPN[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(9).Cast<XPN>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-10
+        /// Race.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public CE GetRace(int numRepetition)
         {
             CE ret = null;
 
@@ -406,39 +467,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-10 - Race.
+        /// PID-10
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CE[] Race()
+        public CE Race
         {
-            CE[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(10);
-                ret          = new CE[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as CE;
-                }
+                return this.GetRace(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-11 - Patient Address.
+        /// PID-10
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public XAD PatientAddress(int numRepetition)
+        public CE[] GetAllRace
+        {
+            get
+            {
+                CE[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(10).Cast<CE>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-11
+        /// Patient Address.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public XAD GetPatientAddress(int numRepetition)
         {
             XAD ret = null;
 
@@ -455,59 +525,72 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-11 - Patient Address.
+        /// PID-11
+        /// Récupère la première répétition du champ.
+        /// </summary>
+        public XAD PatientAddress
+        {
+            get
+            {
+                return this.GetPatientAddress(1);
+            }
+        }
+
+        /// <summary>
+        /// PID-11
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
         /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public XAD[] PatientAddress()
+        public XAD[] GetAllPatientAddress
         {
-            XAD[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(11);
-                ret          = new XAD[reps.Length];
+                XAD[] ret = null;
 
-                for (int i = 0; i < ret.Length; i++)
+                try
                 {
-                    ret[i] = reps[i] as XAD;
+                    ret = this.GetField(11).Cast<XAD>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-12 - County Code.
+        /// PID-12
+        /// County Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public IS CountyCode()
+        public IS CountyCode
         {
-            IS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(12, 1) as IS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                IS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(12, 1) as IS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-13 - Phone Number - Home.
+        /// PID-13
+        /// Phone Number - Home.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public XTN PhoneNumberHome(int numRepetition)
+        public XTN GetPhoneNumberHome(int numRepetition)
         {
             XTN ret = null;
 
@@ -524,39 +607,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-13 - Phone Number - Home.
+        /// PID-13
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XTN[] PhoneNumberHome()
+        public XTN PhoneNumberHome
         {
-            XTN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(13);
-                ret          = new XTN[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as XTN;
-                }
+                return this.GetPhoneNumberHome(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-14 - Phone Number - Business.
+        /// PID-13
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public XTN PhoneNumberBusiness(int numRepetition)
+        public XTN[] GetAllPhoneNumberHome
+        {
+            get
+            {
+                XTN[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(13).Cast<XTN>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-14
+        /// Phone Number - Business.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public XTN GetPhoneNumberBusiness(int numRepetition)
         {
             XTN ret = null;
 
@@ -573,159 +665,186 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-14 - Phone Number - Business.
+        /// PID-14
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XTN[] PhoneNumberBusiness()
+        public XTN PhoneNumberBusiness
         {
-            XTN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(14);
-                ret          = new XTN[reps.Length];
+                return this.GetPhoneNumberBusiness(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// PID-14
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public XTN[] GetAllPhoneNumberBusiness
+        {
+            get
+            {
+                XTN[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as XTN;
+                    ret = this.GetField(14).Cast<XTN>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-15 - Primary Language.
+        /// PID-15
+        /// Primary Language.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE PrimaryLanguage()
+        public CE PrimaryLanguage
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(15, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(15, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-16 - Marital Status.
+        /// PID-16
+        /// Marital Status.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE MaritalStatus()
+        public CE MaritalStatus
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(16, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(16, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-17 - Religion.
+        /// PID-17
+        /// Religion.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE Religion()
+        public CE Religion
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(17, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(17, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-18 - Patient Account Number.
+        /// PID-18
+        /// Patient Account Number.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CX PatientAccountNumber()
+        public CX PatientAccountNumber
         {
-            CX ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(18, 1) as CX;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CX ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(18, 1) as CX;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-19 - SSN Number - Patient.
+        /// PID-19
+        /// SSN Number.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST SSNNumberPatient()
+        public ST SSNNumber
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(19, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(19, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-20 - Driver's License Number - Patient.
+        /// PID-20
+        /// Driver's License Number.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public DLN DriversLicenseNumberPatient()
+        public DLN DriversLicenseNumber
         {
-            DLN ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(20, 1) as DLN;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                DLN ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(20, 1) as DLN;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-21 - Mother's Identifier.
+        /// PID-21
+        /// Mother's Identifier.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public CX MothersIdentifier(int numRepetition)
+        public CX GetMothersIdentifier(int numRepetition)
         {
             CX ret = null;
 
@@ -742,39 +861,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-21 - Mother's Identifier.
+        /// PID-21
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CX[] MothersIdentifier()
+        public CX MothersIdentifier
         {
-            CX[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(21);
-                ret          = new CX[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as CX;
-                }
+                return this.GetMothersIdentifier(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-22 - Ethnic Group.
+        /// PID-21
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public CE EthnicGroup(int numRepetition)
+        public CX[] GetAllMothersIdentifier
+        {
+            get
+            {
+                CX[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(21).Cast<CX>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-22
+        /// Ethnic Group.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public CE GetEthnicGroup(int numRepetition)
         {
             CE ret = null;
 
@@ -791,99 +919,117 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-22 - Ethnic Group.
+        /// PID-22
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CE[] EthnicGroup()
+        public CE EthnicGroup
         {
-            CE[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(22);
-                ret          = new CE[reps.Length];
+                return this.GetEthnicGroup(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// PID-22
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public CE[] GetAllEthnicGroup
+        {
+            get
+            {
+                CE[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as CE;
+                    ret = this.GetField(22).Cast<CE>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-23 - Birth Place.
+        /// PID-23
+        /// Birth Place.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST BirthPlace()
+        public ST BirthPlace
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(23, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(23, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-24 - Multiple Birth Indicator.
+        /// PID-24
+        /// Multiple Birth Indicator.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID MultipleBirthIndicator()
+        public ID MultipleBirthIndicator
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(24, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(24, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-25 - Birth Order.
+        /// PID-25
+        /// Birth Order.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public NM BirthOrder()
+        public NM BirthOrder
         {
-            NM ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(25, 1) as NM;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                NM ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(25, 1) as NM;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-26 - Citizenship.
+        /// PID-26
+        /// Citizenship.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public CE Citizenship(int numRepetition)
+        public CE GetCitizenship(int numRepetition)
         {
             CE ret = null;
 
@@ -900,139 +1046,163 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-26 - Citizenship.
+        /// PID-26
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CE[] Citizenship()
+        public CE Citizenship
         {
-            CE[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(26);
-                ret          = new CE[reps.Length];
+                return this.GetCitizenship(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// PID-26
+        /// Citizenship.
+        /// </summary>
+        /// <returns></returns>
+        public CE[] GetAllCitizenship
+        {
+            get
+            {
+                CE[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as CE;
+                    ret = this.GetField(26).Cast<CE>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-27 - Veterans Military Status.
+        /// PID-27
+        /// Veterans Military Status.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE VeteransMilitaryStatus()
+        public CE VeteransMilitaryStatus
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(27, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(27, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-28 - Nationality.
+        /// PID-28
+        /// Nationality.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE Nationality()
+        public CE Nationality
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(28, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(28, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-29 - Patient Death Date and Time.
+        /// PID-29
+        /// Patient Death Date and Time.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS PatientDeathDateTime()
+        public TS PatientDeathDateTime
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(29, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(29, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-30 - Patient Death Indicator.
+        /// PID-30
+        /// Patient Death Indicator.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID PatientDeathIndicator()
+        public ID PatientDeathIndicator
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(30, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(30, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-31 - Identity Unknown Indicator.
+        /// PID-31
+        /// Identity Unknown Indicator.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID IdentityUnknownIndicator()
+        public ID IdentityUnknownIndicator
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(31, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(31, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-32 - Identity Reliability Code.
+        /// PID-32
+        /// Identity Reliability Code.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public IS IdentityReliabilityCode(int numRepetition)
+        public IS GetIdentityReliabilityCode(int numRepetition)
         {
             IS ret = null;
 
@@ -1049,139 +1219,163 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-32 - Identity Reliability Code.
+        /// PID-32
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public IS[] IdentityReliabilityCode()
+        public IS IdentityReliabilityCode
         {
-            IS[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(32);
-                ret          = new IS[reps.Length];
+                return this.GetIdentityReliabilityCode(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// PID-32
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public IS[] GetAllIdentityReliabilityCode
+        {
+            get
+            {
+                IS[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as IS;
+                    ret = this.GetField(32).Cast<IS>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-33 - Last Update Date/Time.
+        /// PID-33
+        /// Last Update Date/Time.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS LastUpdateDateTime()
+        public TS LastUpdateDateTime
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(33, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(33, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-34 - Last Update Facility.
+        /// PID-34
+        /// Last Update Facility.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public HD LastUpdateFacility()
+        public HD LastUpdateFacility
         {
-            HD ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(34, 1) as HD;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                HD ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(34, 1) as HD;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-35 - Species Code.
+        /// PID-35
+        /// Species Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE SpeciesCode()
+        public CE SpeciesCode
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(35, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(35, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-36 - Breed Code.
+        /// PID-36
+        /// Breed Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE BreedCode()
+        public CE BreedCode
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(36, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(36, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-37 - Strain.
+        /// PID-37
+        /// Strain.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST Strain()
+        public ST Strain
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(37, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(37, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// PID-38 - Production Class Code.
+        /// PID-38
+        /// Production Class Code.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public CE ProductionClassCode(int numRepetition)
+        public CE GetProductionClassCode(int numRepetition)
         {
             CE ret = null;
 
@@ -1198,39 +1392,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-38 - Production Class Code.
+        /// PID-38
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CE[] ProductionClassCode()
+        public CE ProductionClassCode
         {
-            CE[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(38);
-                ret          = new CE[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as CE;
-                }
+                return this.GetProductionClassCode(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// PID-39 - Tribal Citizenship.
+        /// PID-38
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public CWE TribalCitizenship(int numRepetition)
+        public CE[] GetAllProductionClassCode
+        {
+            get
+            {
+                CE[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(38).Cast<CE>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// PID-39
+        /// Tribal Citizenship.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public CWE GetTribalCitizenship(int numRepetition)
         {
             CWE ret = null;
 
@@ -1247,30 +1450,39 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// PID-39 - Tribal Citizenship.
+        /// PID-39
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CWE[] TribalCitizenship()
+        public CWE TribalCitizenship
         {
-            CWE[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(39);
-                ret          = new CWE[reps.Length];
+                return this.GetTribalCitizenship(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// PID-39
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public CWE[] GetAllTribalCitizenship
+        {
+            get
+            {
+                CWE[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as CWE;
+                    ret = this.GetField(39).Cast<CWE>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
     }
 }

@@ -7,7 +7,10 @@ using Xalise.Interop.HL7.Structure.DataType.Primitive;
 namespace Xalise.Interop.HL7.Structure.Segment
 {
     /// <summary>
-    /// SFT - Software Segment.
+    /// Software Segment.
+    /// Ce segment fournit des informations supplémentaires sur le(s) produit(s) logiciel(s) utilisé(s) comme application d'envoi.
+    /// L'objectif principal de ce segment est à des fins de diagnostic.
+    /// Il peut y avoir des utilisations supplémentaires selon les accords spécifiques au site.
     /// </summary>
     [Serializable]
     public class SFT : AbstractSegment
@@ -26,123 +29,141 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// SFT-1 - Software Vendor Organization.
+        /// SFT-1
+        /// Software Vendor Organization.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public XON SoftwareVendorOrganization()
+        public XON SoftwareVendorOrganization
         {
-            XON ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(1, 1) as XON;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                XON ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(1, 1) as XON;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// SFT-2 - Software Certified Version or Release Number.
+        /// SFT-2
+        /// Software Certified Version or Release Number.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST SoftwareCertifiedVersionOrReleaseNumber()
+        public ST SoftwareCertifiedVersionOrReleaseNumber
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(2, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(2, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// SFT-3 - Software Product Name.
+        /// SFT-3
+        /// Software Product Name.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST SoftwareProductName()
+        public ST SoftwareProductName
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(3, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(3, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// SFT-4 - Software Binary ID.
+        /// SFT-4
+        /// Software Binary ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST SoftwareBinaryID()
+        public ST SoftwareBinaryID
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(4, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(4, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// SFT-5 - Software Product Information.
+        /// SFT-5
+        /// Software Product Information.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TX SoftwareProductInformation()
+        public TX SoftwareProductInformation
         {
-            TX ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(5, 1) as TX;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TX ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(5, 1) as TX;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// SFT-6 - Software Install Date.
+        /// SFT-6
+        /// Software Install Date.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS SoftwareInstallDate()
+        public TS SoftwareInstallDate
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(6, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(6, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
     }
 }

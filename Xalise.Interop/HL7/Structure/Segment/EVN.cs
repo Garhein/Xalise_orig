@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xalise.Interop.HL7.Core;
 using Xalise.Interop.HL7.Exceptions;
 using Xalise.Interop.HL7.Structure.DataType.Composite;
@@ -7,7 +8,8 @@ using Xalise.Interop.HL7.Structure.DataType.Primitive;
 namespace Xalise.Interop.HL7.Structure.Segment
 {
     /// <summary>
-    /// EVN - Event Type.
+    /// Event Type.
+    /// Le segment EVN est utilisé pour communiquer les informations d'événement de déclenchement nécessaires aux applications de réception.
     /// </summary>
     [Serializable]
     public class EVN : AbstractSegment
@@ -27,92 +29,104 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// EVN-1 - Event Type Code.
+        /// EVN-1
+        /// Event Type Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID EventTypeCode()
+        public ID EventTypeCode
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(1, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(1, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// EVN-2 - Recorded Date/Time.
+        /// EVN-2
+        /// Recorded Date/Time.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS RecordedDateTime()
+        public TS RecordedDateTime
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(2, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(2, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// EVN-3 - Date/Time Planned Event.
+        /// EVN-3
+        /// Date/Time Planned Event.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS DateTimePlannedEvent()
+        public TS DateTimePlannedEvent
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(3, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(3, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// EVN-4 - Event Reason Code.
+        /// EVN-4
+        /// Event Reason Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public IS EventReasonCode()
+        public IS EventReasonCode
         {
-            IS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(4, 1) as IS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                IS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(4, 1) as IS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// EVN-5 - Operator ID.
+        /// EVN-5
+        /// Operator ID.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public XCN OperatorID(int numRepetition)
+        public XCN GetOperatorID(int numRepetition)
         {
             XCN ret = null;
 
@@ -129,70 +143,85 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// EVN-5 - Operator ID.
+        /// EVN-5
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        public XCN OperatorID
+        {
+            get
+            {
+                return this.GetOperatorID(1);
+            }
+        }
+
+        /// <summary>
+        /// EVN-5
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
         /// <returns></returns>
-        public XCN[] OperatorID()
+        public XCN[] GetAllOperatorID
         {
-            XCN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(5);
-                ret          = new XCN[reps.Length];
+                XCN[] ret = null;
 
-                for (int i = 0; i < ret.Length; i++)
+                try
                 {
-                    ret[i] = reps[i] as XCN;
+                    ret = this.GetField(5).Cast<XCN>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// EVN-6 - Event Occurred.
+        /// EVN-6
+        /// Event Occurred.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS EventOccurred()
+        public TS EventOccurred
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(6, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(6, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// EVN-7 - Event Facility.
+        /// EVN-7
+        /// Event Facility.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public HD EventFacility()
+        public HD EventFacility
         {
-            HD ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(7, 1) as HD;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                HD ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(7, 1) as HD;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
     }
 }

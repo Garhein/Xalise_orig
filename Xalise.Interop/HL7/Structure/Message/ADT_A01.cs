@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using Xalise.Interop.HL7.Core;
 using Xalise.Interop.HL7.Structure.Segment;
 using Xalise.Interop.HL7.Structure.Table;
 
 namespace Xalise.Interop.HL7.Structure.Message
 {
+    /// <summary>
+    /// Admit/Visit Notification.
+    /// </summary>
     public class ADT_A01 : AbstractMessage
     {
         /// <summary>
@@ -18,34 +22,59 @@ namespace Xalise.Interop.HL7.Structure.Message
             this.InitMessageItem(typeof(EVN), "Event Type", 1, true);
             this.InitMessageItem(typeof(PID), "Patient Identification", 1, true);
             this.InitMessageItem(typeof(ROL), "Role", 0, false);
+            this.InitDefaultValues();
         }
 
         /// <summary>
-        /// 
+        /// Initialisation des valeurs par défaut du message.
         /// </summary>
-        /// <returns></returns>
-        public MSH MSH()
+        public override void InitDefaultValues()
         {
-            MSH ret = null;
-
-            try
-            {
-                ret = this.GetSegment("MSH", 1)as MSH;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            return ret;
+            this.MSH.MessageType.MessageCode.Value      = T0076_MessageType.ADT.Value;
+            this.MSH.MessageType.TriggerEvent.Value     = T003_EventType.A01.Value;
+            this.MSH.MessageType.MessageStructure.Value = T0354_MessageStructure.ADT_A01.Value;
         }
 
         /// <summary>
-        /// 
+        /// Segment <see cref="Segment.MSH"/>.
         /// </summary>
-        /// <param name="numRepetition"></param>
         /// <returns></returns>
-        public SFT SFT(int numRepetition)
+        public MSH MSH
+        {
+            get
+            {
+                MSH ret = null;
+
+                try
+                {
+                    ret = this.GetSegment("MSH", 1) as MSH;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// Récupère la première occurence du segment <see cref="Segment.SFT"/>.
+        /// </summary>
+        public SFT SFT
+        {
+            get
+            {
+                return this.GetSFT(1);
+            }
+        }
+
+        /// <summary>
+        /// Récupère une occurence précise du segment <see cref="Segment.SFT"/>.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public SFT GetSFT(int numRepetition)
         {
             SFT ret = null;
 
@@ -62,77 +91,91 @@ namespace Xalise.Interop.HL7.Structure.Message
         }
 
         /// <summary>
-        /// 
+        /// Récupère l'ensemble des segments <see cref="Segment.SFT"/>.
         /// </summary>
         /// <returns></returns>
-        public SFT[] SFT()
+        public SFT[] GetAllSFT
         {
-            SFT[] ret = null;
-
-            try
+            get
             {
-                MessageItem item = this.GetStructure("SFT");
-                ret              = new SFT[item.Repetitions.Count];
+                SFT[] ret = null;
 
-                for (int i = 0; i < ret.Length; i++)
+                try
                 {
-                    ret[i] = item[i] as SFT;
+                    ret = this.GetStructure("SFT").ConvertRepetitionsToISegmentArray.Cast<SFT>().ToArray();
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                catch (Exception)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// 
+        /// Récupère le segment <see cref="Segment.EVN"/>.
         /// </summary>
         /// <returns></returns>
-        public EVN EVN()
+        public EVN EVN
         {
-            EVN ret = null;
-
-            try
+            get
             {
-                ret = this.GetSegment("EVN", 1) as EVN;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                EVN ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetSegment("EVN", 1) as EVN;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// 
+        /// Récupère le segment <see cref="Segment.PID"/>.
         /// </summary>
         /// <returns></returns>
-        public PID PID()
+        public PID PID
         {
-            PID ret = null;
-
-            try
+            get
             {
-                ret = this.GetSegment("PID", 1) as PID;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                PID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetSegment("PID", 1) as PID;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// 
+        /// Récupère la première occurence du segment <see cref="Segment.ROL"/>.
         /// </summary>
-        /// <param name="numRepetition"></param>
+        public ROL ROL
+        {
+            get
+            {
+                return this.GetROL(1);
+            }
+        }
+
+        /// <summary>
+        /// Récupère une occurence précise du segment <see cref="Segment.ROL"/>.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public ROL ROL(int numRepetition)
+        public ROL GetROL(int numRepetition)
         {
             ROL ret = null;
 
@@ -149,39 +192,26 @@ namespace Xalise.Interop.HL7.Structure.Message
         }
 
         /// <summary>
-        /// 
+        /// Récupère l'ensemble des segments <see cref="Segment.ROL"/>.
         /// </summary>
         /// <returns></returns>
-        public ROL[] ROL()
+        public ROL[] GetAllROL
         {
-            ROL[] ret = null;
-
-            try
+            get
             {
-                MessageItem item = this.GetStructure("ROL");
-                ret              = new ROL[item.Repetitions.Count];
+                ROL[] ret = null;
 
-                for (int i = 0; i < ret.Length; i++)
+                try
                 {
-                    ret[i] = item[i] as ROL;
+                    ret = this.GetStructure("ROL").ConvertRepetitionsToISegmentArray.Cast<ROL>().ToArray();
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+                catch (Exception)
+                {
+                    throw;
+                }
 
-            return ret;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public override void InitDefaultValues()
-        {
-            this.MSH().MessageType().MessageCode.Value      = T0076_MessageType.ADT.Value;
-            this.MSH().MessageType().TriggerEvent.Value     = T003_EventType.A01.Value;
-            this.MSH().MessageType().MessageStructure.Value = T0354_MessageStructure.ADT_A01.Value;
+                return ret;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xalise.Interop.HL7.Core;
 using Xalise.Interop.HL7.Exceptions;
 using Xalise.Interop.HL7.Structure.DataType.Composite;
@@ -7,7 +8,8 @@ using Xalise.Interop.HL7.Structure.DataType.Primitive;
 namespace Xalise.Interop.HL7.Structure.Segment
 {
     /// <summary>
-    /// MSH - Message Header.
+    /// Message Header.
+    /// Le segment MSH définit l'intention, la source, la destination et certaines spécificités de la syntaxe d'un message.
     /// </summary>
     [Serializable]
     public class MSH : AbstractSegment
@@ -41,352 +43,403 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// MSH-1 - Field Separator.
+        /// MSH-1
+        /// Field Separator. 
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST FieldSeparator()
+        public ST FieldSeparator
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(1, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(1, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-2 - Encoding Characters.
+        /// MSH-2
+        /// Encoding Characters.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST EncodingCharacters()
+        public ST EncodingCharacters
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(2, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(2, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-3 - Sending Application.
+        /// MSH-3
+        /// Sending Application.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public HD SendingApplication()
+        public HD SendingApplication
         {
-            HD ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(3, 1) as HD;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                HD ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(3, 1) as HD;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-4 - Sending Facility.
+        /// MSH-4
+        /// Sending Facility.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public HD SendingFacility()
+        public HD SendingFacility
         {
-            HD ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(4, 1) as HD;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                HD ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(4, 1) as HD;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-5 - Receiving Application.
+        /// MSH-5
+        /// Receiving Application.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public HD ReceivingApplication()
+        public HD ReceivingApplication
         {
-            HD ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(5, 1) as HD;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                HD ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(5, 1) as HD;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-6 - Receiving Facility.
+        /// MSH-6
+        /// Receiving Facility.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public HD ReceivingFacility()
+        public HD ReceivingFacility
         {
-            HD ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(6, 1) as HD;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                HD ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(6, 1) as HD;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-7 - Date/Time Of Message.
+        /// MSH-7
+        /// Date/Time Of Message.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS DateTimeOfMessage()
+        public TS DateTimeOfMessage
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(7, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(7, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-8 - Security.
+        /// MSH-8
+        /// Security.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST Security()
+        public ST Security
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(8, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(8, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-9 - Message Type.
+        /// MSH-9
+        /// Message Type.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public MSG MessageType()
+        public MSG MessageType
         {
-            MSG ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(9, 1) as MSG;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                MSG ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(9, 1) as MSG;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-10 - Message Control ID.
+        /// MSH-10
+        /// Message Control ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST MessageControlID()
+        public ST MessageControlID
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(10, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(10, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-11 - Processing ID.
+        /// MSH-11
+        /// Processing ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public PT ProcessingID()
+        public PT ProcessingID
         {
-            PT ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(11, 1) as PT;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                PT ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(11, 1) as PT;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-12 - Version ID.
+        /// MSH-12
+        /// Version ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public VID VersionID()
+        public VID VersionID
         {
-            VID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(12, 1) as VID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                VID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(12, 1) as VID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-13 - Sequence Number.
+        /// MSH-13
+        /// Sequence Number.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public NM SequenceNumber()
+        public NM SequenceNumber
         {
-            NM ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(13, 1) as NM;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                NM ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(13, 1) as NM;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-14 - Continuation Pointer.
+        /// MSH-14
+        /// Continuation Pointer.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ST ContinuationPointer()
+        public ST ContinuationPointer
         {
-            ST ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(14, 1) as ST;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ST ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(14, 1) as ST;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-15 - Accept Acknowledgment Type.
+        /// MSH-15
+        /// Accept Acknowledgment Type.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID AcceptAcknowledgmentType()
+        public ID AcceptAcknowledgmentType
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(15, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(15, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-16 - Application Acknowledgment Type.
+        /// MSH-16
+        /// Application Acknowledgment Type.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID ApplicationAcknowledgmentType()
+        public ID ApplicationAcknowledgmentType
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(16, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(16, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-17 - Country Code.
+        /// MSH-17
+        /// Country Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID CountryCode()
+        public ID CountryCode
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(17, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(17, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-18 - Character Set.
+        /// MSH-18
+        /// Character Set.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public ID CharacterSet(int numRepetition)
+        public ID GetCharacterSet(int numRepetition)
         {
             ID ret = null;
 
@@ -403,79 +456,94 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// MSH-18 - Character Set.
+        /// MSH-18
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public ID[] CharacterSet()
+        public ID CharacterSet
         {
-            ID[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(18);
-                ret = new ID[reps.Length];
+                return this.GetCharacterSet(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// MSH-18
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public ID[] GetAllCharacterSet
+        {
+            get
+            {
+                ID[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as ID;
+                    ret = this.GetField(18).Cast<ID>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-19 - Principal Language Of Message.
+        /// MSH-19
+        /// Principal Language Of Message.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE PrincipalLanguageOfMessage()
+        public CE PrincipalLanguageOfMessage
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(19, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(19, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-20 - Alternate Character Set Handling Scheme.
+        /// MSH-20
+        /// Alternate Character Set Handling Scheme.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID AlternateCharacterSetHandlingScheme()
+        public ID AlternateCharacterSetHandlingScheme
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(20, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(20, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// MSH-21 - Message Profile Identifier.
+        /// MSH-21
+        /// Message Profile Identifier.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public EI MessageProfileIdentifier(int numRepetition)
+        public EI GetMessageProfileIdentifier(int numRepetition)
         {
             EI ret = null;
 
@@ -492,30 +560,39 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// MSH-21 - Message Profile Identifier.
+        /// MSH-21
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public EI[] MessageProfileIdentifier()
+        public EI MessageProfileIdentifier
         {
-            EI[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(21);
-                ret          = new EI[reps.Length];
+                return this.GetMessageProfileIdentifier(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// MSH-21
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public EI[] GetAllMessageProfileIdentifier
+        {
+            get
+            {
+                EI[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as EI;
+                    ret = this.GetField(21).Cast<EI>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
     }
 }

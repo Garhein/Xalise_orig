@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xalise.Interop.HL7.Core;
 using Xalise.Interop.HL7.Exceptions;
 using Xalise.Interop.HL7.Structure.DataType.Composite;
@@ -7,7 +8,8 @@ using Xalise.Interop.HL7.Structure.DataType.Primitive;
 namespace Xalise.Interop.HL7.Structure.Segment
 {
     /// <summary>
-    /// ROL - Role
+    /// Role.
+    /// Le segment de rôle contient les données nécessaires pour ajouter, mettre à jour, corriger et supprimer de l'enregistrement les personnes impliquées, ainsi que leur implication fonctionnelle dans l'activité transmise.
     /// </summary>
     [Serializable]
     public class ROL : AbstractSegment
@@ -32,72 +34,81 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// ROL-1 - Role Instance ID.
+        /// ROL-1
+        /// Role Instance ID.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public EI RoleInstanceID()
+        public EI RoleInstanceID
         {
-            EI ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(1, 1) as EI;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                EI ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(1, 1) as EI;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-2 - Action Code.
+        /// ROL-2
+        /// Action Code.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public ID ActionCode()
+        public ID ActionCode
         {
-            ID ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(2, 1) as ID;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                ID ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(2, 1) as ID;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-3 - Role-ROL.
+        /// ROL-3
+        /// Role-ROL.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE RoleROL()
+        public CE RoleROL
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(3, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(3, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-4 - Role Person.
+        /// ROL-4
+        /// Role Person.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public XCN RolePerson(int numRepetition)
+        public XCN GetRolePerson(int numRepetition)
         {
             XCN ret = null;
 
@@ -114,119 +125,140 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// ROL-4 - Role Person.
+        /// ROL-4
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XCN[] RolePerson()
+        public XCN RolePerson
         {
-            XCN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(4);
-                ret          = new XCN[reps.Length];
+                return this.GetRolePerson(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// ROL-4
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public XCN[] GetAllRolePerson
+        {
+            get
+            {
+                XCN[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as XCN;
+                    ret = this.GetField(4).Cast<XCN>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-5 - Role Begin Date/Time.
+        /// ROL-5
+        /// Role Begin Date/Time.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS RoleBeginDateTime()
+        public TS RoleBeginDateTime
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(5, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(5, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-6 - Role End Date/Time.
+        /// ROL-6
+        /// Role End Date/Time.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public TS RoleEndDateTime()
+        public TS RoleEndDateTime
         {
-            TS ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(6, 1) as TS;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                TS ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(6, 1) as TS;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-7 - Role Duration.
+        /// ROL-7
+        /// Role Duration.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE RoleDuration()
+        public CE RoleDuration
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(7, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(7, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-8 - Role Action Reason.
+        /// ROL-8
+        /// Role Action Reason.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE RoleActionReason()
+        public CE RoleActionReason
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(8, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(8, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-9 - Provider Type.
+        /// ROL-9
+        /// Provider Type.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public CE ProviderType(int numRepetition)
+        public CE GetProviderType(int numRepetition)
         {
             CE ret = null;
 
@@ -243,59 +275,71 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// ROL-9 - Provider Type.
+        /// ROL-9
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public CE[] ProviderType()
+        public CE ProviderType
         {
-            CE[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(9);
-                ret          = new CE[reps.Length];
+                return this.GetProviderType(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// ROL-9
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public CE[] GetAllProviderType
+        {
+            get
+            {
+                CE[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as CE;
+                    ret = this.GetField(9).Cast<CE>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-10 - Organization Unit Type.
+        /// ROL-10
+        /// Organization Unit Type.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        public CE OrganizationUnitType()
+        public CE OrganizationUnitType
         {
-            CE ret = null;
-
-            try
+            get
             {
-                ret = this.GetField(10, 1) as CE;
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                CE ret = null;
 
-            return ret;
+                try
+                {
+                    ret = this.GetField(10, 1) as CE;
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
         }
 
         /// <summary>
-        /// ROL-11 - Office/Home Address/Birthplace.
+        /// ROL-11
+        /// Office/Home Address/Birthplace.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
         /// <returns></returns>
-        public XAD OfficeHomeAddressBirthplace(int numRepetition)
+        public XAD GetOfficeHomeAddressBirthplace(int numRepetition)
         {
             XAD ret = null;
 
@@ -312,39 +356,48 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// ROL-11 - Office/Home Address/Birthplace.
+        /// ROL-11
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XAD[] OfficeHomeAddressBirthplace()
+        public XAD OfficeHomeAddressBirthplace
         {
-            XAD[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(11);
-                ret          = new XAD[reps.Length];
-
-                for (int i = 0; i < ret.Length; i++)
-                {
-                    ret[i] = reps[i] as XAD;
-                }
+                return this.GetOfficeHomeAddressBirthplace(1);
             }
-            catch (SegmentException)
-            {
-                throw;
-            }
-
-            return ret;
         }
 
         /// <summary>
-        /// SFT-12 - Phone.
+        /// ROL-11
+        /// Récupère l'ensemble des répétitions.
         /// </summary>
-        /// <param name="numRepetition">Numéro de la répétition.</param>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
         /// <returns></returns>
-        public XTN Phone(int numRepetition)
+        public XAD[] GetAllOfficeHomeAddressBirthplace
+        {
+            get
+            {
+                XAD[] ret = null;
+
+                try
+                {
+                    ret = this.GetField(11).Cast<XAD>().ToArray();
+                }
+                catch (SegmentException)
+                {
+                    throw;
+                }
+
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// SFT-12
+        /// Phone.
+        /// </summary>
+        /// <param name="numRepetition">Index de la répétition à récupérer.</param>
+        /// <returns></returns>
+        public XTN GetPhone(int numRepetition)
         {
             XTN ret = null;
 
@@ -361,30 +414,39 @@ namespace Xalise.Interop.HL7.Structure.Segment
         }
 
         /// <summary>
-        /// SFT-12 - Phone.
+        /// SFT-12
+        /// Récupère la première répétition du champ.
         /// </summary>
-        /// <exception cref="SegmentException">Si erreur à l'accès au champ.</exception>
-        /// <returns></returns>
-        public XTN[] Phone()
+        public XTN Phone
         {
-            XTN[] ret = null;
-
-            try
+            get
             {
-                IType[] reps = this.GetField(12);
-                ret          = new XTN[reps.Length];
+                return this.GetPhone(1);
+            }
+        }
 
-                for (int i = 0; i < ret.Length; i++)
+        /// <summary>
+        /// SFT-12
+        /// Récupère l'ensemble des répétitions.
+        /// </summary>
+        /// <returns></returns>
+        public XTN[] GetAllPhone
+        {
+            get
+            {
+                XTN[] ret = null;
+
+                try
                 {
-                    ret[i] = reps[i] as XTN;
+                    ret = this.GetField(12).Cast<XTN>().ToArray();
                 }
-            }
-            catch (SegmentException)
-            {
-                throw;
-            }
+                catch (SegmentException)
+                {
+                    throw;
+                }
 
-            return ret;
+                return ret;
+            }
         }
     }
 }
