@@ -48,7 +48,7 @@ namespace Xalise.Util.Logging
             ArgumentHelper.ThrowIfDirectoryNotFound(baseDirectory);
 
             // Retrait du premier point de l'extension
-            if (extFilename[0].Equals("."))
+            if (extFilename[0].Equals('.'))
             {
                 extFilename = extFilename.Substring(1);
             }
@@ -62,15 +62,20 @@ namespace Xalise.Util.Logging
         /// Écriture d'un message de log.
         /// </summary>
         /// <param name="niveau">Niveau du message.</param>
+        /// <param name="emetteur">Émetteur du message.</param>
         /// <param name="log">Message de log.</param>
-        public override void EcrireMessage(TEnum niveau, string log)
+        /// <exception cref="ArgumentNullException">L'émetteur du log est NULL.</exception>
+        /// <exception cref="ArgumentException">L'émetteur du log est vide ou composé uniquement d'espaces.</exception>
+        public override void EcrireMessage(TEnum niveau, string emetteur, string log)
         {
+            ArgumentHelper.ThrowIfNullOrWhiteSpace(emetteur, nameof(emetteur));
+
             if (!string.IsNullOrWhiteSpace(log) && niveau.AsInteger() >= this.NiveauMinimum.AsInteger())
             {
                 lock (_lockObj)
                 {
                     string logPath = Path.Combine(this._baseDirectory, $"{this._baseFilename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFileName}");
-                    string logMsg  = $"[{niveau.ToString()}];[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}];{log.Trim()}";
+                    string logMsg  = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}][{niveau.ToString()}] >> {emetteur} > {log.Trim()}";
 
                     using (StreamWriter writer = new StreamWriter(logPath, true))
                     {
