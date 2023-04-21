@@ -1,0 +1,78 @@
+﻿@using Xalise.Web.Enums;
+@using Xalise.Web.Helpers.WebHelpers;
+@using Xalise.Web.Areas.Repertoires.Models;
+@model ThemeEditModel;
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header bg-secondary bg-gradient">
+            <h1 class="modal-title fs-5 text-white">@Model.UModalTitle</h1>
+        </div>
+        <div class="modal-body">
+            @if (Model.AvecErreur)
+            {
+                <!-- TODO: afficher une vue générique qui prend en paramètre Model.ErrorModel -->
+            }
+            else
+            {
+                @using (Html.BeginForm("Save", "Theme", FormMethod.Post, new { area = "Repertoires", @id = "form-theme-edit"}))
+                {
+                    <input type="hidden" asp-for="ThemeDTO.ID" />
+                    <input type="hidden" asp-for="ThemeDTO.NumOrdre" />
+                    <input type="hidden" asp-for="ThemeDTO.EstInterne" />
+                    <input type="hidden" asp-for="ThemeDTO.EstArchive" />
+                    <input type="hidden" asp-for="ModeOuverture" />
+
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <label asp-for="ThemeDTO.Libelle" class="col-sm-3 col-form-label-sm px-0"></label>
+                            <div class="col-sm-9">
+                                <input asp-for="ThemeDTO.Libelle" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <label asp-for="ThemeDTO.ParentID" class="col-sm-3 col-form-label-sm px-0"></label>
+                            <div class="col-sm-9">
+                                <select asp-for="ThemeDTO.ParentID" asp-items="Model.ListeThemesParents" class="form-select form-select-sm" disabled="@Model.EstParentAvecEnfants"></select>
+                            </div>
+                        </div>
+
+                        @if (Model.EstParentAvecEnfants)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <p class="mb-0 text-info @HtmlHelpers.IdentifiantfHtmlElement.CLASS_TXT_JUSTIFY @HtmlHelpers.IdentifiantfHtmlElement.CLASS_FONT_SIZE_70">
+                                        Un thème parent possédant des enfants ne peut pas être rattaché à un autre thème parent.
+                                    </p>
+                                </div>
+                            </div>
+                        }
+
+                        @if (Model.ModeOuverture.Equals(eModeOuverture.CREATION))
+                        {
+                            <div class="row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <div class="form-check">
+                                        <input asp-for="ContinuerSaisie" id="@HtmlHelpers.IdentifiantfHtmlElement.ID_CHECKBOX_SAISIE_SUITE" class="form-check-input" />
+                                        <label asp-for="ContinuerSaisie" class="form-check-label">Saisir un thème à la suite</label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+        <div class="modal-footer">
+            @if (Model.AvecErreur || Model.ModeOuverture.Equals(eModeOuverture.VISUALISATION))
+            {
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Annuler" onclick="Theme_Fermer();"/>
+            }
+            else
+            {
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Annuler" onclick="Theme_Fermer();"/>
+                <xalise-button size="btn_sm" style="btn_primary" icon="check" icon-style="solid" title="Enregistrer" onclick="Theme_Enregistrer();"/>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿@using Xalise.Util.Extensions
+@using Xalise.Web.Data
+@model List<ThemeDTO>
+
+<xalise-button size="btn_sm" style="btn_primary" icon="plus" icon-style="regular" title="Ajouter un thème" onclick="Theme_Editer(0);"/>
+
+@if (Model.IsEmpty())
+{
+    <partial name="_EmptyResults" />
+}
+else
+{
+    <table class="table table-hover table-sm table-bordered mt-2">
+        <thead class="table-dark">
+            <tr>
+                <th class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_ACTIONS"></th>
+                <th>Libellé</th>
+                <th class="ui-col-num-ordre">N°ordre</th>
+                <th class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CHECKBOX">Réf. interne</th>
+                <th class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CHECKBOX">Archivé</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ThemeDTO dto in Model)
+            {
+                <tr>
+                    <td class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_ACTIONS">
+                        <xalise-action-link icon-style="regular" icon="pen_to_square" title="Modifier le thème" onclick="Theme_Editer(@dto.ID)"/>
+
+                        @if (!dto.EstInterne)
+                        {
+                            <xalise-action-link icon-style="regular" icon="trash_can" title="Supprimer le thème" onclick="Theme_Supprimer(@dto.ID)" />
+
+                            @if (dto.EstArchive)
+                            {
+                                <xalise-action-link icon-style="regular" icon="eye" title="Activer le thème" onclick="Theme_GererArchivage(@dto.ID, false)" />
+                            }
+                            else
+                            {
+                                <xalise-action-link icon-style="regular" icon="eye_slash" title="Archiver le thème" onclick="Theme_GererArchivage(@dto.ID, true)" />
+                            }
+                        }
+                    </td>
+                    <td>@dto.ULibelleListe</td>
+                    <td class="ui-col-num-ordre">@dto.NumOrdre</td>
+                    <td class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CHECKBOX">
+                        <input asp-for="@dto.EstInterne" class="form-check-input" disabled="disabled" />
+                    </td>
+                    <td class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CHECKBOX">
+                        <input asp-for="@dto.EstArchive" class="form-check-input" disabled="disabled" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

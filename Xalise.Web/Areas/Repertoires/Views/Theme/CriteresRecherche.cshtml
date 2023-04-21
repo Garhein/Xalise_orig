@@ -1,0 +1,38 @@
+﻿@using Xalise.Web.Areas.Repertoires.Models
+@model ThemeCriteresRechercheModel
+
+@using (Html.BeginForm("action", "Theme", FormMethod.Post, new { @id = "form-criteres-themes" }))
+{
+    <div class="container-fluid container-md mb-2">
+        <fieldset>
+            <div class="row">
+                <div class="col-4">
+                    <label asp-for="Libelle" class="form-label"></label>
+                    <input asp-for="Libelle" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-2">
+                    <div class="form-check">
+                        <input asp-for="EstInterne" class="form-check-input" />
+                        <label asp-for="EstInterne" class="form-check-label"></label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="EstNonInterne" class="form-check-input" />
+                        <label asp-for="EstNonInterne" class="form-check-label"></label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-check">
+                        <input asp-for="EstArchive" class="form-check-input" />
+                        <label asp-for="EstArchive" class="form-check-label"></label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="EstNonArchive" class="form-check-input" />
+                        <label asp-for="EstNonArchive" class="form-check-label"></label>
+                    </div>
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </fieldset>
+    </div>
+}

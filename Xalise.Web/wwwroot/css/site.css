@@ -1,0 +1,73 @@
+html {
+  /*font-size: 14px;*/
+}
+
+@media (min-width: 768px) {
+  html {
+    /*font-size: 16px;*/
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  /*box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;*/
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/*#region Styles génériques : tables*/
+
+.ui-col-check,
+.ui-col-actions,
+.ui-col-num-ordre {
+    text-align: center;
+}
+
+.ui-col-check,
+.ui-col-actions {
+    width: 8rem;
+}
+
+.ui-col-num-ordre {
+    width: 5rem;
+}
+
+/*#endregion*/
+
+/*#region Styles génériques : liens*/
+
+.ui-action-link {
+    cursor: pointer;
+}
+
+.ui-action-link:not(:last-child) {
+    margin-right: 0.25rem;
+}
+
+.ui-action-link span {
+    margin-left: 0.25rem;
+}
+
+/*#endregion*/
+
+/*#region Styles génériques : texte*/
+
+.x-txt-justify {
+    text-align: justify;
+}
+
+.x-font-size-70 {
+    font-size: 0.70rem;
+}
+
+.x-font-size-75 {
+    font-size: 0.75rem;
+}
+
+/*#endregion*/
