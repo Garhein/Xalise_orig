@@ -48,7 +48,16 @@
                             </div>
                         }
 
-                        @if (Model.ModeOuverture.Equals(eModeOuverture.CREATION))
+                        @if (!Model.ModeOuverture.Equals(eModeOuverture.CREATION))
+                        {
+                            <div class="row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <input asp-for="ThemeDTO.EstArchive" class="form-check-input" disabled="disabled" />
+                                    <label asp-for="ThemeDTO.EstArchive" class="form-check-label"></label>
+                                </div>
+                            </div>
+                        }
+                        else
                         {
                             <div class="row">
                                 <div class="col-sm-9 offset-sm-3">
