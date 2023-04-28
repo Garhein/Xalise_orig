@@ -19,7 +19,7 @@ namespace Xalise.Web.Areas.Repertoires.Models
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public ThemeEditModel() : base()
+        public ThemeEditModel() : base("Thème GED")
         {
             ListeThemesParents          = new List<SelectListItem>();
             ThemeDTO                    = new ThemeDTO();
@@ -29,31 +29,14 @@ namespace Xalise.Web.Areas.Repertoires.Models
         #region Utilitaires d'affichage
 
         /// <summary>
-        /// Titre de la fenêtre de dialogue.
+        /// Titre de la case à cocher permettant de saisir un
+        /// nouvel élément à la suite.
         /// </summary>
-        public string UModalTitle
+        public new string UTitreContinuerSaisie
         {
             get
             {
-                string title = string.Empty;
-
-                if (AvecErreur)
-                {
-                    title = "Erreur";
-                }
-                else
-                {
-                    if (ThemeDTO.ID > 0)
-                    {
-                        title = "Modification du thème";
-                    }
-                    else
-                    {
-                        title = "Création d'un thème";
-                    }
-                }
-
-                return title;
+                return "Saisir un thème à la suite";
             }
         }
 
