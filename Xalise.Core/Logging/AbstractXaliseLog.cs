@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Xalise.Util.Logging
+﻿namespace Xalise.Core.Logging
 {
     /// <summary>
     /// Classe de base pour la gestion des logs.
@@ -22,7 +20,7 @@ namespace Xalise.Util.Logging
         /// <summary>
         /// Récupère le niveau minimum d'écriture des messages de log.
         /// </summary>
-        public TEnum NiveauMinimum 
+        public TEnum NiveauMinimum
         {
             get
             {

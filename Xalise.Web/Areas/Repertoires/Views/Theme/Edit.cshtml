@@ -52,10 +52,7 @@
                         {
                             <div class="row">
                                 <div class="col-sm-9 offset-sm-3">
-                                    <div class="form-check">
-                                        <input asp-for="ContinuerSaisie" id="@HtmlHelpers.IdentifiantfHtmlElement.ID_CHECKBOX_SAISIE_SUITE" class="form-check-input" />
-                                        <label asp-for="ContinuerSaisie" class="form-check-label">Saisir un thème à la suite</label>
-                                    </div>
+                                    <partial name="_ContinuerSaisie" model="Model" />
                                 </div>
                             </div>
                         }

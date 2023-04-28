@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq.Expressions;
-using Xalise.Util.Extensions;
+﻿using System.Linq.Expressions;
+using System.Runtime.InteropServices;
+using Xalise.Core.Extensions;
 
-namespace Xalise.Util.Helpers
+namespace Xalise.Core.Helpers
 {
     /// <summary>
     /// Fonctions utilitaires pour récupérer le nom d'une variable, d'un type ou d'un membre.
@@ -16,7 +16,8 @@ namespace Xalise.Util.Helpers
         /// <param name="name">Expression à évaluer.</param>
         /// <param name="alias">Alias à inclure dans le résultlat.</param>
         /// <returns>Si <paramref name="alias"/> renseigné renvoie "alias.NomPropriété", sinon renvoie "NomPropriété".</returns>
-        public static string NameOfProperty<T>(Expression<Func<T, object>> name, string alias = null)
+        
+        public static string NameOfProperty<T>(Expression<Func<T, object>> name, string alias = "")
         {
             if (!string.IsNullOrWhiteSpace(alias))
             {

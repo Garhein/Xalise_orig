@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Xalise.Util.Extensions;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using Xalise.Core.Entite.GED;
+using Xalise.Core.Extensions;
 using Xalise.Web.Areas.Repertoires.Models;
 using Xalise.Web.Controllers;
-using Xalise.Web.Data;
 using Xalise.Web.Enums;
 using Xalise.Web.Helpers;
 using Xalise.Web.Helpers.WebHelpers;

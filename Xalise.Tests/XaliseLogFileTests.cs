@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using System.Diagnostics;
-using System.Reflection;
-using Xalise.Util.Logging;
+using Xalise.Core.Logging;
 
 namespace Xalise.Tests
 {

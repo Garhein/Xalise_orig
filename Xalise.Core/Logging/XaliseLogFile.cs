@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using Xalise.Util.Extensions;
-using Xalise.Util.Helpers;
+﻿using Xalise.Core.Extensions;
+using Xalise.Core.Helpers;
 
-namespace Xalise.Util.Logging
+namespace Xalise.Core.Logging
 {
     /// <summary>
     /// Gestion des logs dans un fichier physique.
@@ -74,8 +72,8 @@ namespace Xalise.Util.Logging
             {
                 lock (_lockObj)
                 {
-                    string logPath = Path.Combine(this._baseDirectory, $"{this._baseFilename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFileName}");
-                    string logMsg  = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}][{niveau.ToString()}] >> {emetteur} > {log.Trim()}";
+                    string logPath  = Path.Combine(this._baseDirectory, $"{this._baseFilename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFileName}");
+                    string logMsg   = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}][{niveau.ToString()}] >> {emetteur} > {log.Trim()}";
 
                     using (StreamWriter writer = new StreamWriter(logPath, true))
                     {

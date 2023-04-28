@@ -1,4 +1,5 @@
-﻿using Xalise.Web.Enums;
+﻿using System;
+using Xalise.Web.Enums;
 
 namespace Xalise.Web.Models
 {

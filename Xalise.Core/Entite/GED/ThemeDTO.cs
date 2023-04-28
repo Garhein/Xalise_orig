@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace Xalise.Web.Data
+namespace Xalise.Core.Entite.GED
 {
     [Serializable]
     public class ThemeDTO
@@ -20,10 +20,11 @@ namespace Xalise.Web.Data
 
         [DisplayName("Référence interne")]
         public bool     EstInterne { get; set; }
+        [DisplayName("Archivé")]
         public bool     EstArchive { get; set; }
 
         /// <summary>
-        /// Constructeur vide.
+        /// Constructeur par défaut.
         /// </summary>
         public ThemeDTO()
         {

@@ -1,3 +1,18 @@
 [
-  
+  {
+    "ID": 1,
+    "Libelle": "Non class\u00E9",
+    "ParentID": null,
+    "NumOrdre": 1,
+    "EstInterne": false,
+    "EstArchive": false
+  },
+  {
+    "ID": 2,
+    "Libelle": "Autre",
+    "ParentID": null,
+    "NumOrdre": 2,
+    "EstInterne": false,
+    "EstArchive": false
+  }
 ]

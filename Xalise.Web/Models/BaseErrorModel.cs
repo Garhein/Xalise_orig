@@ -1,4 +1,7 @@
-﻿namespace Xalise.Web.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace Xalise.Web.Models
 {
     /// <summary>
     /// Classe de base utilisée pour la gestion des erreurs.

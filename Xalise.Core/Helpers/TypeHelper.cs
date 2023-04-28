@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Xalise.Util.Helpers
+﻿namespace Xalise.Core.Helpers
 {
     /// <summary>
     /// Fonctions utilitaires pour manipuler les types de données.
@@ -14,10 +12,7 @@ namespace Xalise.Util.Helpers
         /// <returns></returns>
         public static string GetTypeName(Object obj)
         {
-            if (obj == null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
+            ArgumentHelper.ThrowIfNull(obj, nameof(obj));
 
             return TypeHelper.GetTypeName(obj.GetType());
         }
@@ -29,10 +24,7 @@ namespace Xalise.Util.Helpers
         /// <returns></returns>
         public static string GetTypeName(Type type)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
+            ArgumentHelper.ThrowIfNull(type, nameof(type));
 
             string className = type.FullName;
             return className.Substring(className.LastIndexOf('.') + 1);

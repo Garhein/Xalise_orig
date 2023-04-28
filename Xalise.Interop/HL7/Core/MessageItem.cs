@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xalise.Core.Helpers;
 using Xalise.Interop.HL7.Exceptions;
-using Xalise.Util.Helpers;
 
 namespace Xalise.Interop.HL7.Core
 {

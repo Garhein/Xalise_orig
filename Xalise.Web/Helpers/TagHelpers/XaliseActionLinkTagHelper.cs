@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.IO;
 using System.Text.Encodings.Web;
 using Xalise.Web.Helpers.WebHelpers;
 using static Xalise.Web.Helpers.WebHelpers.HtmlHelpers;
@@ -16,6 +17,15 @@ namespace Xalise.Web.Helpers.TagHelpers
         public string                   LinkTitle { get; set; }
         public FontAwesomeIconStyle     IconStyle { get; set; }
         public FontAwesomeIcon          Icon { get; set; }
+
+        /// <summary>
+        /// Constructeur par défaut.
+        /// </summary>
+        public XaliseActionLinkTagHelper()
+        {
+            this.Title      = string.Empty;
+            this.LinkTitle  = string.Empty;
+        }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

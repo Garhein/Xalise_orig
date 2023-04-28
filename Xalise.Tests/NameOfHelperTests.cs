@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Xalise.Util.Helpers;
+using Xalise.Core.Helpers;
 
 namespace Xalise.Tests
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace Xalise.Util.Helpers
+﻿namespace Xalise.Core.Helpers
 {
     /// <summary>
     /// Fonctions utilitaires pour manipuler les arguments.
@@ -33,10 +30,7 @@ namespace Xalise.Util.Helpers
         /// <exception cref="ArgumentException">Le paramètre est vide.</exception>
         public static void ThrowIfNullOrEmpty(string value, string parameterName)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
+            ArgumentHelper.ThrowIfNull(value, parameterName);
 
             if (string.IsNullOrEmpty(value))
             {
@@ -57,7 +51,7 @@ namespace Xalise.Util.Helpers
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentNullException($"Le paramètre '{parameterName}' ne pas être composé uniquement d'espaces.");
+                throw new ArgumentException($"Le paramètre '{parameterName}' ne pas être composé uniquement d'espaces.");
             }
         }
 
@@ -74,7 +68,6 @@ namespace Xalise.Util.Helpers
         {
             if (!string.IsNullOrWhiteSpace(directory))
             {
-
                 if (!Directory.Exists(directory))
                 {
                     throw new DirectoryNotFoundException($"Le répertoire <{directory}> n'a pas été trouvé.");
@@ -83,7 +76,7 @@ namespace Xalise.Util.Helpers
         }
 
         /// <summary>
-        /// Vérifier si le répertoire n'existe pas.
+        /// Vérifier si le fichier n'existe pas.
         /// </summary>
         /// <param name="filePath">Chemin du fichier.</param>
         /// <exception cref="FileNotFoundException">Le fichier n'a pas été trouvé.</exception>

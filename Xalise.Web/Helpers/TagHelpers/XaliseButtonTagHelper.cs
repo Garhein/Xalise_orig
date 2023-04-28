@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.IO;
 using System.Text.Encodings.Web;
 using Xalise.Web.Helpers.WebHelpers;
 
@@ -16,6 +17,14 @@ namespace Xalise.Web.Helpers.TagHelpers
         public eXaliseButtonStyle       Style { get; set; }
         public FontAwesomeIconStyle     IconStyle { get; set; }
         public FontAwesomeIcon          Icon { get; set; }
+
+        /// <summary>
+        /// Constructeur par défaut.
+        /// </summary>
+        public XaliseButtonTagHelper()
+        {
+            this.Title = string.Empty;
+        }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {

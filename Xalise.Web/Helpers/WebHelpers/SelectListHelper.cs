@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Xalise.Web.Data;
-using Xalise.Util.Extensions;
+using System.Collections.Generic;
+using Xalise.Core.Entite.GED;
+using Xalise.Core.Extensions;
 
 namespace Xalise.Web.Helpers.WebHelpers
 {

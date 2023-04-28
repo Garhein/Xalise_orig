@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-
-namespace Xalise.Web.Data
+﻿namespace Xalise.Core.Entite.GED
 {
     [Serializable]
     public class Theme
@@ -12,9 +9,9 @@ namespace Xalise.Web.Data
         public int      NumOrdre { get; set; }
         public bool     EstInterne { get; set; }
         public bool     EstArchive { get; set; }
-    
+
         /// <summary>
-        /// Constructeur vide.
+        /// Constructeur par défaut.
         /// </summary>
         public Theme()
         {

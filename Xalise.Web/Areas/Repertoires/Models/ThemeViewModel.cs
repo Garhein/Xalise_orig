@@ -1,4 +1,6 @@
-﻿using Xalise.Web.Data;
+﻿using System;
+using System.Collections.Generic;
+using Xalise.Core.Entite.GED;
 
 namespace Xalise.Web.Areas.Repertoires.Models
 {

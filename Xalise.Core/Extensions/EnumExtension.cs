@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
-namespace Xalise.Util.Extensions
+namespace Xalise.Core.Extensions
 {
     /// <summary>
     /// Extensions applicables aux <see cref="Enum"/>.

@@ -1,5 +1,5 @@
 ﻿using System;
-using Xalise.Util.Helpers;
+using Xalise.Core.Helpers;
 
 namespace Xalise.Interop.HL7.Core
 {

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Xalise.Web.Data;
+using System;
+using System.Collections.Generic;
+using Xalise.Core.Entite.GED;
 using Xalise.Web.Models;
 
 namespace Xalise.Web.Areas.Repertoires.Models

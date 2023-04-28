@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Xalise.Util.Extensions
+﻿namespace Xalise.Core.Extensions
 {
     /// <summary>
     /// Extensions applicables aux <see cref="IEnumerable{T}</T>"/> et <see cref="IDictionary{TKey, TValue}"/>.
     /// </summary>
-    public static class IEnumerableExtension
+    public static class CollectionsExtension
     {
         /// <summary>
         /// Vérifie si <paramref name="source"/> est NULL ou ne contient aucune valeur.
@@ -32,6 +28,18 @@ namespace Xalise.Util.Extensions
         }
 
         /// <summary>
+        /// Vérifie si <paramref name="liste"/> existe, si la liste contient des valeurs et si la valeur existe.
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="liste"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool ExistAndContainsValue<TValue>(this IEnumerable<TValue> liste, TValue value)
+        {
+            return liste.IsNotEmpty() && value != null && liste.Contains(value);
+        }
+
+        /// <summary>
         /// Vérifie si <paramref name="dictionary"/> existe, s'il contient des valeurs et si la clé existe.        
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
@@ -42,18 +50,6 @@ namespace Xalise.Util.Extensions
         public static bool ExistAndContainsKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
             return dictionary.IsNotEmpty() && key != null && dictionary.ContainsKey(key);
-        }
-
-        /// <summary>
-        /// Vérifie si <paramref name="liste"/> existe, si la liste contient des valeurs et si la valeur existe.
-        /// </summary>
-        /// <typeparam name="TValue"></typeparam>
-        /// <param name="liste"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool ExistAndContainsValue<TValue>(this IEnumerable<TValue> liste, TValue value)
-        {
-            return liste.IsNotEmpty() && value != null && liste.Contains(value);
         }
     }
 }
