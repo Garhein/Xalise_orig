@@ -21,6 +21,33 @@ body {
   margin-bottom: 60px;
 }
 
+/*#region Message d'attente*/
+
+#div-container-xalise-msg-attente {
+    background-color: #fff;
+    filter: opacity(80%);
+    position: fixed;
+    display: none;
+    opacity: 0.8;
+    z-index: 99;
+    bottom: 0px;
+    right: 0px;
+    top: 0px;
+    left: 0px;
+}
+
+#div-container-xalise-msg-attente #div-xalise-msg-attente {
+    filter: opacity(100%);
+    position: absolute;
+    padding: 0.75rem;
+    z-index: 1000;
+    opacity: 100;
+    left: 45%;
+    top: 40%; 
+}
+
+/*#endregion*/
+
 /*#region Styles génériques : tables*/
 
 .ui-col-check,

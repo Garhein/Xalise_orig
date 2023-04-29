@@ -23,20 +23,10 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             _logger = logger;
         }
 
-
         /*
-         * 0°) Colonnes
-         *  - modifier
-         *  - archiver/désarchiver : si pas réf. interne
-         *  - supprimer : si pas réf. interne
-         *  - libellé
-         *  - numéro d'ordre
-         *  - réf. interne ?
-         *  - archivé ?
          *  
          * 0°) Si pas de données : afficher une vue générique placée dans "Shared"
          * 0°) Pour faire apparaître la hiérarchie : espaces blancs devant le libellé des enfants ?
-         * 0°) Classes CSS de la table : .table, .table-hover, .table-sm, .table-bordered
          * 0°) Titre des colonnes : structure ?
          * 0°) Les thèmes de référence interne :
          *  - ne peuvent être que des parents
@@ -62,6 +52,9 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
          * 
          */
 
+        // TODO: à l'archivage d'un parent avec enfant, archiver aussi les enfants ?
+        // TODO: liste des thèmes, changer icône pour ouvrir la fenêtre en mode 'Visualisation' ? Prévoir une action JS différente pour la visualisation ?
+
         /// <summary>
         /// Affiche la page de gestion des thèmes.
         /// </summary>
@@ -79,10 +72,11 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         /// <summary>
         /// Affiche la fenêtre de dialogue de création/modification d'un thème.
         /// </summary>
+        /// <param name="modeOuverture">Mode d'ouverture de la fenêtre de dialogue.</param>
         /// <param name="themeID">Identifiant du thème à modifier.</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Edit(int themeID)
+        public IActionResult Edit(int modeOuverture, int themeID)
         {
             IEnumerable<ThemeDTO> listeThemes   = JsonHelper.ReadJsonDataFile<ThemeDTO>(JsonHelper.CSTS_FILENAME_THEMES);
             ThemeEditModel model                = new ThemeEditModel();
@@ -91,42 +85,59 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             // Gestion des informations du thème et du mode d'ouverture
             // =-=-=-
 
-            if (themeID <= 0)
-            {
-                model.ModeOuverture = eModeOuverture.CREATION;
-            }
-            else
+            model.ModeOuverture = (eModeOuverture)modeOuverture;
+
+            if (model.ModeOuverture != eModeOuverture.CREATION)
             {
                 if (listeThemes.IsEmpty())
                 {
-                    model.ErrorModel.AddErreur("Impossible de trouver le thème que vous souhaitez modifier : aucun thème n'a été trouvé.");
+                    model.ErrorModel.AddErreur("Modification impossible : le répertoire des thèmes est vide.");
                 }
                 else
                 {
                     IEnumerable<ThemeDTO> resRecherche = listeThemes.Where(x => x.ID.Equals(themeID));
                     if (resRecherche.IsEmpty())
                     {
-                        model.ErrorModel.AddErreur("Le thème que vous souhaitez modifier n'a pas été trouvé.");
+                        model.ErrorModel.AddErreur("Modification impossible : les informations du thème n'ont pas été trouvées.");
                     }
                     else
                     {
                         model.ThemeDTO              = resRecherche.First();
-                        model.ModeOuverture         = eModeOuverture.MODIFICATION;
                         model.EstParentAvecEnfants  = listeThemes.Any(x => x.ParentID.HasValue && x.ParentID.Value.Equals(themeID));
+
+                        if (model.ThemeDTO.ParentID.HasValue)
+                        {
+                            model.EstEnfantAvecParentArchive = listeThemes.Any(x => x.ID.Equals(model.ThemeDTO.ParentID.Value) && x.EstArchive);
+                        }
                     }
                 }
             }
 
             // =-=-=-
             // Initialisation de la liste déroulante de sélection du thème parent
-            // // Exclusion du thème modifié pour empêcher de le lier avec lui-même
+            //  - exclusion du thème modifié pour empêcher de le lier avec lui-même
+            //  - exclusion des thèmes archivés (sauf si mode 'VISUALISATION')
             // =-=-=-
 
             if (!model.AvecErreur)
             {
                 if (listeThemes.IsNotEmpty())
                 {
-                    listeThemes = listeThemes.Where(x => !x.ParentID.HasValue && !x.ID.Equals(themeID)).OrderBy(x => x.NumOrdre);
+                    if (model.ModeOuverture != eModeOuverture.VISUALISATION)
+                    {
+                        listeThemes = listeThemes.Where(x => !x.ParentID.HasValue
+                                                             && !x.ID.Equals(themeID)
+                                                             && !x.EstArchive)
+                                                 .OrderBy(x => x.NumOrdre);
+                    }
+                    else
+                    {
+                        // En 'VISUALISATION' on prend aussi les thèmes archivés : dans le cas d'un enfant
+                        // dont le parent est archivé il faut pouvoir visualiser son parent
+                        listeThemes = listeThemes.Where(x => !x.ParentID.HasValue
+                                                             && !x.ID.Equals(themeID))
+                                                 .OrderBy(x => x.NumOrdre);
+                    }
                 }
 
                 model.ListeThemesParents = SelectListHelper.ConstruireListeThemesParents(listeThemes, model.ThemeDTO.ParentID);
@@ -144,11 +155,6 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         public IActionResult Save(ThemeEditModel model)
         {
             BaseErrorModel retModel = new BaseErrorModel();
-
-            //TODO: en modification, on ne peut pas sélectionner comme parent soit-même !!
-            //TODO: gestion des erreurs, jeton de validité du formulaire (possible avec 'Continuer la saisie' ?), ...
-
-            // Récupération des thèmes
             List<Theme> listeThemes = JsonHelper.ReadJsonDataFile<Theme>(JsonHelper.CSTS_FILENAME_THEMES);
 
             // =-=-=-
@@ -157,59 +163,44 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
             Theme theme = new Theme(model.ThemeDTO);
 
-            if (model.ModeOuverture.Equals(eModeOuverture.CREATION))
+            switch (model.ModeOuverture)
             {
-                theme.ID = CalculerNumOrdre(ref listeThemes, null); // Ne calcule pas correctement l'identifiant s'il existe des enfants
-                theme.NumOrdre = CalculerNumOrdre(ref listeThemes, theme.ParentID);
-                listeThemes.Add(theme);
-            }
-            else if (model.ModeOuverture.Equals(eModeOuverture.MODIFICATION))
-            {
-                int index = listeThemes.ToList().FindIndex(x => x.ID == model.ThemeDTO.ID);
-                if (index < 0)
-                {
-                    retModel.AddErreur("Impossible de trouver le thème que vous souhaitez modifier.");
-                }
-                else
-                {
-                    // Si changement de parent : retrait du parent de départ, changement de parent ou sélection d'un parent
-                    if (listeThemes[index].ParentID != theme.ParentID)
+                case eModeOuverture.CREATION:
                     {
-                        // Retrait du parent de départ
-                        if (listeThemes[index].ParentID.HasValue && !theme.ParentID.HasValue)
+                        theme.ID        = this.CalculerProchainID(ref listeThemes);
+                        theme.NumOrdre  = this.CalculerProchainNumOrdre(ref listeThemes, theme.ParentID);
+                        listeThemes.Add(theme);
+                        break;
+                    }
+                case eModeOuverture.MODIFICATION:
+                    {
+                        int index = listeThemes.ToList().FindIndex(x => x.ID == model.ThemeDTO.ID);
+                        if (index < 0)
                         {
-                            // Réordonner les éléments associés au parent de départ qui ont un numéro d'ordre supérieur
-                            RemonterOrdreThemes(ref listeThemes, listeThemes[index].ParentID, listeThemes[index].NumOrdre);
-
-                            // Numéroter le thème, qui devient parent, pour le placer en dernière position
-                            theme.NumOrdre = CalculerNumOrdre(ref listeThemes, theme.ParentID);
+                            retModel.AddErreur("Enregistrement des modifications impossible : les informations du thème n'ont pas été trouvées.");
                         }
-                        // Sélection d'un parent
-                        else if (!listeThemes[index].ParentID.HasValue && theme.ParentID.HasValue)
-                        {
-                            // Réordonner les parents qui ont un numéro d'ordre supérieur
-                            RemonterOrdreThemes(ref listeThemes, null, listeThemes[index].NumOrdre);
-
-                            // Numéroter le thème, qui devient enfant, pour le placer en dernière position du parent
-                            theme.NumOrdre = CalculerNumOrdre(ref listeThemes, theme.ParentID);
-                        }
-                        // Changement de parent
                         else
                         {
-                            // Réordonner les éléments associés au parent de départ qui ont un numéro d'ordre supérieur
-                            RemonterOrdreThemes(ref listeThemes, listeThemes[index].ParentID, listeThemes[index].NumOrdre);
+                            // Si changement de parent : retrait du parent de départ, changement de parent ou sélection d'un parent
+                            if (listeThemes[index].ParentID != theme.ParentID)
+                            {
+                                // Réordonner les éléments associés au parent de départ qui ont un numéro d'ordre supérieur
+                                this.RemonterOrdreThemes(ref listeThemes, listeThemes[index].ParentID, listeThemes[index].NumOrdre);
 
-                            // Numéroter le thème pour le placer en dernière position du parent sélectionné
-                            theme.NumOrdre = CalculerNumOrdre(ref listeThemes, theme.ParentID);
+                                // Numéroter le thème, qui devient parent, pour le placer en dernière position
+                                theme.NumOrdre = this.CalculerProchainNumOrdre(ref listeThemes, theme.ParentID);
+                            }
                         }
-                    }
 
-                    listeThemes[index] = theme;
-                }
-            }
-            else
-            {
-                retModel.AddErreur($"Le mode d'ouverture {model.ModeOuverture.ToString()} n'est pas pris en charge.");
+                        listeThemes[index] = theme;
+
+                        break;
+                    }
+                default:
+                    {
+                        retModel.AddErreur($"Le mode d'ouverture {model.ModeOuverture.ToString()} n'est pas pris en charge.");
+                        break;
+                    }
             }
 
             if (!retModel.AvecErreur)
@@ -218,25 +209,50 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             }
 
             return new JsonResult(retModel);
+
+            //TODO: en modification, on ne peut pas sélectionner comme parent soit-même !!
+            //TODO: gestion des erreurs, jeton de validité du formulaire (possible avec 'Continuer la saisie' ?), ...
         }
 
         /// <summary>
-        /// Calcul du prochaine numéro d'ordre.
+        /// Calcul du prochain identifiant.
+        /// </summary>
+        /// <param name="themes">Liste des thèmes.</param>
+        /// <returns></returns>
+        private int CalculerProchainID(ref List<Theme> themes)
+        {
+            int ret = 1;
+
+            if (themes.IsNotEmpty())
+            {
+                ret = themes.Max(x => x.ID) + 1;
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Calcul du prochain numéro d'ordre.
         /// </summary>
         /// <param name="themes">Liste des thèmes.</param>
         /// <param name="parentID">ID du thème parent.</param>
         /// <returns></returns>
-        private int CalculerNumOrdre(ref List<Theme> themes, int? parentID)
+        private int CalculerProchainNumOrdre(ref List<Theme> themes, int? parentID)
         {
             int numOrdre = 1;
 
-            if (!parentID.HasValue)
+            if (themes.IsNotEmpty())
             {
-                numOrdre = themes.IsNotEmpty() ? themes.Where(x => !x.ParentID.HasValue).Max(x => x.ID) + 1 : 1;
-            }
-            else
-            {
-                numOrdre = themes.Any(x => x.ParentID.Equals(parentID)) ? themes.Where(x => x.ParentID.Equals(parentID)).Max(x => x.NumOrdre) + 1 : 1;
+                if (!parentID.HasValue)
+                {
+                    // Pour un thème parent
+                    numOrdre = themes.Where(x => !x.ParentID.HasValue).Max(x => x.NumOrdre) + 1;
+                }
+                else if (themes.Any(x => x.ParentID.Equals(parentID)))
+                {
+                    // Pour un thème enfant
+                    numOrdre = themes.Where(x => x.ParentID.Equals(parentID)).Max(x => x.NumOrdre) + 1;
+                }
             }
 
             return numOrdre;
@@ -246,7 +262,7 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         /// Réordonne l'ordre des thèmes en retirant 1 à la position de départ.
         /// </summary>
         /// <param name="themes">Liste des thèmes.</param>
-        /// <param name="parentID">ID du parent utilisé pour retrouver les thèmes à réordonner.</param>
+        /// <param name="parentID">ID du parent utilisé pour trouver les thèmes à réordonner.</param>
         /// <param name="ordreDepart">Numéro d'ordre à partir duquel les thèmes doivent être réordonnés.</param>
         private void RemonterOrdreThemes(ref List<Theme> themes, int? parentID, int ordreDepart)
         {
@@ -265,6 +281,8 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             // =-=-=-
 
             IEnumerable<ThemeDTO> listeDTO = JsonHelper.ReadJsonDataFile<ThemeDTO>(JsonHelper.CSTS_FILENAME_THEMES);
+
+            // TODO: si recherche et que l'on trouve un/des enfants, il faut aussi afficher le parent ?
 
             // =-=-=-
             // Construction du retour

@@ -11,7 +11,7 @@
         <div class="modal-body">
             @if (Model.AvecErreur)
             {
-                <!-- TODO: afficher une vue générique qui prend en paramètre Model.ErrorModel -->
+                <partial name="_ErrorEdit" model="Model.ErrorModel" />
             }
             else
             {
@@ -27,13 +27,13 @@
                         <div class="row mb-2">
                             <label asp-for="ThemeDTO.Libelle" class="col-sm-3 col-form-label-sm px-0"></label>
                             <div class="col-sm-9">
-                                <input asp-for="ThemeDTO.Libelle" class="form-control form-control-sm" />
+                                <input asp-for="ThemeDTO.Libelle" class="form-control form-control-sm" disabled="@(Model.ModeOuverture == eModeOuverture.VISUALISATION)" />
                             </div>
                         </div>
                         <div class="row mb-2">
                             <label asp-for="ThemeDTO.ParentID" class="col-sm-3 col-form-label-sm px-0"></label>
                             <div class="col-sm-9">
-                                <select asp-for="ThemeDTO.ParentID" asp-items="Model.ListeThemesParents" class="form-select form-select-sm" disabled="@Model.EstParentAvecEnfants"></select>
+                                <select asp-for="ThemeDTO.ParentID" asp-items="Model.ListeThemesParents" class="form-select form-select-sm" disabled="@(Model.EstParentAvecEnfants || Model.ModeOuverture == eModeOuverture.VISUALISATION)"></select>
                             </div>
                         </div>
 
@@ -48,16 +48,16 @@
                             </div>
                         }
 
-                        @if (!Model.ModeOuverture.Equals(eModeOuverture.CREATION))
+                        @if (Model.ThemeDTO.EstArchive || Model.EstEnfantAvecParentArchive)
                         {
                             <div class="row">
                                 <div class="col-sm-9 offset-sm-3">
-                                    <input asp-for="ThemeDTO.EstArchive" class="form-check-input" disabled="disabled" />
-                                    <label asp-for="ThemeDTO.EstArchive" class="form-check-label"></label>
+                                    <p class="mb-0 text-danger @HtmlHelpers.IdentifiantfHtmlElement.CLASS_TXT_JUSTIFY @HtmlHelpers.IdentifiantfHtmlElement.CLASS_FONT_SIZE_75">@Model.UInfoArchivage</p>
                                 </div>
                             </div>
                         }
-                        else
+
+                        @if (Model.ModeOuverture.Equals(eModeOuverture.CREATION))
                         {
                             <div class="row">
                                 <div class="col-sm-9 offset-sm-3">
@@ -72,7 +72,7 @@
         <div class="modal-footer">
             @if (Model.AvecErreur || Model.ModeOuverture.Equals(eModeOuverture.VISUALISATION))
             {
-                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Annuler" onclick="Theme_Fermer();"/>
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Fermer" onclick="Theme_Fermer();"/>
             }
             else
             {

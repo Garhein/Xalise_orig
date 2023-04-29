@@ -15,15 +15,17 @@ namespace Xalise.Web.Areas.Repertoires.Models
         public List<SelectListItem> ListeThemesParents { get; set; }
         public ThemeDTO             ThemeDTO { get; set; }
         public bool                 EstParentAvecEnfants { get; set; }
+        public bool                 EstEnfantAvecParentArchive { get; set; }
 
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
         public ThemeEditModel() : base("Thème GED")
         {
-            ListeThemesParents          = new List<SelectListItem>();
-            ThemeDTO                    = new ThemeDTO();
-            this.EstParentAvecEnfants   = false;
+            ListeThemesParents              = new List<SelectListItem>();
+            ThemeDTO                        = new ThemeDTO();
+            this.EstParentAvecEnfants       = false;
+            this.EstEnfantAvecParentArchive = false;
         }
 
         #region Utilitaires d'affichage
@@ -37,6 +39,28 @@ namespace Xalise.Web.Areas.Repertoires.Models
             get
             {
                 return "Saisir un thème à la suite";
+            }
+        }
+
+        /// <summary>
+        /// Information sur l'archivage du thème.
+        /// </summary>
+        public string UInfoArchivage
+        {
+            get
+            {
+                string retVal = string.Empty;
+
+                if (this.ThemeDTO.EstArchive)
+                {
+                    retVal = "Thème archivé";
+                }
+                else if (this.EstEnfantAvecParentArchive)
+                {
+                    retVal = "Thème parent archivé";
+                }
+
+                return retVal;
             }
         }
 

@@ -3,10 +3,10 @@
     /// <summary>
     /// Mode d'ouverture des pages et fenêtres.
     /// </summary>
-    public enum eModeOuverture
+    public enum eModeOuverture : int
     {
-        CREATION,
-        MODIFICATION,
-        VISUALISATION
+        CREATION        = 1,
+        MODIFICATION    = 2,
+        VISUALISATION   = 3
     }
 }

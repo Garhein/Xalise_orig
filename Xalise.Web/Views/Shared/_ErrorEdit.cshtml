@@ -1,0 +1,24 @@
+﻿@using Xalise.Web.Areas.Repertoires.Models;
+@using Xalise.Core.Extensions
+@model BaseErrorModel;
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            @if (!string.IsNullOrWhiteSpace(Model.MessageErreur))
+            {
+                <p class="text-danger @HtmlHelpers.IdentifiantfHtmlElement.CLASS_TXT_JUSTIFY">@Model.MessageErreur</p>
+            }
+
+            @if (Model.MessageErreurs.IsNotEmpty())
+            {
+                <ul>
+                    @foreach (string errMessage in Model.MessageErreurs)
+                    {
+                        <li>@errMessage</li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>

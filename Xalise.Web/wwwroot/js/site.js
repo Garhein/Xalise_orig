@@ -1,6 +1,10 @@
 ﻿"use strict";
 
-//#region Fonctions globables
+//#region Déclarations et fonctions globables
+
+const selectorSaisieSuiteID         = '#ui-chk-saisie-suite';
+const selectorContainerMsgAttenteID = '#div-container-xalise-msg-attente';
+const selectorMsgAttenteID          = '#div-xalise-msg-attente';
 
 /**
  * Ouverture d'une fenêtre de dialogue bootstrap.
@@ -8,7 +12,7 @@
  * @param {string} selector
  * @param {string} contentHtml
  */
-function Xalise_OpenModal(selector, contentHtml) {
+function Xalise_OuvrirDialogue(selector, contentHtml) {
     let config = { keyboard: false, backdrop: 'static' };
     let modal  = document.querySelector(selector);
 
@@ -29,7 +33,7 @@ function Xalise_OpenModal(selector, contentHtml) {
  * @author Xavier VILLEMIN
  * @param {string} selector
  */
-function Xalise_CloseModal(selector) {
+function Xalise_FermerDialogue(selector) {
     let modal = document.querySelector(selector);
 
     modal.addEventListener('hidden.bs.modal', event => {
@@ -40,44 +44,70 @@ function Xalise_CloseModal(selector) {
     $(modal).modal('hide');
 }
 
+/**
+ * Affichage et retrait du message d'attente.
+ * @author Xavier VILLEMIN
+ * @param {string} message
+ */
+function Xalise_GererMsgAttente(message) {
+    // Message par défaut
+    if (message === undefined || message === null) {
+        message = "Traitement en cours...";
+    }
+
+    if (message != null && message != "") {
+        $("span", selectorMsgAttenteID).html(message);
+        $(selectorContainerMsgAttenteID).fadeIn("slow");
+    }
+    else {
+        // Le retrait du message est réalisé après que le conteneur ait été caché, sinon il disparaît
+        // avant que le conteneur soit réellement caché
+        $(selectorContainerMsgAttenteID).fadeOut("slow", function () { $("span", selectorMsgAttenteID).html(""); });
+    }
+}
+
 //#endregion
 
 //#region Gestion des thèmes
 
-let selectorThemeModalID    = '#div-modal-theme-edit';
-let selectorThemeEditFormID = '#form-theme-edit';
+const selectorThemeModalID    = '#div-modal-theme-edit';
+const selectorThemeEditFormID = '#form-theme-edit';
 
 /**
  * Fermeture de la fenêtre de dialogue d'édition d'un thème.
  * @author Xavier VILLEMIN
  */
 function Theme_Fermer() {
-    Xalise_CloseModal(selectorThemeModalID);
+    Xalise_FermerDialogue(selectorThemeModalID);
 }
 
 /**
  * Création ou modification d'un thème.
  * @author Xavier VILLEMIN
+ * @param {int} modeOuverture
  * @param {int} themeID
  */
-function Theme_Editer(themeID) {
+function Theme_Editer(modeOuverture, themeID) {
+    Xalise_GererMsgAttente();
+
     $.ajax({
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: "/Repertoires/Theme/Edit",
         dataType: "html",
         type: "GET",
         data: {
+            modeOuverture: modeOuverture,
             themeID: themeID
         }
     })
         .done(function (data, textStatus, jqXHR) {
-            Xalise_OpenModal(selectorThemeModalID, data);
+            Xalise_OuvrirDialogue(selectorThemeModalID, data);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            
+
         })
         .always(function () {
-            
+            Xalise_GererMsgAttente("");
         });
 }
 
@@ -94,8 +124,8 @@ function Theme_Enregistrer() {
         data: $(selectorThemeEditFormID).serialize()
     })
         .done(function (data, textStatus, jqXHR) {
-
             Theme_Fermer();
+            location.reload();
         });
 }
 
