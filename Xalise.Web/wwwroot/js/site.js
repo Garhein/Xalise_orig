@@ -66,12 +66,35 @@ function Xalise_GererMsgAttente(message) {
     }
 }
 
+/**
+ * Vide les champs d'un formulaire de saisie.
+ * @author Xavier VILLEMIN
+ * @param {string} selectorForm
+ * */
+function Xalise_ViderFormulaire(selectorForm) {
+    let form = $(selectorForm);
+
+    $("input[type='text']:not(.nePasVider)", form).val("");
+    $("input[type='hidden'][value!=false]:not(.nePasVider)", form).val("");
+    $("input[type='checkbox']:not(.nePasVider)", form).attr("checked", false);
+    $("textarea:not(.nePasVider)", form).val("");
+
+    form.find("select:not(.nePasVider)").each(function () {
+        if ($(this).attr("multiple") != undefined) {
+            $("option", $(this)).prop('selected', false);
+        }
+        else {
+            $("option:first", $(this)).prop('selected', true);
+        }
+    });
+}
+
 //#endregion
 
 //#region Gestion des thèmes
 
-const selectorThemeModalID    = '#div-modal-theme-edit';
-const selectorThemeEditFormID = '#form-theme-edit';
+const selectorThemeModalID      = '#div-modal-theme-edit';
+const selectorThemeEditFormID   = '#form-theme-edit';
 
 /**
  * Fermeture de la fenêtre de dialogue d'édition d'un thème.
@@ -116,6 +139,8 @@ function Theme_Editer(modeOuverture, themeID) {
  * @author Xavier VILLEMIN
  */
 function Theme_Enregistrer() {
+    Xalise_GererMsgAttente("Enregistrement en cours...");
+
     $.ajax({
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         url: "/Repertoires/Theme/Save",
@@ -124,8 +149,21 @@ function Theme_Enregistrer() {
         data: $(selectorThemeEditFormID).serialize()
     })
         .done(function (data, textStatus, jqXHR) {
-            Theme_Fermer();
-            location.reload();
+            if (data.AvecErreur) {
+
+            }
+            else {
+                if ($(selectorSaisieSuiteID, selectorThemeEditFormID).is(":checked")) {
+                    Xalise_ViderFormulaire(selectorThemeEditFormID);
+                }
+                else {
+                    Theme_Fermer();
+                    location.reload();
+                }
+            }
+        })
+        .always(function () {
+            Xalise_GererMsgAttente("");
         });
 }
 
