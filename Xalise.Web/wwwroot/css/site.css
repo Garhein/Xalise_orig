@@ -98,3 +98,11 @@ body {
 }
 
 /*#endregion*/
+
+/*#region Styles génériques : formulaires*/
+
+.xalise-form-check-input-sm {
+    margin-top: 0.5rem;
+}
+
+/*#endregion*/
