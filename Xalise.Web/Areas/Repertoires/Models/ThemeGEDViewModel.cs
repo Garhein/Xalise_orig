@@ -7,7 +7,7 @@ using Xalise.Web.Enums;
 namespace Xalise.Web.Areas.Repertoires.Models
 {
     [Serializable]
-    public class ThemeViewModel
+    public class ThemeGEDViewModel
     {
         public ThemeCriteresRechercheModel  CriteresRecherche { get; set; }
         public IEnumerable<ThemeDTO>        ListeThemes { get; set; }
@@ -15,7 +15,7 @@ namespace Xalise.Web.Areas.Repertoires.Models
         /// <summary>
         /// Constructeur vide.
         /// </summary>
-        public ThemeViewModel()
+        public ThemeGEDViewModel()
         {
             CriteresRecherche   = new ThemeCriteresRechercheModel();
             ListeThemes         = new List<ThemeDTO>();
@@ -32,7 +32,7 @@ namespace Xalise.Web.Areas.Repertoires.Models
             int modeOuverture = (int)eModeOuverture.MODIFICATION;
 
             // La fenêtre de dialogue est ouverte en mode 'VISUALISATION' si
-            //  - le thème lui-même (parent ou fils) est archivé
+            //  - le thème est archivé
             //  - le thème parent est archivé
             if (estArchive || (parentID.HasValue && this.ListeThemes.Any(x => x.ID.Equals(parentID.Value) && x.EstArchive)))
             {

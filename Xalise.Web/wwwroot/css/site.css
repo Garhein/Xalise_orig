@@ -50,18 +50,16 @@ body {
 
 /*#region Styles génériques : tables*/
 
-.ui-col-check,
-.ui-col-actions,
-.ui-col-num-ordre {
+.x-col-center {
     text-align: center;
 }
 
-.ui-col-check,
-.ui-col-actions {
+.x-col-check,
+.x-col-actions {
     width: 8rem;
 }
 
-.ui-col-num-ordre {
+.x-col-num-ordre {
     width: 5rem;
 }
 
@@ -69,15 +67,15 @@ body {
 
 /*#region Styles génériques : liens*/
 
-.ui-action-link {
+.x-action-link {
     cursor: pointer;
 }
 
-.ui-action-link:not(:last-child) {
+.x-action-link:not(:last-child) {
     margin-right: 0.25rem;
 }
 
-.ui-action-link span {
+.x-action-link span {
     margin-left: 0.25rem;
 }
 

@@ -3,17 +3,17 @@
     public static class HtmlHelpers
     {
         /// <summary>
-        /// Définition des ID, class et nom des éléments HTML courants.
+        /// Définition des ID, classes et nom des éléments HTML courants.
         /// </summary>
         public struct IdentifiantfHtmlElement
         {
             // Lien d'action
-            public const string CLASS_ACTION_LINK = "ui-action-link";
+            public const string CLASS_ACTION_LINK = "x-action-link";
 
             #region Formulaire
 
             // Case à cocher permettant de réaliser une saisie à la suite de l'enregistrement
-            public const string ID_CHECKBOX_SAISIE_SUITE    = "ui-chk-saisie-suite";
+            public const string ID_CHECKBOX_SAISIE_SUITE    = "x-chk-saisie-suite";
 
             #endregion
 
@@ -30,10 +30,14 @@
 
             #region Tables HTML
 
+            // Colonne dont le contenu est centré
+            public const string CLASS_COL_CENTER        = "x-col-center";
             // Colonne contenant les icônes d'action
-            public const string CLASS_COL_ACTIONS = "ui-col-actions";
+            public const string CLASS_COL_ACTIONS       = "x-col-actions";
             // Colonne contenant une case à cocher
-            public const string CLASS_COL_CHECKBOX = "ui-col-check";
+            public const string CLASS_COL_CHECKBOX      = "x-col-check";
+            // Colonne contenant une case à cocher
+            public const string CLASS_COL_NUM_ORDRE     = "x-col-num-ordre";
 
             #endregion
         }

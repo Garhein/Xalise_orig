@@ -14,14 +14,19 @@ using Xalise.Web.Models;
 namespace Xalise.Web.Areas.Repertoires.Controllers
 {
     [Area("Repertoires")]
-    public class ThemeController : XaliseMvcController
+    public class ThemeGEDController : XaliseMvcController
     {
-        private readonly ILogger<ThemeController> _logger;
+        private readonly ILogger<ThemeGEDController> _logger;
 
-        public ThemeController(ILogger<ThemeController> logger)
+        public ThemeGEDController(ILogger<ThemeGEDController> logger)
         {
-            _logger = logger;
+            this._logger = logger;
         }
+
+        /*
+         *  1 - Liste des thèmes
+         * 
+         */
 
         /*
          *  
@@ -52,7 +57,7 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
          * 
          */
 
-        // TODO: à l'archivage d'un parent avec enfant, archiver aussi les enfants ?
+        // TODO: à l'archivage d'un parent avec enfant, archiver aussi les enfants
         // TODO: liste des thèmes, changer icône pour ouvrir la fenêtre en mode 'Visualisation' ? Prévoir une action JS différente pour la visualisation ?
 
         /// <summary>
@@ -61,13 +66,49 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            InitViewDataPageTitle("Thèmes GED");
+            this.InitViewDataPageTitle("Thèmes GED");
 
-            ThemeViewModel model = new ThemeViewModel();
-            model.ListeThemes    = RechercherThemes(model.CriteresRecherche);
+            ThemeGEDViewModel model = new ThemeGEDViewModel();
+            model.ListeThemes       = this.RechercherThemes(model.CriteresRecherche);
 
             return View(model);
         }
+
+        /*
+         * CAS DE TESTS
+         *  - CREATION
+         *      -> la liste des thèmes parents doit afficher uniquement les parents
+         *      -> la liste des thèmes parents ne doit pas afficher les parents archivés
+         *      -> la liste des thèmes parents doit être triée par numéro d'ordre
+         *      -> case à cocher pour continuer la saisie visible
+         *  - MODIFICATION
+         *      -> case à cocher pour continuer la saisie non visible
+         *      -> thème parent
+         *          - le thème modifié ne doit pas apparaître dans la liste des thèmes parents
+         *          - la liste des thèmes parents doit afficher uniquement les parents
+         *          - la liste des thèmes parents ne doit pas afficher les parents archivés
+         *          - la liste des thèmes parents doit être triée par numéro d'ordre
+         *          - si le thème possède des enfants, impossible de sélectionner un parent pour le faire devenir enfant
+         *      -> thème enfant
+         *          - le  thème parent est bien sélectionné
+         *          - la liste des thèmes parents doit afficher uniquement les parents
+         *          - la liste des thèmes parents ne doit pas afficher les parents archivés
+         *          - la liste des thèmes parents doit être triée par numéro d'ordre
+         *  - VISUALISATION
+         *      -> case à cocher pour continuer la saisie non visible
+         *      -> seul le bouton 'Fermer' est visible
+         *      -> les valeurs ne peuvent pas être modifiées
+         *      -> thème parent
+         *          - le thème modifié ne doit pas apparaître dans la liste des thèmes parents
+         *          - la liste des thèmes parents doit afficher uniquement les parents
+         *          - la liste des thèmes parents ne doit pas afficher les parents archivés
+         *          - la liste des thèmes parents doit être triée par numéro d'ordre
+         *      -> thème enfant
+         *          - le  thème parent est bien sélectionné
+         *          - la liste des thèmes parents doit afficher uniquement les parents
+         *          - la liste des thèmes parents doit être triée par numéro d'ordre
+         */
+
 
         /// <summary>
         /// Affiche la fenêtre de dialogue de création/modification d'un thème.
@@ -104,7 +145,7 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
                     {
                         model.ThemeDTO              = resRecherche.First();
                         model.EstParentAvecEnfants  = listeThemes.Any(x => x.ParentID.HasValue && x.ParentID.Value.Equals(themeID));
-
+                    
                         if (model.ThemeDTO.ParentID.HasValue)
                         {
                             model.EstEnfantAvecParentArchive = listeThemes.Any(x => x.ID.Equals(model.ThemeDTO.ParentID.Value) && x.EstArchive);
@@ -116,7 +157,7 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             // =-=-=-
             // Initialisation de la liste déroulante de sélection du thème parent
             //  - exclusion du thème modifié pour empêcher de le lier avec lui-même
-            //  - exclusion des thèmes archivés (sauf si mode 'VISUALISATION')
+            //  - exclusion des thèmes archivés (sauf si mode 'VISUALISATION'
             // =-=-=-
 
             if (!model.AvecErreur)
@@ -154,6 +195,11 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         [HttpPost]
         public IActionResult Save(ThemeEditModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("Edit", model);
+            }
+
             BaseErrorModel retModel = new BaseErrorModel();
             List<Theme> listeThemes = JsonHelper.ReadJsonDataFile<Theme>(JsonHelper.CSTS_FILENAME_THEMES);
 
@@ -213,6 +259,10 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             //TODO: en modification, on ne peut pas sélectionner comme parent soit-même !!
             //TODO: gestion des erreurs, jeton de validité du formulaire (possible avec 'Continuer la saisie' ?), ...
         }
+
+
+
+
 
         /// <summary>
         /// Calcul du prochain identifiant.

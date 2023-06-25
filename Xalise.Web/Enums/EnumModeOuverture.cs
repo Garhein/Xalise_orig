@@ -1,7 +1,7 @@
 ﻿namespace Xalise.Web.Enums
 {
     /// <summary>
-    /// Mode d'ouverture des pages et fenêtres.
+    /// Mode d'ouverture des pages et des fenêtres de dialogue.
     /// </summary>
     public enum eModeOuverture : int
     {

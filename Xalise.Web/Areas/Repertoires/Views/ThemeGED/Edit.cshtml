@@ -6,7 +6,7 @@
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header bg-secondary bg-gradient">
-            <h1 class="modal-title fs-5 text-white">@Model.UModalTitle</h1>
+            <h1 class="modal-title fs-5 text-white">@Model.UTitre</h1>
         </div>
         <div class="modal-body">
             @if (Model.AvecErreur)
@@ -15,7 +15,7 @@
             }
             else
             {
-                @using (Html.BeginForm("Save", "Theme", FormMethod.Post, new { area = "Repertoires", @id = "form-theme-edit"}))
+                @using (Html.BeginForm("Save", "ThemeGED", FormMethod.Post, new { area = "Repertoires", @id = "form-theme-ged-edit"}))
                 {
                     <input type="hidden" asp-for="ThemeDTO.ID" />
                     <input type="hidden" asp-for="ThemeDTO.NumOrdre" />
@@ -28,6 +28,7 @@
                             <label asp-for="ThemeDTO.Libelle" class="col-sm-3 col-form-label-sm px-0"></label>
                             <div class="col-sm-9">
                                 <input asp-for="ThemeDTO.Libelle" class="form-control form-control-sm" disabled="@(Model.ModeOuverture == eModeOuverture.VISUALISATION)" />
+                                <span asp-validation-for="ThemeDTO.Libelle" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -72,12 +73,12 @@
         <div class="modal-footer">
             @if (Model.AvecErreur || Model.ModeOuverture.Equals(eModeOuverture.VISUALISATION))
             {
-                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Fermer" onclick="Theme_Fermer();"/>
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Fermer" onclick="ThemeGED_Fermer();"/>
             }
             else
             {
-                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Annuler" onclick="Theme_Fermer();"/>
-                <xalise-button size="btn_sm" style="btn_primary" icon="check" icon-style="solid" title="Enregistrer" onclick="Theme_Enregistrer();"/>
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Annuler" onclick="ThemeGED_Fermer();"/>
+                <xalise-button size="btn_sm" style="btn_primary" icon="check" icon-style="solid" title="Enregistrer" onclick="ThemeGED_Enregistrer();"/>
             }
         </div>
     </div>

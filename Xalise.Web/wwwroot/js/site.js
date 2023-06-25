@@ -2,7 +2,7 @@
 
 //#region Déclarations et fonctions globables
 
-const selectorSaisieSuiteID         = '#ui-chk-saisie-suite';
+const selectorSaisieSuiteID         = '#x-chk-saisie-suite';
 const selectorContainerMsgAttenteID = '#div-container-xalise-msg-attente';
 const selectorMsgAttenteID          = '#div-xalise-msg-attente';
 
@@ -57,12 +57,12 @@ function Xalise_GererMsgAttente(message) {
 
     if (message != null && message != "") {
         $("span", selectorMsgAttenteID).html(message);
-        $(selectorContainerMsgAttenteID).fadeIn("slow");
+        $(selectorContainerMsgAttenteID).fadeIn("fast");
     }
     else {
         // Le retrait du message est réalisé après que le conteneur ait été caché, sinon il disparaît
         // avant que le conteneur soit réellement caché
-        $(selectorContainerMsgAttenteID).fadeOut("slow", function () { $("span", selectorMsgAttenteID).html(""); });
+        $(selectorContainerMsgAttenteID).fadeOut("fast", function () { $("span", selectorMsgAttenteID).html(""); });
     }
 }
 
@@ -91,17 +91,17 @@ function Xalise_ViderFormulaire(selectorForm) {
 
 //#endregion
 
-//#region Gestion des thèmes
+//#region Gestion des thèmes GED
 
-const selectorThemeModalID      = '#div-modal-theme-edit';
-const selectorThemeEditFormID   = '#form-theme-edit';
+const selectorThemeGEDModalID      = '#div-modal-theme-ged-edit';
+const selectorThemeGEDEditFormID   = '#form-theme-ged-edit';
 
 /**
  * Fermeture de la fenêtre de dialogue d'édition d'un thème.
  * @author Xavier VILLEMIN
  */
-function Theme_Fermer() {
-    Xalise_FermerDialogue(selectorThemeModalID);
+function ThemeGED_Fermer() {
+    Xalise_FermerDialogue(selectorThemeGEDModalID);
 }
 
 /**
@@ -110,12 +110,12 @@ function Theme_Fermer() {
  * @param {int} modeOuverture
  * @param {int} themeID
  */
-function Theme_Editer(modeOuverture, themeID) {
+function ThemeGED_Editer(modeOuverture, themeID) {
     Xalise_GererMsgAttente();
 
     $.ajax({
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: "/Repertoires/Theme/Edit",
+        url: "/Repertoires/ThemeGED/Edit",
         dataType: "html",
         type: "GET",
         data: {
@@ -124,13 +124,11 @@ function Theme_Editer(modeOuverture, themeID) {
         }
     })
         .done(function (data, textStatus, jqXHR) {
-            Xalise_OuvrirDialogue(selectorThemeModalID, data);
+            Xalise_GererMsgAttente("");
+            Xalise_OuvrirDialogue(selectorThemeGEDModalID, data);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
 
-        })
-        .always(function () {
-            Xalise_GererMsgAttente("");
         });
 }
 
@@ -138,26 +136,26 @@ function Theme_Editer(modeOuverture, themeID) {
  * Enregistrement (création ou modification) d'un thème.
  * @author Xavier VILLEMIN
  */
-function Theme_Enregistrer() {
+function ThemeGED_Enregistrer() {
     Xalise_GererMsgAttente("Enregistrement en cours...");
 
     $.ajax({
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: "/Repertoires/Theme/Save",
+        url: "/Repertoires/ThemeGED/Save",
         dataType: "json",
         type: "POST",
-        data: $(selectorThemeEditFormID).serialize()
+        data: $(selectorThemeGEDEditFormID).serialize()
     })
         .done(function (data, textStatus, jqXHR) {
             if (data.AvecErreur) {
 
             }
             else {
-                if ($(selectorSaisieSuiteID, selectorThemeEditFormID).is(":checked")) {
-                    Xalise_ViderFormulaire(selectorThemeEditFormID);
+                if ($(selectorSaisieSuiteID, selectorThemeGEDEditFormID).is(":checked")) {
+                    Xalise_ViderFormulaire(selectorThemeGEDEditFormID);
                 }
                 else {
-                    Theme_Fermer();
+                    ThemeGED_Fermer();
                     location.reload();
                 }
             }

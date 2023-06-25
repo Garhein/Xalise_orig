@@ -8,7 +8,7 @@ namespace Xalise.Core.Entite.GED
     {
         public int      ID { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Le libellé du thème est obligatoire.")]
+        [Required(ErrorMessage = "Le libellé du thème est obligatoire.")]
         [DisplayName("Libellé")]
         [MaxLength(80)]
         public string   Libelle { get; set; }
@@ -41,6 +41,7 @@ namespace Xalise.Core.Entite.GED
         /// Construction à partir d'une entité.
         /// </summary>
         /// <param name="theme">Thème à transformer en DTO.</param>
+        /// <param name="parentLibelle">Libellé du thème parent.</param>
         public ThemeDTO(Theme theme, string parentLibelle)
         {
             if (theme != null)
@@ -65,7 +66,10 @@ namespace Xalise.Core.Entite.GED
             }
         }
 
-        public string ULibelleListe
+        /// <summary>
+        /// Construction du libellé affiché sur le répertoire des thèmes GED.
+        /// </summary>
+        public string ULibelleListeRepertoire
         {
             get
             {

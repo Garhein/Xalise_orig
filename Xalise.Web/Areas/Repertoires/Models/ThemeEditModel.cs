@@ -22,8 +22,8 @@ namespace Xalise.Web.Areas.Repertoires.Models
         /// </summary>
         public ThemeEditModel() : base("Thème GED")
         {
-            ListeThemesParents              = new List<SelectListItem>();
-            ThemeDTO                        = new ThemeDTO();
+            this.ListeThemesParents         = new List<SelectListItem>();
+            this.ThemeDTO                   = new ThemeDTO();
             this.EstParentAvecEnfants       = false;
             this.EstEnfantAvecParentArchive = false;
         }
@@ -31,8 +31,7 @@ namespace Xalise.Web.Areas.Repertoires.Models
         #region Utilitaires d'affichage
 
         /// <summary>
-        /// Titre de la case à cocher permettant de saisir un
-        /// nouvel élément à la suite.
+        /// Titre de la case à cocher permettant de saisir un nouvel élément à la suite.
         /// </summary>
         public new string UTitreContinuerSaisie
         {

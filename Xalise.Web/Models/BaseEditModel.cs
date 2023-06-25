@@ -9,13 +9,24 @@ namespace Xalise.Web.Models
     [Serializable]
     public class BaseEditModel
     {
-        // En mode création, permet de saisir un nouvel élément après l'enregistrement
+        /// <summary>
+        /// En mode <see cref="eModeOuverture.CREATION"/>, permet de saisir un nouvel élément après l'enregistrement
+        /// </summary>
         public bool             ContinuerSaisie { get; set; }
 
+        /// <summary>
+        /// Erreurs détectées pendant les traitements.
+        /// </summary>
         public BaseErrorModel   ErrorModel { get; set; }
 
+        /// <summary>
+        /// Mode d'ouverture de la page ou de la fenêtre de dialogue.
+        /// </summary>
         public eModeOuverture   ModeOuverture { get; set; }
 
+        /// <summary>
+        /// Complément du titre de la page ou de la fenêtre de dialogue.
+        /// </summary>
         public string           ComplementTitre { get; set; }
 
         /// <summary>
@@ -26,7 +37,7 @@ namespace Xalise.Web.Models
         /// <summary>
         /// Constructeur.
         /// </summary>
-        /// <param name="complTitre">Complément du titre de la page/fenêtre de dialogue.</param>
+        /// <param name="complTitre">Complément du titre de la page ou de la fenêtre de dialogue.</param>
         public BaseEditModel(string complTitre)
         {
             this.ContinuerSaisie    = false;
@@ -42,15 +53,14 @@ namespace Xalise.Web.Models
         {
             get
             {
-                return ErrorModel.AvecErreur;
+                return this.ErrorModel.AvecErreur;
             }
         }
 
         #region Utilitaires d'affichage
 
         /// <summary>
-        /// Titre de la case à cocher permettant de saisir un
-        /// nouvel élément à la suite.
+        /// Titre de la case à cocher permettant de saisir un nouvel élément à la suite.
         /// </summary>
         public string UTitreContinuerSaisie
         { 
@@ -61,9 +71,9 @@ namespace Xalise.Web.Models
         }
 
         /// <summary>
-        /// Titre de la fenêtre de dialogue.
+        /// Titre de la page ou de la fenêtre de dialogue.
         /// </summary>
-        public string UModalTitle
+        public string UTitre
         {
             get
             {
