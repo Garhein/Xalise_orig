@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.IO;
 using System.Text.Encodings.Web;
+using Xalise.Web.Enums;
 using Xalise.Web.Helpers.WebHelpers;
 
 namespace Xalise.Web.Helpers.TagHelpers
@@ -13,10 +14,10 @@ namespace Xalise.Web.Helpers.TagHelpers
     public class XaliseButtonTagHelper : TagHelper
     {
         public string                   Title { get; set; }
-        public eXaliseButtonSize        Size { get; set; }
-        public eXaliseButtonStyle       Style { get; set; }
-        public FontAwesomeIconStyle     IconStyle { get; set; }
-        public FontAwesomeIcon          Icon { get; set; }
+        public eBootstrapButtonSize     Size { get; set; }
+        public eBootstrapButtonStyle    Style { get; set; }
+        public eFontAwesomeIconStyle    IconStyle { get; set; }
+        public eFontAwesomeIcon         Icon { get; set; }
 
         /// <summary>
         /// Constructeur par défaut.
@@ -34,12 +35,12 @@ namespace Xalise.Web.Helpers.TagHelpers
 
             string cssClasses = "btn";
 
-            if (this.Size != eXaliseButtonSize.size_default)
+            if (this.Size != eBootstrapButtonSize.size_default)
             {
                 cssClasses = $"{cssClasses} {this.Size.ToString().Replace("_", "-")}";
             }
 
-            if (this.Style != eXaliseButtonStyle.style_default)
+            if (this.Style != eBootstrapButtonStyle.style_default)
             {
                 cssClasses = $"{cssClasses} {this.Style.ToString().Replace("_", "-")}";
             }
@@ -48,7 +49,7 @@ namespace Xalise.Web.Helpers.TagHelpers
             // Définition du contenu
             // =-=-=-
 
-            if (this.Icon != FontAwesomeIcon.icon_default)
+            if (this.Icon != eFontAwesomeIcon.icon_default)
             {
                 // Avec icône
                 HtmlString iconHtml = new HtmlString("");
@@ -78,24 +79,5 @@ namespace Xalise.Web.Helpers.TagHelpers
             output.Attributes.SetAttribute("type", "button");
             output.Attributes.SetAttribute("class", cssClasses);
         }
-    }
-
-    /// <summary>
-    /// Taille des boutons.
-    /// </summary>
-    public enum eXaliseButtonSize
-    {
-        size_default,   // Doit toujours être en première position
-        btn_sm
-    }
-
-    /// <summary>
-    /// Style des boutons.
-    /// </summary>
-    public enum eXaliseButtonStyle
-    {
-        style_default,  // Doit toujours être en première position
-        btn_primary,
-        btn_secondary
     }
 }

@@ -6,9 +6,6 @@ namespace Xalise.Web.Areas.Repertoires.Models
     [Serializable]
     public class ThemeCriteresRechercheModel
     {
-        [DisplayName("Identifiant du thème")]
-        public int? ThemeID { get; set; }
-
         [DisplayName("Libellé")]
         public string Libelle { get; set; }
 
@@ -29,7 +26,6 @@ namespace Xalise.Web.Areas.Repertoires.Models
         /// </summary>
         public ThemeCriteresRechercheModel()
         {
-            ThemeID         = null;
             Libelle         = string.Empty;
             EstInterne      = false;
             EstNonInterne   = false;

@@ -1,7 +1,7 @@
 ﻿@using Xalise.Web.Areas.Repertoires.Models
 @model ThemeCriteresRechercheModel
 
-@using (Html.BeginForm("action", "Theme", FormMethod.Post, new { @id = "form-criteres-themes" }))
+@using (Html.BeginForm("action", "Theme", FormMethod.Post, new { @id = "form-theme-ged-criteres" }))
 {
     <div class="container-fluid container-md mb-2">
         <fieldset>
@@ -31,7 +31,10 @@
                         <label asp-for="EstNonArchive" class="form-check-label"></label>
                     </div>
                 </div>
-                <div class="col-4"></div>
+                <div class="col-4">
+                    <button type="button" class="btn btn-primary" value="Rechercher" onclick="ThemeGED_ActualiserRepertoire()" />
+                    <button type="button" class="btn btn-secondary" value="Vider les filtres" onclick="Xalise_ViderFormulaire(@("'#" + IdentifiantfHtmlElement.ID_FORM_THEME_GED_CRITERES + "'"))" />
+                </div>
             </div>
         </fieldset>
     </div>

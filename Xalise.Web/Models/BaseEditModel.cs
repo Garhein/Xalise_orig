@@ -1,4 +1,5 @@
 ﻿using System;
+using Xalise.Core.Extensions;
 using Xalise.Web.Enums;
 
 namespace Xalise.Web.Models
@@ -9,15 +10,22 @@ namespace Xalise.Web.Models
     [Serializable]
     public class BaseEditModel
     {
+        private const string CONST_CONTINUER_SAISIE_TITRE = "Continuer la saisie";
+
         /// <summary>
-        /// En mode <see cref="eModeOuverture.CREATION"/>, permet de saisir un nouvel élément après l'enregistrement
+        /// En mode <see cref="eModeOuverture.CREATION"/>, permet de saisir un nouvel élément après l'enregistrement.
         /// </summary>
         public bool             ContinuerSaisie { get; set; }
 
         /// <summary>
+        /// Titre de la case à cocher permettant de saisir un nouvel élément après l'enregistrement.
+        /// </summary>
+        public string           ContinuerSaisieTitre { get; set; }
+
+        /// <summary>
         /// Erreurs détectées pendant les traitements.
         /// </summary>
-        public BaseErrorModel   ErrorModel { get; set; }
+        public BaseAjaxReturnModel   ErrorModel { get; set; }
 
         /// <summary>
         /// Mode d'ouverture de la page ou de la fenêtre de dialogue.
@@ -32,18 +40,26 @@ namespace Xalise.Web.Models
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public BaseEditModel() : this("") { }
+        public BaseEditModel() : this("", BaseEditModel.CONST_CONTINUER_SAISIE_TITRE) { }
 
         /// <summary>
         /// Constructeur.
         /// </summary>
         /// <param name="complTitre">Complément du titre de la page ou de la fenêtre de dialogue.</param>
-        public BaseEditModel(string complTitre)
+        public BaseEditModel(string complTitre) : this(complTitre, BaseEditModel.CONST_CONTINUER_SAISIE_TITRE) { }
+
+        /// <summary>
+        /// Constructeur.
+        /// </summary>
+        /// <param name="complTitre">Complément du titre de la page ou de la fenêtre de dialogue.</param>
+        /// <param name="continuerSaisieTitre">Titre de la case à cocher pour saisir un nouvel élément après enregistrement.</param>
+        public BaseEditModel(string complTitre, string continuerSaisieTitre)
         {
-            this.ContinuerSaisie    = false;
-            this.ErrorModel         = new BaseErrorModel();
-            this.ModeOuverture      = eModeOuverture.VISUALISATION;
-            this.ComplementTitre    = complTitre;
+            this.ContinuerSaisie        = false;
+            this.ContinuerSaisieTitre   = string.IsNullOrWhiteSpace(continuerSaisieTitre) ? BaseEditModel.CONST_CONTINUER_SAISIE_TITRE : continuerSaisieTitre;
+            this.ErrorModel             = new BaseAjaxReturnModel();
+            this.ModeOuverture          = eModeOuverture.VISUALISATION;
+            this.ComplementTitre        = complTitre;
         }
 
         /// <summary>
@@ -54,19 +70,6 @@ namespace Xalise.Web.Models
             get
             {
                 return this.ErrorModel.AvecErreur;
-            }
-        }
-
-        #region Utilitaires d'affichage
-
-        /// <summary>
-        /// Titre de la case à cocher permettant de saisir un nouvel élément à la suite.
-        /// </summary>
-        public string UTitreContinuerSaisie
-        { 
-            get
-            {
-                return "Continuer la saisie";
             }
         }
 
@@ -92,24 +95,11 @@ namespace Xalise.Web.Models
                         retTitre += " - ";
                     }
 
-                    if (this.ModeOuverture == eModeOuverture.CREATION)
-                    {
-                        retTitre += "Création";
-                    }
-                    else if (this.ModeOuverture == eModeOuverture.MODIFICATION)
-                    {
-                        retTitre += "Modification";
-                    }
-                    else if (this.ModeOuverture == eModeOuverture.VISUALISATION)
-                    {
-                        retTitre += "Visualisation";
-                    }
+                    retTitre += this.ModeOuverture.Description();
                 }
 
                 return retTitre;
             }
         }
-
-        #endregion
     }
 }

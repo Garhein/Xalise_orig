@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.IO;
 using System.Text.Encodings.Web;
+using Xalise.Web.Enums;
 using Xalise.Web.Helpers.WebHelpers;
-using static Xalise.Web.Helpers.WebHelpers.HtmlHelpers;
+using Xalise.Web.Utils;
 
 namespace Xalise.Web.Helpers.TagHelpers
 {
@@ -15,8 +16,8 @@ namespace Xalise.Web.Helpers.TagHelpers
     {
         public string                   Title { get; set; }
         public string                   LinkTitle { get; set; }
-        public FontAwesomeIconStyle     IconStyle { get; set; }
-        public FontAwesomeIcon          Icon { get; set; }
+        public eFontAwesomeIconStyle    IconStyle { get; set; }
+        public eFontAwesomeIcon         Icon { get; set; }
 
         /// <summary>
         /// Constructeur par défaut.
@@ -33,7 +34,7 @@ namespace Xalise.Web.Helpers.TagHelpers
             // Définition du contenu
             // =-=-=-
 
-            if (this.Icon != FontAwesomeIcon.icon_default)
+            if (this.Icon != eFontAwesomeIcon.icon_default)
             {
                 HtmlString iconHtml = new HtmlString("");
                 HtmlString spanHtml = new HtmlString("");

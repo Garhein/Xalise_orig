@@ -7,38 +7,23 @@ using Xalise.Web.Models;
 namespace Xalise.Web.Areas.Repertoires.Models
 {
     /// <summary>
-    /// Modèle de données utilisé pour la saisie d'un thème.
+    /// Modèle de données utilisé pour la saisie d'un thème GED.
     /// </summary>
     [Serializable]
-    public class ThemeEditModel : BaseEditModel
+    public class ThemeGEDEditModel : BaseEditModel
     {
         public List<SelectListItem> ListeThemesParents { get; set; }
         public ThemeDTO             ThemeDTO { get; set; }
         public bool                 EstParentAvecEnfants { get; set; }
-        public bool                 EstEnfantAvecParentArchive { get; set; }
 
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public ThemeEditModel() : base("Thème GED")
+        public ThemeGEDEditModel() : base("Thème GED", "Saisir un thème à la suite")
         {
             this.ListeThemesParents         = new List<SelectListItem>();
             this.ThemeDTO                   = new ThemeDTO();
             this.EstParentAvecEnfants       = false;
-            this.EstEnfantAvecParentArchive = false;
-        }
-
-        #region Utilitaires d'affichage
-
-        /// <summary>
-        /// Titre de la case à cocher permettant de saisir un nouvel élément à la suite.
-        /// </summary>
-        public new string UTitreContinuerSaisie
-        {
-            get
-            {
-                return "Saisir un thème à la suite";
-            }
         }
 
         /// <summary>
@@ -54,15 +39,9 @@ namespace Xalise.Web.Areas.Repertoires.Models
                 {
                     retVal = "Thème archivé";
                 }
-                else if (this.EstEnfantAvecParentArchive)
-                {
-                    retVal = "Thème parent archivé";
-                }
 
                 return retVal;
             }
         }
-
-        #endregion
     }
 }

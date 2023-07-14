@@ -1,1 +1,58 @@
-[]
+[
+  {
+    "ID": 1,
+    "Libelle": "Parent 1",
+    "ParentID": null,
+    "NumOrdre": 1,
+    "EstInterne": false,
+    "EstArchive": true
+  },
+  {
+    "ID": 2,
+    "Libelle": "Parent 2",
+    "ParentID": null,
+    "NumOrdre": 2,
+    "EstInterne": false,
+    "EstArchive": false
+  },
+  {
+    "ID": 3,
+    "Libelle": "Parent 3",
+    "ParentID": null,
+    "NumOrdre": 3,
+    "EstInterne": false,
+    "EstArchive": false
+  },
+  {
+    "ID": 4,
+    "Libelle": "Sous parent 1.1",
+    "ParentID": 1,
+    "NumOrdre": 1,
+    "EstInterne": false,
+    "EstArchive": true
+  },
+  {
+    "ID": 5,
+    "Libelle": "Sous-parent 1.2",
+    "ParentID": 1,
+    "NumOrdre": 2,
+    "EstInterne": false,
+    "EstArchive": true
+  },
+  {
+    "ID": 6,
+    "Libelle": "Sous parent 1.3",
+    "ParentID": 1,
+    "NumOrdre": 3,
+    "EstInterne": false,
+    "EstArchive": true
+  },
+  {
+    "ID": 7,
+    "Libelle": "Parent 4",
+    "ParentID": null,
+    "NumOrdre": 4,
+    "EstInterne": false,
+    "EstArchive": true
+  }
+]

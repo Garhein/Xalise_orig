@@ -1,0 +1,44 @@
+﻿@using Xalise.Web.Areas.Repertoires.Models;
+@model ThemeGEDGestionArchivageModel;
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header bg-secondary bg-gradient">
+            <h1 class="modal-title fs-5 text-white">@Model.UTitre</h1>
+        </div>
+        <div class="modal-body">
+            @if (Model.AvecErreur)
+            {
+                <partial name="_ErrorEdit" model="Model.ErrorModel" />
+            }
+            else
+            {
+                <p class="x-txt-justify">Etes-vous sûr(e) de vouloir @Model.UMessageConfirmationAction thème <b>@Model.ThemeDTO.Libelle</b>@Model.UMessageConfirmationComplement ?</p>
+            }
+        </div>
+        <div class="modal-footer">
+            @if (Model.AvecErreur)
+            {
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Fermer" onclick="ThemeGED_Fermer();" />
+            }
+            else
+            {
+                <xalise-button 
+                        size="btn_sm"
+                        style="btn_secondary"
+                        icon="xmark"
+                        icon-style="solid"
+                        title="Annuler"
+                        onclick="ThemeGED_Fermer();" />
+ 
+                <xalise-button 
+                        size="btn_sm"
+                        style="btn_primary"
+                        icon="check"
+                        icon-style="solid"
+                        title="@Model.UTitreAction"
+                        onclick="ThemeGED_ExecuterGestionArchivage(@((int)Model.ModeGestion), @Model.ThemeDTO.ID);" />
+            }
+        </div>
+    </div>
+</div>

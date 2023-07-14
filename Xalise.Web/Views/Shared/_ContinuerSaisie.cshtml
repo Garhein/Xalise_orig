@@ -1,7 +1,6 @@
-﻿@using Xalise.Web.Areas.Repertoires.Models;
-@model ThemeEditModel;
+﻿@model BaseEditModel;
 
 <div class="form-check">
-    <input asp-for="ContinuerSaisie" id="@HtmlHelpers.IdentifiantfHtmlElement.ID_CHECKBOX_SAISIE_SUITE" class="form-check-input xalise-form-check-input-sm" />
-    <label for="@HtmlHelpers.IdentifiantfHtmlElement.ID_CHECKBOX_SAISIE_SUITE" class="form-check-label col-form-label-sm">@Model.UTitreContinuerSaisie</label>
+    <input asp-for="ContinuerSaisie" id="@IdentifiantfHtmlElement.ID_CHECKBOX_SAISIE_SUITE" class="form-check-input xalise-form-check-input-sm" />
+    <label for="@IdentifiantfHtmlElement.ID_CHECKBOX_SAISIE_SUITE" class="form-check-label col-form-label-sm">@Model.ContinuerSaisieTitre</label>
 </div>

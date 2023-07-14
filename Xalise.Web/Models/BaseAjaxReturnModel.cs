@@ -4,24 +4,26 @@ using System.Collections.Generic;
 namespace Xalise.Web.Models
 {
     /// <summary>
-    /// Classe de base utilisée pour la gestion des erreurs.
+    /// Classe de base utilisée pour la gestion des retours des appels Ajax.
     /// Exemples d'utilisation : ouverture d'une fenêtre de dialogue, enregistrement Ajax, ...
     /// </summary>
     [Serializable]
-    public class BaseErrorModel
+    public class BaseAjaxReturnModel
     {
         public bool         AvecErreur { get; set; }
         public string       MessageErreur { get; set; }
         public List<string> MessageErreurs { get; set; }
+        public string       MessageSucces { get; set; }
 
         /// <summary>
         /// Constructeur par défaut.
         /// </summary>
-        public BaseErrorModel()
+        public BaseAjaxReturnModel()
         {
-            AvecErreur      = false;
-            MessageErreur   = string.Empty;
-            MessageErreurs  = new List<string>();
+            this.AvecErreur      = false;
+            this.MessageErreur   = string.Empty;
+            this.MessageErreurs  = new List<string>();
+            this.MessageSucces   = string.Empty;
         }
 
         /// <summary>
@@ -30,8 +32,8 @@ namespace Xalise.Web.Models
         /// <param name="messageErreur">Message de l'erreur.</param>
         public void AddErreur(string messageErreur)
         {
-            AvecErreur      = true;
-            MessageErreur   = messageErreur;
+            this.AvecErreur      = true;
+            this.MessageErreur   = messageErreur;
         }
 
         /// <summary>
@@ -40,8 +42,8 @@ namespace Xalise.Web.Models
         /// <param name="messageErreurs">Liste des messages d'erreur.</param>
         public void AddErreurs(List<string> messageErreurs)
         {
-            AvecErreur = true;
-            MessageErreurs.AddRange(messageErreurs);
+            this.AvecErreur = true;
+            this.MessageErreurs.AddRange(messageErreurs);
         }
     }
 }

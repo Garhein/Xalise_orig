@@ -1,10 +1,9 @@
 ﻿@using Xalise.Web.Areas.Repertoires.Models
 @using Xalise.Core.Extensions
 @using Xalise.Core.Entite.GED
-@using Xalise.Web.Enums
 @model ThemeGEDViewModel
 
-<xalise-button size="btn_sm" style="btn_primary" icon="plus" icon-style="regular" title="Ajouter un thème" onclick="ThemeGED_Editer(@((int)eModeOuverture.CREATION), 0);" />
+<xalise-button size="btn_sm" style="btn_primary" icon="plus" icon-style="regular" title="Ajouter un thème" onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.CREATION), 0);" />
 
 @if (Model.ListeThemes.IsEmpty())
 {
@@ -15,22 +14,31 @@ else
     <table class="table table-hover table-sm table-bordered mt-2">
         <thead class="table-dark">
             <tr>
-                <th class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_ACTIONS @HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CENTER"></th>
+                <th class="@IdentifiantfHtmlElement.CLASS_COL_ACTIONS @IdentifiantfHtmlElement.CLASS_COL_CENTER"></th>
                 <th>Libellé</th>
-                <th class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_NUM_ORDRE @HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CENTER">N°ordre</th>
-                <th class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CHECKBOX @HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CENTER">Archivé</th>
+                <th class="@IdentifiantfHtmlElement.CLASS_COL_NUM_ORDRE @IdentifiantfHtmlElement.CLASS_COL_CENTER">N°ordre</th>
+                <th class="@IdentifiantfHtmlElement.CLASS_COL_CHECKBOX @IdentifiantfHtmlElement.CLASS_COL_CENTER">Archivé</th>
             </tr>
         </thead>
         <tbody>
             @foreach (ThemeDTO dto in Model.ListeThemes)
             {
                 <tr>
-                    <td class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_ACTIONS @HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CENTER">
-                        <xalise-action-link 
-                            icon-style="regular" 
-                            icon="pen_to_square" 
-                            title="Modifier le thème" 
-                            onclick="ThemeGED_Editer(@Model.DefinirModeOuverture(dto.EstArchive, dto.ParentID), @dto.ID)"/>
+                    <td class="@IdentifiantfHtmlElement.CLASS_COL_ACTIONS @IdentifiantfHtmlElement.CLASS_COL_CENTER">
+                        @if (!dto.EstArchive)
+                        {
+                            <xalise-action-link icon-style="regular"
+                                    icon="pen_to_square"
+                                    title="Modifier le thème"
+                                    onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.MODIFICATION), @dto.ID)" />
+                        }
+                        else
+                        {
+                            <xalise-action-link icon-style="regular"
+                                    icon="eye"
+                                    title="Visualiser le thème"
+                                    onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.VISUALISATION), @dto.ID)" />
+                        }
 
                         @if (!dto.EstInterne)
                         {
@@ -38,17 +46,25 @@ else
 
                             @if (dto.EstArchive)
                             {
-                                <!--<xalise-action-link icon-style="regular" icon="eye" title="Activer le thème" onclick="Theme_GererArchivage(@dto.ID, false)" />-->
+                                <xalise-action-link 
+                                        icon-style="regular"
+                                        icon="eye_slash"
+                                        title="Annuler l'archivage du thème"
+                                        onclick="ThemeGED_AfficherDialogueGestionArchivage(@((int)eModeGestionArchivage.ANNULATION_ARCHIVAGE), @dto.ID)" />
                             }
                             else
                             {
-                                <!--<xalise-action-link icon-style="regular" icon="eye_slash" title="Archiver le thème" onclick="Theme_GererArchivage(@dto.ID, true)" />-->
+                                <xalise-action-link 
+                                        icon-style="regular" 
+                                        icon="eye_slash" 
+                                        title="Archiver le thème"
+                                        onclick="ThemeGED_AfficherDialogueGestionArchivage(@((int)eModeGestionArchivage.ARCHIVAGE), @dto.ID)" />
                             }
                         }
                     </td>
                     <td>@dto.ULibelleListeRepertoire</td>
-                    <td class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_NUM_ORDRE @HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CENTER">@dto.NumOrdre</td>
-                    <td class="@HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CHECKBOX @HtmlHelpers.IdentifiantfHtmlElement.CLASS_COL_CENTER">
+                    <td class="@IdentifiantfHtmlElement.CLASS_COL_NUM_ORDRE @IdentifiantfHtmlElement.CLASS_COL_CENTER">@dto.NumOrdre</td>
+                    <td class="@IdentifiantfHtmlElement.CLASS_COL_CHECKBOX @IdentifiantfHtmlElement.CLASS_COL_CENTER">
                         <input asp-for="@dto.EstArchive" class="form-check-input" disabled="disabled" />
                     </td>
                 </tr>
