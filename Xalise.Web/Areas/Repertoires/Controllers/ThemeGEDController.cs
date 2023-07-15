@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Xalise.Core.Entite.GED;
 using Xalise.Core.Exceptions;
 using Xalise.Core.Extensions;
@@ -28,130 +26,6 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             this._logger = logger;
         }
 
-        
-        /// <summary>
-        /// Affiche la fenêtre de dialogue de création/modification d'un thème.
-        /// </summary>
-        /// <param name="modeOuverture">Mode d'ouverture de la fenêtre de dialogue.</param>
-        /// <param name="themeID">Identifiant du thème.</param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult AfficherTheme(int modeOuverture, int themeID)
-        {
-            IEnumerable<ThemeDTO> listeThemes = JsonHelper.ReadJsonDataFile<ThemeDTO>(JsonHelper.CSTS_FILENAME_THEMES);
-            ThemeGEDEditModel model = new ThemeGEDEditModel();
-
-            // =-=-=-
-            // Gestion des informations du thème et du mode d'ouverture
-            // =-=-=-
-
-            model.ModeOuverture = (eModeOuverture)modeOuverture;
-
-            if (model.ModeOuverture != eModeOuverture.CREATION)
-            {
-                if (listeThemes.IsEmpty())
-                {
-                    model.ErrorModel.AddErreur("Modification impossible : le répertoire des thèmes est vide.");
-                }
-                else
-                {
-                    IEnumerable<ThemeDTO> resRecherche = listeThemes.Where(x => x.ID.Equals(themeID));
-                    if (resRecherche.IsEmpty())
-                    {
-                        model.ErrorModel.AddErreur("Modification impossible : les informations du thème n'ont pas été trouvées.");
-                    }
-                    else
-                    {
-                        model.ThemeDTO = resRecherche.First();
-                        model.EstParentAvecEnfants = listeThemes.Any(x => x.ParentID.HasValue && x.ParentID.Value.Equals(themeID));
-                    }
-                }
-            }
-
-            // =-=-=-
-            // Initialisation de la liste déroulante de sélection du thème parent
-            //  - exclusion du thème modifié pour empêcher de le lier avec lui-même
-            //  - exclusion des thèmes archivés, sauf s'il s'agit du parent du thème visualisé
-            // =-=-=-
-
-            if (!model.AvecErreur)
-            {
-                if (listeThemes.IsNotEmpty())
-                {
-                    listeThemes = listeThemes.Where(x => !x.ParentID.HasValue
-                                                         && !x.ID.Equals(themeID)
-                                                         && ((model.ThemeDTO.ParentID.HasValue && x.ID.Equals(model.ThemeDTO.ParentID)) || !x.EstArchive))
-                                             .OrderBy(x => x.NumOrdre);
-                }
-
-                model.ListeThemesParents = SelectListHelper.ConstruireListeThemesParents(listeThemes, model.ThemeDTO.ParentID);
-            }
-
-            return PartialView("Editer", model);
-        }
-
-        /// <summary>
-        /// Enregistre (création/modification) un thème.
-        /// </summary>
-        /// <param name="model">Données saisies par l'utilisateur.</param>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult EnregistrerTheme(ThemeGEDEditModel model)
-        {
-            BaseAjaxReturnModel retModel = new BaseAjaxReturnModel();
-            List<Theme> listeThemes = JsonHelper.ReadJsonDataFile<Theme>(JsonHelper.CSTS_FILENAME_THEMES);
-            Theme theme             = new Theme(model.ThemeDTO);
-
-            switch (model.ModeOuverture)
-            {
-                case eModeOuverture.CREATION:
-                    {
-                        theme.ID        = this.CalculerProchainID(ref listeThemes);
-                        theme.NumOrdre  = this.CalculerProchainNumOrdre(ref listeThemes, theme.ParentID);
-                        listeThemes.Add(theme);
-                        break;
-                    }
-                case eModeOuverture.MODIFICATION:
-                    {
-                        int posTheme = listeThemes.FindIndex(x => x.ID == model.ThemeDTO.ID);
-                        if (posTheme < 0)
-                        {
-                            retModel.AddErreur("Enregistrement des informations impossible : le thème n'a pas été trouvé.");
-                        }
-                        else
-                        {
-                            // Si changement de parent : retrait du parent de départ, changement de parent ou sélection d'un parent
-                            if (listeThemes[posTheme].ParentID != theme.ParentID)
-                            {
-                                // Réordonner les éléments associés au parent de départ qui ont un numéro d'ordre supérieur
-                                this.RemonterOrdreThemes(ref listeThemes, listeThemes[posTheme].ParentID, listeThemes[posTheme].NumOrdre);
-
-                                // Numéroter le thème pour le placer en dernière position
-                                theme.NumOrdre = this.CalculerProchainNumOrdre(ref listeThemes, theme.ParentID);
-                            }
-
-                            listeThemes[posTheme] = theme;
-                        }
-
-                        break;
-                    }
-                default:
-                    {
-                        retModel.AddErreur($"Le mode d'ouverture {model.ModeOuverture.ToString()} n'est pas pris en charge.");
-                        break;
-                    }
-            }
-
-            if (!retModel.AvecErreur)
-            {
-                JsonHelper.WriteJsonDataFile(JsonHelper.CSTS_FILENAME_THEMES, listeThemes);
-            }
-
-            return new JsonResult(retModel);
-        }
-
-        #region OK
-
         /// <summary>
         /// Affiche la page du répertoire de gestion des thèmes.
         /// </summary>
@@ -174,6 +48,150 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         }
 
         /// <summary>
+        /// Affiche la fenêtre de dialogue de création/modification d'un thème.
+        /// </summary>
+        /// <param name="modeOuverture">Mode d'ouverture de la fenêtre de dialogue.</param>
+        /// <param name="themeID">Identifiant du thème.</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult AfficherTheme(short modeOuverture, int themeID)
+        {
+            IEnumerable<ThemeDTO> listeThemes   = new List<ThemeDTO>();
+            ThemeGEDEditModel model             = new ThemeGEDEditModel();
+
+            try
+            {
+                EnumHelper.VerifierValidite<eModeOuverture>(modeOuverture, nameof(modeOuverture));
+
+                // =-=-=-
+                // Gestion des informations du thème et du mode d'ouverture
+                // =-=-=-
+
+                model.ModeOuverture = (eModeOuverture)modeOuverture;
+                listeThemes         = JsonHelper.ReadJsonDataFile<ThemeDTO>(JsonHelper.CSTS_FILENAME_THEMES);
+
+                if (model.ModeOuverture != eModeOuverture.CREATION)
+                {
+                    this.VerifierThemeID(themeID, nameof(themeID));
+
+                    if (listeThemes.IsEmpty())
+                    {
+                        throw new XaliseException($"{model.ModeOuverture.Description()} impossible : le répertoire des thèmes est vide.");
+                    }
+                    else
+                    {
+                        int posTheme = listeThemes.ToList().FindIndex(x => x.ID == themeID);
+                        if (posTheme < 0)
+                        {
+                            throw new XaliseException($"{model.ModeOuverture.Description()} impossible : le thème n'a pas été trouvé.");
+                        }
+                        else
+                        {
+                            model.ThemeDTO = listeThemes.ElementAt(posTheme);
+                            model.EstParentAvecEnfants = listeThemes.Any(x => x.ParentID.HasValue && x.ParentID.Value.Equals(themeID));
+                        }
+                    }
+                }
+
+                // =-=-=-
+                // Initialisation de la liste déroulante de sélection du thème parent
+                //  - exclusion du thème modifié pour empêcher de le lier avec lui-même
+                //  - exclusion des thèmes archivés, sauf s'il s'agit du parent du thème visualisé
+                // =-=-=-
+
+                if (listeThemes.IsNotEmpty())
+                {
+                    listeThemes = listeThemes.Where(x => !x.ParentID.HasValue
+                                                         && !x.ID.Equals(themeID)
+                                                         && ((model.ThemeDTO.ParentID.HasValue && x.ID.Equals(model.ThemeDTO.ParentID)) || !x.EstArchive))
+                                             .OrderBy(x => x.NumOrdre);
+                }
+
+                model.ListeThemesParents = SelectListHelper.ConstruireListeThemesParents(listeThemes, model.ThemeDTO.ParentID);
+            }
+            catch (Exception ex)
+            {
+                model.ErrorModel.AddErreur(ex.Message);
+            }
+
+            return PartialView("Editer", model);
+        }
+
+        /// <summary>
+        /// Enregistre (création/modification) un thème.
+        /// </summary>
+        /// <param name="model">Données saisies par l'utilisateur.</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult EnregistrerTheme(ThemeGEDEditModel model)
+        {
+            BaseAjaxReturnModel retModel = new BaseAjaxReturnModel();
+            List<Theme> listeThemes      = new List<Theme>();
+
+            try
+            {
+                EnumHelper.VerifierValidite<eModeOuverture>(model.ModeOuverture, nameof(model.ModeOuverture));
+
+                if (model.ModeOuverture != eModeOuverture.CREATION)
+                {
+                    this.VerifierThemeID(model.ThemeDTO.ID, nameof(model.ThemeDTO.ID));
+                }
+
+                listeThemes = JsonHelper.ReadJsonDataFile<Theme>(JsonHelper.CSTS_FILENAME_THEMES);
+                Theme theme = new Theme(model.ThemeDTO);
+
+                switch (model.ModeOuverture)
+                {
+                    case eModeOuverture.CREATION:
+                        {
+                            theme.ID = this.CalculerProchainID(ref listeThemes);
+                            theme.NumOrdre = this.CalculerProchainNumOrdre(ref listeThemes, theme.ParentID);
+                            listeThemes.Add(theme);
+                            break;
+                        }
+                    case eModeOuverture.MODIFICATION:
+                        {
+                            int posTheme = listeThemes.FindIndex(x => x.ID == model.ThemeDTO.ID);
+                            if (posTheme < 0)
+                            {
+                                throw new XaliseException($"{model.ModeOuverture.Description()} du thème impossible : le thème n'a pas été trouvé.");
+                            }
+                            else
+                            {
+                                // Si changement de parent : retrait du parent de départ, changement de parent ou sélection d'un parent
+                                if (listeThemes[posTheme].ParentID != theme.ParentID)
+                                {
+                                    // Réordonner les éléments associés au parent de départ qui ont un numéro d'ordre supérieur
+                                    this.RemonterOrdreThemes(ref listeThemes, listeThemes[posTheme].ParentID, listeThemes[posTheme].NumOrdre);
+
+                                    // Numéroter le thème pour le placer en dernière position
+                                    theme.NumOrdre = this.CalculerProchainNumOrdre(ref listeThemes, theme.ParentID);
+                                }
+
+                                listeThemes[posTheme] = theme;
+                            }
+
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+
+                JsonHelper.WriteJsonDataFile(JsonHelper.CSTS_FILENAME_THEMES, listeThemes);
+
+                retModel.MessageSucces = $"{model.ModeOuverture.Description()} du thème <b>{theme.Libelle}</b> réalisé avec succès.";
+            }
+            catch (Exception ex)
+            {
+                retModel.AddErreur(ex.Message);
+            }
+
+            return new JsonResult(retModel);
+        }
+
+        /// <summary>
         /// Affiche la fenêtre de dialogue de gestion de l'archivage d'un thème GED.
         /// </summary>
         /// <param name="modeGestion">Mode de gestion de l'archivage.</param>
@@ -187,7 +205,7 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
             try
             {
-                this.VerifierModeGestionArchivage(modeGestion, nameof(modeGestion));
+                EnumHelper.VerifierValidite<eModeGestionArchivage>(modeGestion, nameof(modeGestion));
                 this.VerifierThemeID(themeID, nameof(themeID));
 
                 model.ModeGestion = (eModeGestionArchivage)modeGestion;
@@ -226,14 +244,14 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
         /// <param name="themeID">Identifiant du thème.</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ExecuterGestionArchivage(short modeGestion, int themeID)
+        public IActionResult ExecuterGestionArchivage(short modeGestion, int themeID) 
         {
             BaseAjaxReturnModel retModel = new BaseAjaxReturnModel();
             List<Theme> listeThemes      = new List<Theme>();
 
             try
             {
-                this.VerifierModeGestionArchivage(modeGestion, nameof(modeGestion));
+                EnumHelper.VerifierValidite<eModeGestionArchivage>(modeGestion, nameof(modeGestion));
                 this.VerifierThemeID(themeID, nameof(themeID));
 
                 // =-=-=-
@@ -288,28 +306,6 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             return new JsonResult(retModel);
         }
 
-        #endregion
-
-        #region Fonctions utiles
-
-        /// <summary>
-        /// Vérifie la validité du mode de gestion de l'archivage.
-        /// </summary>
-        /// <param name="modeGestion">Mode de gestion.</param>
-        /// <param name="nomParametre">Nom du paramètre.</param>
-        /// <exception cref="ArgumentException"></exception>
-        private void VerifierModeGestionArchivage(short modeGestion, string nomParametre)
-        {
-            if (modeGestion <= 0)
-            {
-                throw new ArgumentException("Le mode d'ouverture ne peut pas être inférieur ou égal à 0.", nomParametre);
-            }
-            else if (!Enum.IsDefined(typeof(eModeGestionArchivage), modeGestion))
-            {
-                throw new ArgumentException("Le mode d'ouverture indiqué n'est pas valide.", nomParametre);
-            }
-        }
-
         /// <summary>
         /// Vérifie la validité de l'identifiant du thème.
         /// </summary>
@@ -324,11 +320,6 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             }
         }
 
-        #endregion
-
-
-
-        
         /// <summary>
         /// Calcul du prochain identifiant.
         /// </summary>
@@ -384,83 +375,10 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             themes.Where(x => x.ParentID.Equals(parentID) && x.NumOrdre > ordreDepart).ToList().ForEach(x => x.NumOrdre = x.NumOrdre - 1);
         }
 
-        /*
-         * REGLES DE GESTION
-         *  - trois modes d'ouverture : CREATION, MODIFICATION, VISUALISATION
-         *  - liste de sélection du thème parent
-         *      -- [OK] affiche uniquement les thèmes parent non archivés, triés par numéro d'ordre
-         *      -- [OK] en mode modification, le thème parent modifié n'apparaît pas dans la liste pour empêcher de le lier avec lui-même
-         *      -- [OK] enfant dont le parent est archivé : il faut visualiser le parent dans la liste déroulante
-         *  - archivage
-         *      -- si le thème archivé est parent, on archive aussi les enfants
-         *      -- si le thème archivé est enfant, on archive pas le parent
-         *      -- demander une confirmation à l'utilisateur
-         *          --- indiquer clairement le libellé du thème qui va être archivé
-         *          --- si le thème est parent et a des enfants, indiquer que les enfants seront aussi archivés (en indiquant le nom des enfants ?)
-         *  - annulation de l'archivage
-         *      -- si le thème est parent, on réactive aussi les enfants
-         *      -- si le thème est enfant, on ne réactive pas le parent
-         *      -- demander une confirmation à l'utilisateur
-         *          --- indiquer clairement le libellé du thème qui va être réactivé
-         *          --- si le thème est parent et a des enfants, indiquer que les enfants seront aussi réactivés (en indiquant le nom des enfants ?)
-         *  - CREATION
-         *      -- [OK] le thème créé est positionné en dernière position
-         *      -- [OK] la case à cocher pour continuer la saisie après l'enregistrement est visible
-         *  - MODIFICATION
-         *      -- [OK] un parent possédant au moins un enfant ne peut devenir lui-même enfant : liste déroulante du thème parent non accessible (affichage d'un message)
-         *      -- [OK] la case à cocher pour continuer la saisie après l'enregistrement n'est pas visible
-         *      -- [OK] le thème était parent mais devient enfant :
-         *          --- [OK] positionner le thème en dernière position dans la hiérarchie des thèmes liés au parent sélectionné
-         *          --- [OK] remonter de 1 les thèmes parents qui se trouvaient en dessous du thème parent modifié
-         *      -- [OK] le thème était enfant mais devient parent :
-         *          ---- [OK] positionner le thème en dernière position dans la hiérarchie des thèmes parents
-         *          ---- [OK] remonter de 1 les thèmes enfants qui se trouvaient en dessous du thème enfant modifié
-         *  - VISUALISATION
-         *      -- [OK] la case à cocher pour continuer la saisie après l'enregistrement n'est pas visible
-         *  - DIVERS
-         *      -- [OK] un message est affiché si le thème est archivé
-         */
-
-
-
-
-        /*
-         *  
-         * 0°) Si pas de données : afficher une vue générique placée dans "Shared"
-         * 0°) Pour faire apparaître la hiérarchie : espaces blancs devant le libellé des enfants ?
-         * 0°) Titre des colonnes : structure ?
-         * 0°) Les thèmes de référence interne :
-         *  - ne peuvent être que des parents
-         *  - ne peuvent pas avoir d'enfants
-         *  
-         * Réordonner les thèmes : quelle solution ?
-         * 
-         * Mise en place d'un export Excel ?
-         *  - pouvoir dire que certaines colonnes ne doivent pas être exportées (fixes) et d'autres facultatives (en fonction d'option) : attributs personnalisés
-         *  - ordre des colonnes (attribut personnalisé)
-         *  - Delegate qui exécute une fonction du contrôleur, qui :
-         *      - initialise les données : colonnes facultatives
-         *      - exécute la recherche
-         *      - génère les fichier Excel et le propose au téléchargement
-         *      - ...
-         *  - gestion des différents types de données : string, date, heure, date/heure, booléen, entier, décimal, ...
-         *  
-         * 
-         * 1°) Suppression
-         *  - si thème utilisé : proposer le remplacement
-         *  - s'il s'agit d'un parent avec un/des enfants : proposer de rattacher les enfant à un autre parent où en faire des parents
-         *  - penser à gérer les numéros d'ordre
-         * 
-         */
-
-        // TODO: liste des thèmes, changer icône pour ouvrir la fenêtre en mode 'Visualisation'
-        // Archivage : action ajax qui récupère le HTML à afficher (si erreur, erreur générique, sinon confirmation)
-
-        #region Recherches
-
         /// <summary>
         /// Recherche des thèmes.
         /// </summary>
+        /// <param name="criteres">Critères de recherche.</param>
         /// <returns></returns>
         private ThemeGEDViewModel RechercherThemes(ThemeCriteresRechercheModel criteres)
         {
@@ -511,6 +429,38 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
             return model;
         }
 
-        #endregion
+
+
+
+        /*
+         *  
+         * 0°) Si pas de données : afficher une vue générique placée dans "Shared"
+         * 0°) Pour faire apparaître la hiérarchie : espaces blancs devant le libellé des enfants ?
+         * 0°) Titre des colonnes : structure ?
+         * 0°) Les thèmes de référence interne :
+         *  - ne peuvent être que des parents
+         *  - ne peuvent pas avoir d'enfants
+         *  
+         * Réordonner les thèmes : quelle solution ?
+         * 
+         * Mise en place d'un export Excel ?
+         *  - pouvoir dire que certaines colonnes ne doivent pas être exportées (fixes) et d'autres facultatives (en fonction d'option) : attributs personnalisés
+         *  - ordre des colonnes (attribut personnalisé)
+         *  - Delegate qui exécute une fonction du contrôleur, qui :
+         *      - initialise les données : colonnes facultatives
+         *      - exécute la recherche
+         *      - génère les fichier Excel et le propose au téléchargement
+         *      - ...
+         *  - gestion des différents types de données : string, date, heure, date/heure, booléen, entier, décimal, ...
+         *  
+         * 
+         * 1°) Suppression
+         *  - si thème utilisé : proposer le remplacement
+         *  - s'il s'agit d'un parent avec un/des enfants : proposer de rattacher les enfant à un autre parent où en faire des parents
+         *  - penser à gérer les numéros d'ordre
+         * 
+         */
+
+        // TODO: liste des thèmes, changer icône pour ouvrir la fenêtre en mode 'Visualisation'
     }
 }

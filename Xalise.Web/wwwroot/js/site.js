@@ -1,26 +1,73 @@
 ﻿"use strict";
 
-//#region Constantes : formulaires
+//#region Constantes globales : formulaires
 
 const CONST_ID_CHECKBOX_SAISIE_SUITE = "#x-chk-saisie-suite";
 
 //#endregion
 
-//#region Constantes : conteneurs
+//#region Constantes globales : conteneurs
 
 const CONST_ID_MESSAGE_ATTENTE_CONTAINER    = "#div-container-xalise-msg-attente";
 const CONST_ID_MESSAGE_ATTENTE              = "#div-xalise-msg-attente";
 
+const CONST_ID_TEMPLATE_ALERTE_INFO         = "#template-xalise-alert-info";
+const CONST_ID_TEMPLATE_ALERTE_SUCCESS      = "#template-xalise-alert-success";
+const CONST_ID_TEMPLATE_ALERTE_DANGER       = "#template-xalise-alert-danger";
+const CONST_CLASS_ALERTE_CONTENT            = ".div-xalise-alert-content";
+
 //#endregion
 
-//#region Constantes : énumérations
+//#region Constantes globales : énumérations
 
-const CONST_ENUM_VALUE_MODE_OUVERTURE_ARCHIVAGE             = 1;
-const CONST_ENUM_VALUE_MODE_OUVERTURE_ANNULATION_ARCHIVAGE  = 2;
+const CONST_ENUM_VALUE_MODE_GESTION_ARCHIVAGE             = 1;
+const CONST_ENUM_VALUE_MODE_GESTION_ANNULATION_ARCHIVAGE  = 2;
 
 //#endregion
 
 //#region Fonctions globables
+
+/**
+ * Affiche une alerte d'information en haut de la page.
+ * @author Xavier VILLEMIN
+ * @param {string} contentHtml  Contenu de l'alerte.
+ */
+function Xalise_AfficherAlerteInfo(contentHtml) {
+    Xalise_AfficherAlerte(CONST_ID_TEMPLATE_ALERTE_INFO, contentHtml);
+}
+
+/**
+ * Affiche une alerte de validation en haut de la page.
+ * @author Xavier VILLEMIN
+ * @param {string} contentHtml  Contenu de l'alerte.
+ */
+function Xalise_AfficherAlerteValidation(contentHtml) {
+    Xalise_AfficherAlerte(CONST_ID_TEMPLATE_ALERTE_SUCCESS, contentHtml);
+}
+
+/**
+ * Affiche une alerte d'erreur en haut de la page.
+ * @author Xavier VILLEMIN
+ * @param {string} contentHtml  Contenu de l'alerte.
+ */
+function Xalise_AfficherAlerteErreur(contentHtml) {
+    Xalise_AfficherAlerte(CONST_ID_TEMPLATE_ALERTE_DANGER, contentHtml);
+}
+
+/**
+ * Affiche une alerte en haut de la page.
+ * @author Xavier VILLEMIN
+ * @param {string} selectorTemplate Identifiant du template à utiliser (# de sélection inclu).
+ * @param {string} contentHtml      Contenu de l'alerte.
+ */
+function Xalise_AfficherAlerte(selectorTemplate, contentHtml) {
+    let template = document.querySelector(selectorTemplate);
+    let mainHtml = document.querySelector("main");
+    let clone = document.importNode(template.content, true);
+
+    $(CONST_CLASS_ALERTE_CONTENT, clone).html(contentHtml);
+    mainHtml.prepend(clone);
+}
 
 /**
  * Ouverture d'une fenêtre de dialogue Bootstrap.
@@ -75,8 +122,6 @@ function Xalise_ExecuterFermetureDialogue(formID, callback) {
         callback();
     }
 }
-
-//TODO: prévoir une fonction générique d'affichage d'un message d'erreur.
 
 /**
  * Affichage du message d'attente indiquant qu'un traitement est en cours.
@@ -136,8 +181,6 @@ const CONST_ID_THEME_GED_CONTAINER_LIST = "#div-theme-ged-container-list";
 const CONST_ID_THEME_GED_FORM_EDIT      = "#form-theme-ged-edit";
 const CONST_ID_THEME_GED_FORM_CRITERES  = "#form-theme-ged-criteres";
 
-// TODO: fonction pour vider les critères de recherche
-
 /**
  * Exécute la recherche et actualise la liste des thèmes GED.
  * @author Xavier VILLEMIN
@@ -173,102 +216,7 @@ function ThemeGED_Fermer() {
 }
 
 /**
- * Affiche la fenêtre de dialogue de gestion de l'archivage d'un thème GED.
- * @author Xavier VILLEMIN
- * @param {int} modeGestion     Mode de gestion de l'archivage.
- * @param {int} themeID         Identifiant du thème.
- */
-function ThemeGED_AfficherDialogueGestionArchivage(modeGestion, themeID) {
-    Xalise_AfficherMsgAttente();
-
-    $.ajax({
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: "/Repertoires/ThemeGED/AfficherDialogueGestionArchivage",
-        dataType: "html",
-        type: "GET",
-        data: {
-            modeGestion: modeGestion,
-            themeID: themeID
-        }
-    })
-        .done(function (data, textStatus, jqXHR) {
-            Xalise_OuvrirDialogue(CONST_ID_THEME_GED_MODAL, data);
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            //TODO: gestion du 'fail'
-        })
-        .always(function () {
-            Xalise_CacherMsgAttente();
-        });
-}
-
-/**
- * Exécute les traitements d'archivage d'un thème GED.
- * @author Xavier VILLEMIN
- * @param {int} modeGestion     Mode de gestion de l'archivage.
- * @param {int} themeID         Identifiant du thème.
- * */
-function ThemeGED_ExecuterGestionArchivage(modeGestion, themeID) {
-    let msgAttente = "";
-
-    if (modeGestion === CONST_ENUM_VALUE_MODE_OUVERTURE_ARCHIVAGE) {
-        msgAttente = "Archivage en cours...";
-    }
-    else {
-        msgAttente = "Annulation de l'archivage en cours...";
-    }
-
-    Xalise_AfficherMsgAttente(msgAttente);
-    ThemeGED_Fermer();
-
-    $.ajax({
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        url: "/Repertoires/ThemeGED/ExecuterGestionArchivage",
-        dataType: "json",
-        type: "POST",
-        data: {
-            modeGestion: modeGestion,
-            themeID: themeID
-        }
-    })
-        .done(function (data, textStatus, jqXHR) {
-            if (data.AvecErreur) {
-                // TODO: gestion de l'erreur pour 'ThemeGED_ArchiverTheme'
-                // Message affiché dans un container toujours présent sur toutes les pages (pas de dialogue) mais qui disparaît au clic sur une icône
-                // Faire générique
-            }
-            else {
-                // TODO: mettre un message de réussite (fonction globale, dans un container présent sur toute les pages ?, qui disparaît au clic sur l'élément)
-                ThemeGED_ActualiserRepertoire();
-            }
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            // TODO: gestion du 'fail'
-        })
-        .always(function () {
-            Xalise_CacherMsgAttente();
-        });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Affichage de la fenêtre de dialogue de création ou de modification d'un thème GED.
+ * Affiche la fenêtre de dialogue de création/modification d'un thème.
  * @author Xavier VILLEMIN
  * @param {int} modeOuverture   Mode d'ouverture de la fenêtre de dialogue.
  * @param {int} themeID         Identifiant du thème à afficher.
@@ -320,6 +268,7 @@ function ThemeGED_EnregistrerTheme() {
                     CONST_ID_THEME_GED_FORM_EDIT,
                     function () {
                         ThemeGED_Fermer();
+                        Xalise_AfficherAlerteValidation(data.messageSucces);
                         ThemeGED_ActualiserRepertoire();
                     }
                 );
@@ -332,6 +281,93 @@ function ThemeGED_EnregistrerTheme() {
             Xalise_CacherMsgAttente();
         });
 }
+
+/**
+ * Affiche la fenêtre de dialogue de gestion de l'archivage d'un thème GED.
+ * @author Xavier VILLEMIN
+ * @param {int} modeGestion     Mode de gestion de l'archivage.
+ * @param {int} themeID         Identifiant du thème.
+ */
+function ThemeGED_AfficherDialogueGestionArchivage(modeGestion, themeID) {
+    Xalise_AfficherMsgAttente();
+
+    $.ajax({
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: "/Repertoires/ThemeGED/AfficherDialogueGestionArchivage",
+        dataType: "html",
+        type: "GET",
+        data: {
+            modeGestion: modeGestion,
+            themeID: themeID
+        }
+    })
+        .done(function (data, textStatus, jqXHR) {
+            Xalise_OuvrirDialogue(CONST_ID_THEME_GED_MODAL, data);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            //TODO: gestion du 'fail'
+        })
+        .always(function () {
+            Xalise_CacherMsgAttente();
+        });
+}
+
+/**
+ * Exécute les traitements d'archivage d'un thème GED.
+ * @author Xavier VILLEMIN
+ * @param {int} modeGestion     Mode de gestion de l'archivage.
+ * @param {int} themeID         Identifiant du thème.
+ * */
+function ThemeGED_ExecuterGestionArchivage(modeGestion, themeID) {
+    let msgAttente = "";
+
+    if (modeGestion === CONST_ENUM_VALUE_MODE_GESTION_ARCHIVAGE) {
+        msgAttente = "Archivage en cours...";
+    }
+    else {
+        msgAttente = "Annulation de l'archivage en cours...";
+    }
+
+    Xalise_AfficherMsgAttente(msgAttente);
+    ThemeGED_Fermer();
+
+    $.ajax({
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        url: "/Repertoires/ThemeGED/ExecuterGestionArchivage",
+        dataType: "json",
+        type: "POST",
+        data: {
+            modeGestion: modeGestion,
+            themeID: themeID
+        }
+    })
+        .done(function (data, textStatus, jqXHR) {
+            if (data.AvecErreur) {
+                // TODO: gestion de l'erreur pour 'ThemeGED_ArchiverTheme'
+                // Message affiché dans un container toujours présent sur toutes les pages (pas de dialogue) mais qui disparaît au clic sur une icône
+                // Faire générique
+            }
+            else {
+                Xalise_AfficherAlerteValidation(data.messageSucces);
+                ThemeGED_ActualiserRepertoire();
+            }
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            // TODO: gestion du 'fail'
+        })
+        .always(function () {
+            Xalise_CacherMsgAttente();
+        });
+}
+
+
+
+
+
+
+
+
+
 
 
 

@@ -99,8 +99,22 @@ body {
 
 /*#region Styles génériques : formulaires*/
 
-.xalise-form-check-input-sm {
+.x-form-check-input-sm {
     margin-top: 0.5rem;
+}
+
+/*#endregion*/
+
+/*#region Alertes*/
+
+.div-xalise-alert {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.div-xalise-alert.alert-dismissible .btn-close {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
 }
 
 /*#endregion*/
