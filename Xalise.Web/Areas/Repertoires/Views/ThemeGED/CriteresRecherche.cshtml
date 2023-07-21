@@ -32,8 +32,19 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <button type="button" class="btn btn-primary" onclick="ThemeGED_ActualiserRepertoire()">Rechercher</button>
-                    <button type="button" class="btn btn-secondary" onclick="Xalise_ViderFormulaire(@("'#" + IdentifiantfHtmlElement.ID_FORM_THEME_GED_CRITERES + "'"))">Vider les filtres</button>
+                    <xalise-button size="btn_sm"
+                               style="btn_primary"
+                               icon="magnifying_glass"
+                               icon-style="solid"
+                               title="Rechercher"
+                               onclick="ThemeGED_ActualiserRepertoire()" />
+
+                    <xalise-button size="btn_sm"
+                               style="btn_secondary"
+                               icon="arrow_rotate_left"
+                               icon-style="solid"
+                               title="Vider les filtres"
+                               onclick="Xalise_ViderFormulaire(@("'#" + IdentifiantfHtmlElement.ID_FORM_THEME_GED_CRITERES + "'"))" />
                 </div>
             </div>
         </fieldset>

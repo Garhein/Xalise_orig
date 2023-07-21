@@ -56,7 +56,19 @@ namespace Xalise.Web.Helpers.WebHelpers
                                         eFontAwesomeIconSize size = eFontAwesomeIconSize.size_default,
                                         eFontAwesomeAnimation animation = eFontAwesomeAnimation.animation_default)
         {
-            string ret = $"fa-{style.ToString()} fa-{icon.ToString().Replace("_", "-")}";
+            string iconClass = string.Empty;
+
+            if (icon == eFontAwesomeIcon.lockk)
+            {
+                // Traitement nécessaire car 'lock' est un mot-clé du language
+                iconClass = "lock";
+            }
+            else
+            {
+                iconClass = icon.ToString().Replace("_", "-");
+            }
+
+            string ret = $"fa-{style.ToString()} fa-{iconClass}";
 
             if (size != eFontAwesomeIconSize.size_default)
             {

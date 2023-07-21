@@ -10,14 +10,17 @@
         /// Pour une bonne gestion des tags helpers personnalisés.
         /// </summary>
         icon_default,
+        arrow_rotate_left,
         check,
         eye,
-        eye_slash,
-        pen_to_square,
+        lockk,
+        lock_open,
+        magnifying_glass,
+        pencil,
         plus,
         spinner,
         trash_can,
         triangle_exclamation,
-        xmark
+        xmark,
     }
 }

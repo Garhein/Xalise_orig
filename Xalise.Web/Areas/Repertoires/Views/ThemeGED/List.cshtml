@@ -3,7 +3,13 @@
 @using Xalise.Core.Entite.GED
 @model ThemeGEDViewModel
 
-<xalise-button size="btn_sm" style="btn_primary" icon="plus" icon-style="regular" title="Ajouter un thème" onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.CREATION), 0);" />
+<xalise-button 
+        size="btn_sm"
+        style="btn_primary"
+        icon="plus"
+        icon-style="solid"
+        title="Ajouter un thème"
+        onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.CREATION), 0);" />
 
 @if (Model.ListeThemes.IsEmpty())
 {
@@ -27,14 +33,16 @@ else
                     <td class="@IdentifiantfHtmlElement.CLASS_COL_ACTIONS @IdentifiantfHtmlElement.CLASS_COL_CENTER">
                         @if (!dto.EstArchive)
                         {
-                            <xalise-action-link icon-style="regular"
-                                    icon="pen_to_square"
+                            <xalise-action-link 
+                                    icon-style="solid"
+                                    icon="pencil"
                                     title="Modifier le thème"
                                     onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.MODIFICATION), @dto.ID)" />
                         }
                         else
                         {
-                            <xalise-action-link icon-style="regular"
+                            <xalise-action-link
+                                    icon-style="solid"
                                     icon="eye"
                                     title="Visualiser le thème"
                                     onclick="ThemeGED_AfficherTheme(@((int)eModeOuverture.VISUALISATION), @dto.ID)" />
@@ -42,21 +50,21 @@ else
 
                         @if (!dto.EstInterne)
                         {
-                            <xalise-action-link icon-style="regular" icon="trash_can" title="Supprimer le thème" onclick="Theme_Supprimer(@dto.ID)" />
+                            <xalise-action-link icon-style="solid" icon="trash_can" title="Supprimer le thème" onclick="Theme_Supprimer(@dto.ID)" />
 
                             @if (dto.EstArchive)
                             {
                                 <xalise-action-link 
-                                        icon-style="regular"
-                                        icon="eye_slash"
+                                        icon-style="solid"
+                                        icon="lock_open"
                                         title="Annuler l'archivage du thème"
                                         onclick="ThemeGED_AfficherDialogueGestionArchivage(@((int)eModeGestionArchivage.ANNULATION_ARCHIVAGE), @dto.ID)" />
                             }
                             else
                             {
                                 <xalise-action-link 
-                                        icon-style="regular" 
-                                        icon="eye_slash" 
+                                        icon-style="solid" 
+                                        icon="lockk" 
                                         title="Archiver le thème"
                                         onclick="ThemeGED_AfficherDialogueGestionArchivage(@((int)eModeGestionArchivage.ARCHIVAGE), @dto.ID)" />
                             }

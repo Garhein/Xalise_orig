@@ -70,12 +70,12 @@
         <div class="modal-footer">
             @if (Model.AvecErreur || Model.ModeOuverture.Equals(eModeOuverture.VISUALISATION))
             {
-                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Fermer" onclick="ThemeGED_Fermer();"/>
+                <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Fermer" onclick="ThemeGED_Fermer();" />
             }
             else
             {
                 <xalise-button size="btn_sm" style="btn_secondary" icon="xmark" icon-style="solid" title="Annuler" onclick="ThemeGED_Fermer();"/>
-                <xalise-button size="btn_sm" style="btn_primary" icon="check" icon-style="solid" title="Enregistrer" onclick="ThemeGED_EnregistrerTheme();"/>
+                <xalise-button size="btn_sm" style="btn_primary" icon="check" icon-style="solid" title="Enregistrer" onclick="ThemeGED_EnregistrerTheme();" />
             }
         </div>
     </div>
