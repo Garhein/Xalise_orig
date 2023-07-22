@@ -1,4 +1,5 @@
-﻿using Xalise.Web.Enums;
+﻿using Xalise.Core.Extensions;
+using Xalise.Web.Enums;
 
 namespace Xalise.Web.Helpers.WebHelpers
 {
@@ -56,28 +57,16 @@ namespace Xalise.Web.Helpers.WebHelpers
                                         eFontAwesomeIconSize size = eFontAwesomeIconSize.size_default,
                                         eFontAwesomeAnimation animation = eFontAwesomeAnimation.animation_default)
         {
-            string iconClass = string.Empty;
-
-            if (icon == eFontAwesomeIcon.lockk)
-            {
-                // Traitement nécessaire car 'lock' est un mot-clé du language
-                iconClass = "lock";
-            }
-            else
-            {
-                iconClass = icon.ToString().Replace("_", "-");
-            }
-
-            string ret = $"fa-{style.ToString()} fa-{iconClass}";
+            string ret = $"{style.CssClassName()} {icon.CssClassName()}";
 
             if (size != eFontAwesomeIconSize.size_default)
             {
-                ret += $" fa-{size.ToString().Replace("double_", "2")}";
+                ret += $" {size.CssClassName()}";
             }
 
             if (animation != eFontAwesomeAnimation.animation_default)
             {
-                ret += $" fa-{animation.ToString().Replace("_", "-")}";
+                ret += $" {animation.CssClassName()}";
             }
 
             return ret;

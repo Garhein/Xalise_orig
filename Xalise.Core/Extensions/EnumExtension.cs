@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Xalise.Core.Attributes;
 
 namespace Xalise.Core.Extensions
 {
@@ -52,6 +53,33 @@ namespace Xalise.Core.Extensions
             }
 
             return descrValue;
+        }
+
+        /// <summary>
+        /// Récupère la valeur de l'attribut <see cref="CssClassNameAttribute"/> indiqué
+        /// sur l'élément de l'énumération.
+        /// </summary>
+        /// <param name="enumValue"></param>
+        /// <returns></returns>
+        public static string CssClassName(this Enum enumValue)
+        {
+            string cssClassName = string.Empty;
+
+            Type type = enumValue.GetType();
+            if (type != null)
+            {
+                FieldInfo? fi = type.GetField(enumValue.ToString());
+                if (fi != null)
+                {
+                    IEnumerable<Attribute> attributes = fi.GetCustomAttributes(typeof(CssClassNameAttribute));
+                    if (attributes.IsNotEmpty())
+                    {
+                        cssClassName = ((CssClassNameAttribute)attributes.First()).ClassName;
+                    }
+                }
+            }
+
+            return cssClassName;
         }
     }
 }

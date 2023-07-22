@@ -1,4 +1,6 @@
-﻿namespace Xalise.Web.Enums
+﻿using Xalise.Core.Attributes;
+
+namespace Xalise.Web.Enums
 {
     /// <summary>
     /// Animation de l'icône FontAwesome.
@@ -10,8 +12,11 @@
         /// Pour une bonne gestion des tags helpers personnalisés.
         /// </summary>
         animation_default,
+        [CssClassName("fa-spin")]
         spin,
+        [CssClassName("fa-spin-reverse")]
         spin_reverse,
+        [CssClassName("fa-spin-pulse")]
         spin_pulse
     }
 }
