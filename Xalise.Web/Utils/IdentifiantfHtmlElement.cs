@@ -5,17 +5,21 @@
     /// </summary>
     public struct IdentifiantfHtmlElement
     {
+        #region Liens
+
         // Lien d'action
-        public const string CLASS_ACTION_LINK   = "x-action-link";
+        public const string CLASS_LINK_ACTION   = "x-link-action";
+
+        #endregion
 
         #region Formulaires
 
         // Case à cocher permettant de réaliser une saisie à la suite de la création d'un élément
-        public const string ID_CHECKBOX_SAISIE_SUITE    = "x-chk-saisie-suite";
+        public const string ID_FORM_CHECKBOX_SAISIE_SUITE    = "x-form-chk-saisie-suite";
         // Formulaire de saisie d'un thème GED
-        public const string ID_FORM_THEME_GED_EDIT      = "form-theme-ged-edit";
+        public const string ID_FORM_REP_THEME_GED_EDIT       = "form-rep-theme-ged-edit";
         // Formulaire des critères de recherche du répertoire des thèmes GED
-        public const string ID_FORM_THEME_GED_CRITERES  = "form-theme-ged-criteres";
+        public const string ID_FORM_REP_THEME_GED_CRITERES   = "form-rep-theme-ged-criteres";
 
         #endregion
 
@@ -33,13 +37,13 @@
         #region Tables HTML
 
         // Colonne dont le contenu est centré
-        public const string CLASS_COL_CENTER        = "x-col-center";
+        public const string CLASS_TR_CENTER        = "x-tr-center";
         // Colonne contenant les icônes d'action
-        public const string CLASS_COL_ACTIONS       = "x-col-actions";
+        public const string CLASS_TR_ACTIONS       = "x-tr-actions";
         // Colonne contenant une case à cocher
-        public const string CLASS_COL_CHECKBOX      = "x-col-check";
+        public const string CLASS_TR_CHECKBOX      = "x-tr-check";
         // Colonne contenant une case à cocher
-        public const string CLASS_COL_NUM_ORDRE     = "x-col-num-ordre";
+        public const string CLASS_TR_NUM_ORDRE     = "x-tr-num-ordre";
 
         #endregion
     }

@@ -2,19 +2,19 @@
 
 //#region Constantes globales : formulaires
 
-const CONST_ID_CHECKBOX_SAISIE_SUITE = "#x-chk-saisie-suite";
+const CONST_ID_FORM_CHECKBOX_SAISIE_SUITE = "#x-form-chk-saisie-suite";
 
 //#endregion
 
 //#region Constantes globales : conteneurs
 
-const CONST_ID_MESSAGE_ATTENTE_CONTAINER    = "#div-container-xalise-msg-attente";
-const CONST_ID_MESSAGE_ATTENTE              = "#div-xalise-msg-attente";
+const CONST_ID_MSG_ATTENTE_CONTAINER        = "#container-xalise-msg-attente";
+const CONST_ID_MSG_ATTENTE_CONTENT          = "#content-xalise-msg-attente";
 
-const CONST_ID_TEMPLATE_ALERTE_INFO         = "#template-xalise-alert-info";
-const CONST_ID_TEMPLATE_ALERTE_SUCCESS      = "#template-xalise-alert-success";
-const CONST_ID_TEMPLATE_ALERTE_DANGER       = "#template-xalise-alert-danger";
-const CONST_CLASS_ALERTE_CONTENT            = ".div-xalise-alert-content";
+const CONST_ID_ALERTE_TEMPLATE_INFO         = "#alert-template-xalise-info";
+const CONST_ID_ALERTE_TEMPLATE_SUCCESS      = "#alert-template-xalise-success";
+const CONST_ID_ALERTE_TEMPLATE_DANGER       = "#alert-template-xalise-danger";
+const CONST_CLASS_ALERTE_CONTENT            = ".alert-xalise-content";
 
 //#endregion
 
@@ -33,7 +33,7 @@ const CONST_ENUM_VALUE_MODE_GESTION_ANNULATION_ARCHIVAGE  = 2;
  * @param {string} contentHtml  Contenu de l'alerte.
  */
 function Xalise_AfficherAlerteInfo(contentHtml) {
-    Xalise_AfficherAlerte(CONST_ID_TEMPLATE_ALERTE_INFO, contentHtml);
+    Xalise_AfficherAlerte(CONST_ID_ALERTE_TEMPLATE_INFO, contentHtml);
 }
 
 /**
@@ -42,7 +42,7 @@ function Xalise_AfficherAlerteInfo(contentHtml) {
  * @param {string} contentHtml  Contenu de l'alerte.
  */
 function Xalise_AfficherAlerteValidation(contentHtml) {
-    Xalise_AfficherAlerte(CONST_ID_TEMPLATE_ALERTE_SUCCESS, contentHtml);
+    Xalise_AfficherAlerte(CONST_ID_ALERTE_TEMPLATE_SUCCESS, contentHtml);
 }
 
 /**
@@ -51,7 +51,7 @@ function Xalise_AfficherAlerteValidation(contentHtml) {
  * @param {string} contentHtml  Contenu de l'alerte.
  */
 function Xalise_AfficherAlerteErreur(contentHtml) {
-    Xalise_AfficherAlerte(CONST_ID_TEMPLATE_ALERTE_DANGER, contentHtml);
+    Xalise_AfficherAlerte(CONST_ID_ALERTE_TEMPLATE_DANGER, contentHtml);
 }
 
 /**
@@ -111,15 +111,30 @@ function Xalise_FermerDialogue(modalID) {
  * Exécution des traitements de fermeture d'une fenêtre de dialogue, vérifiant si
  * l'utilisateur souhaite réaliser une saisie à la suite.
  * @author Xavier VILLEMIN
- * @param {string}   formID     Identifiant du formulaire HTML.
- * @param {Function} callback   Callback à exécuter lorsque la case pour continuer la saisie n'existe pas ou n'est pas cochée.
+ * @param {string}   formID                     Identifiant du formulaire HTML.
+ * @param {Function} callback                   Callback exécuté dans tous les cas.
+ * @param {Function} callbackFermeture          Callback à exécuter pour fermer la fenêtre de dialogue.
+ * @param {Function} callbackRafraichissement   Callback à exécuter pour rafraîchir les données.
  * */
-function Xalise_ExecuterFermetureDialogue(formID, callback) {
-    if ($(CONST_ID_CHECKBOX_SAISIE_SUITE, formID).length > 0 && $(CONST_ID_CHECKBOX_SAISIE_SUITE, formID).is(":checked")) {
+function Xalise_ExecuterFermetureDialogue(formID, callback, callbackFermeture, callbackRafraichissement) {
+    let fermerDialogue = true;
+
+    if ($(CONST_ID_FORM_CHECKBOX_SAISIE_SUITE, formID).length > 0 && $(CONST_ID_FORM_CHECKBOX_SAISIE_SUITE, formID).is(":checked")) {
         Xalise_ViderFormulaire(formID);
+        fermerDialogue = false;
     }
-    else if (typeof callback === "function") {
+
+    if (typeof callback === "function") {
         callback();
+    }
+
+    // Il faut rafraichir le répertoire, au cas où l'utilisateur à demandé une saisie à la suite mais annule la seconde saisie.
+    if (typeof callbackRafraichissement === "function") {
+        callbackRafraichissement();
+    }
+
+    if (fermerDialogue && typeof callbackFermeture === "function") {
+        callbackFermeture();
     }
 }
 
@@ -134,8 +149,8 @@ function Xalise_AfficherMsgAttente(message) {
         message = "Traitement en cours...";
     }
 
-    $("span", CONST_ID_MESSAGE_ATTENTE).html(message);
-    $(CONST_ID_MESSAGE_ATTENTE_CONTAINER).fadeIn("fast");
+    $("span", CONST_ID_MSG_ATTENTE_CONTENT).html(message);
+    $(CONST_ID_MSG_ATTENTE_CONTAINER).fadeIn("fast");
 }
 
 /**
@@ -145,17 +160,17 @@ function Xalise_AfficherMsgAttente(message) {
 function Xalise_CacherMsgAttente() {
     // Le retrait du message est réalisé après que le conteneur ait été caché, sinon il disparaît
     // avant que le conteneur soit réellement caché
-    $(CONST_ID_MESSAGE_ATTENTE_CONTAINER).fadeOut("fast", function () { $("span", CONST_ID_MESSAGE_ATTENTE).html(""); });
+    $(CONST_ID_MSG_ATTENTE_CONTAINER).fadeOut("fast", function () { $("span", CONST_ID_MSG_ATTENTE_CONTENT).html(""); });
 }
 
 /**
  * TODO: Xalise_ViderFormulaire
  * Vide les champs d'un formulaire de saisie.
  * @author Xavier VILLEMIN
- * @param {string} selectorForm
+ * @param {object} eltButton
  * */
-function Xalise_ViderFormulaire(selectorForm) {
-    let form = $(selectorForm);
+function Xalise_ViderFormulaire(eltButton) {
+    let form = $(eltButton).closest('form');
 
     $("input[type='text']:not(.nePasVider)", form).val("");
     $("input[type='hidden'][value!=false]:not(.nePasVider)", form).val("");
@@ -176,10 +191,10 @@ function Xalise_ViderFormulaire(selectorForm) {
 
 //#region Gestion des thèmes GED
 
-const CONST_ID_THEME_GED_MODAL          = "#div-theme-ged-model";
-const CONST_ID_THEME_GED_CONTAINER_LIST = "#div-theme-ged-container-list";
-const CONST_ID_THEME_GED_FORM_EDIT      = "#form-theme-ged-edit";
-const CONST_ID_THEME_GED_FORM_CRITERES  = "#form-theme-ged-criteres";
+const CONST_ID_REP_THEME_GED_MODAL              = "#modal-rep-theme-ged";
+const CONST_ID_REP_THEME_GED_CONTAINER_LIST     = "#container-rep-theme-ged-list";
+const CONST_ID_FORM_REP_THEME_GED_EDIT          = "#form-rep-theme-ged-edit";
+const CONST_ID_FORM_REP_THEME_GED_CRITERES      = "#form-rep-theme-ged-criteres";
 
 /**
  * Exécute la recherche et actualise la liste des thèmes GED.
@@ -193,10 +208,10 @@ function ThemeGED_ActualiserRepertoire() {
         url: "/Repertoires/ThemeGED/ActualiserRepertoire",
         dataType: "html",
         type: "GET",
-        data: $(CONST_ID_THEME_GED_FORM_CRITERES).serialize()
+        data: $(CONST_ID_FORM_REP_THEME_GED_CRITERES).serialize()
     })
         .done(function (data, textStatus, jqXHR) {
-            $(CONST_ID_THEME_GED_CONTAINER_LIST).html(data);
+            $(CONST_ID_REP_THEME_GED_CONTAINER_LIST).html(data);
             Xalise_CacherMsgAttente();
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
@@ -212,7 +227,7 @@ function ThemeGED_ActualiserRepertoire() {
  * @author Xavier VILLEMIN
  */
 function ThemeGED_Fermer() {
-    Xalise_FermerDialogue(CONST_ID_THEME_GED_MODAL);
+    Xalise_FermerDialogue(CONST_ID_REP_THEME_GED_MODAL);
 }
 
 /**
@@ -235,7 +250,7 @@ function ThemeGED_AfficherTheme(modeOuverture, themeID) {
         }
     })
         .done(function (data, textStatus, jqXHR) {
-            Xalise_OuvrirDialogue(CONST_ID_THEME_GED_MODAL, data);
+            Xalise_OuvrirDialogue(CONST_ID_REP_THEME_GED_MODAL, data);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             //TODO: gestion du 'fail'
@@ -257,7 +272,7 @@ function ThemeGED_EnregistrerTheme() {
         url: "/Repertoires/ThemeGED/EnregistrerTheme",
         dataType: "json",
         type: "POST",
-        data: $(CONST_ID_THEME_GED_FORM_EDIT).serialize()
+        data: $(CONST_ID_FORM_REP_THEME_GED_EDIT).serialize()
     })
         .done(function (data, textStatus, jqXHR) {
             if (data.AvecErreur) {
@@ -265,10 +280,14 @@ function ThemeGED_EnregistrerTheme() {
             }
             else {
                 Xalise_ExecuterFermetureDialogue(
-                    CONST_ID_THEME_GED_FORM_EDIT,
+                    CONST_ID_FORM_REP_THEME_GED_EDIT,
+                    function () {
+                        Xalise_AfficherAlerteValidation(data.messageSucces);
+                    },
                     function () {
                         ThemeGED_Fermer();
-                        Xalise_AfficherAlerteValidation(data.messageSucces);
+                    },
+                    function () {  
                         ThemeGED_ActualiserRepertoire();
                     }
                 );
@@ -302,7 +321,7 @@ function ThemeGED_AfficherDialogueGestionArchivage(modeGestion, themeID) {
         }
     })
         .done(function (data, textStatus, jqXHR) {
-            Xalise_OuvrirDialogue(CONST_ID_THEME_GED_MODAL, data);
+            Xalise_OuvrirDialogue(CONST_ID_REP_THEME_GED_MODAL, data);
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             //TODO: gestion du 'fail'

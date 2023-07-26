@@ -1,7 +1,7 @@
 ﻿@using Xalise.Web.Areas.Repertoires.Models
 @model ThemeCriteresRechercheModel
 
-@using (Html.BeginForm("action", "Theme", FormMethod.Post, new { @id = "form-theme-ged-criteres" }))
+@using (Html.BeginForm("action", "Theme", FormMethod.Post, new { @id = IdentifiantfHtmlElement.ID_FORM_REP_THEME_GED_CRITERES }))
 {
     <div class="container-fluid container-md mb-2">
         <fieldset>
@@ -44,7 +44,7 @@
                                icon="arrow_rotate_left"
                                icon-style="solid"
                                title="Vider les filtres"
-                               onclick="Xalise_ViderFormulaire(@("'#" + IdentifiantfHtmlElement.ID_FORM_THEME_GED_CRITERES + "'"))" />
+                               onclick="Xalise_ViderFormulaire(this)" />
                 </div>
             </div>
         </fieldset>

@@ -13,7 +13,7 @@
             }
             else
             {
-                @using (Html.BeginForm("Save", "ThemeGED", FormMethod.Post, new { area = "Repertoires", @id = @IdentifiantfHtmlElement.ID_FORM_THEME_GED_EDIT }))
+                @using (Html.BeginForm("Save", "ThemeGED", FormMethod.Post, new { area = "Repertoires", @id = @IdentifiantfHtmlElement.ID_FORM_REP_THEME_GED_EDIT }))
                 {
                     <input type="hidden" asp-for="ThemeDTO.ID" />
                     <input type="hidden" asp-for="ThemeDTO.NumOrdre" />

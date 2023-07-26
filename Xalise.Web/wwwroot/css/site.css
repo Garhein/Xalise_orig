@@ -1,18 +1,4 @@
 html {
-  /*font-size: 14px;*/
-}
-
-@media (min-width: 768px) {
-  html {
-    /*font-size: 16px;*/
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  /*box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;*/
-}
-
-html {
   position: relative;
   min-height: 100%;
 }
@@ -21,45 +7,18 @@ body {
   margin-bottom: 60px;
 }
 
-/*#region Message d'attente*/
-
-#div-container-xalise-msg-attente {
-    background-color: #fff;
-    filter: opacity(80%);
-    position: fixed;
-    display: none;
-    opacity: 0.8;
-    z-index: 1100;
-    bottom: 0px;
-    right: 0px;
-    top: 0px;
-    left: 0px;
-}
-
-#div-container-xalise-msg-attente #div-xalise-msg-attente {
-    filter: opacity(100%);
-    position: absolute;
-    padding: 0.75rem;
-    z-index: 1103;
-    opacity: 100;
-    left: 45%;
-    top: 40%; 
-}
-
-/*#endregion*/
-
 /*#region Styles génériques : tables*/
 
-.x-col-center {
+.x-tr-center {
     text-align: center;
 }
 
-.x-col-check,
-.x-col-actions {
+.x-tr-check,
+.x-tr-actions {
     width: 8rem;
 }
 
-.x-col-num-ordre {
+.x-tr-num-ordre {
     width: 5rem;
 }
 
@@ -67,15 +26,15 @@ body {
 
 /*#region Styles génériques : liens*/
 
-.x-action-link {
+.x-link-action {
     cursor: pointer;
 }
 
-.x-action-link:not(:last-child) {
+.x-link-action:not(:last-child) {
     margin-right: 0.25rem;
 }
 
-.x-action-link span {
+.x-link-action span {
     margin-left: 0.25rem;
 }
 
@@ -105,14 +64,42 @@ body {
 
 /*#endregion*/
 
+
+/*#region Message d'attente*/
+
+#container-xalise-msg-attente {
+    background-color: #fff;
+    filter: opacity(80%);
+    position: fixed;
+    display: none;
+    opacity: 0.8;
+    z-index: 1100;
+    bottom: 0px;
+    right: 0px;
+    top: 0px;
+    left: 0px;
+}
+
+    #container-xalise-msg-attente #content-xalise-msg-attente {
+        filter: opacity(100%);
+        position: absolute;
+        padding: 0.75rem;
+        z-index: 1103;
+        opacity: 100;
+        left: 45%;
+        top: 40%;
+    }
+
+/*#endregion*/
+
 /*#region Alertes*/
 
-.div-xalise-alert {
+.container-xalise-alert {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
-.div-xalise-alert.alert-dismissible .btn-close {
+.container-xalise-alert.alert-dismissible .btn-close {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
 }

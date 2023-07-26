@@ -181,7 +181,7 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
                 JsonHelper.WriteJsonDataFile(JsonHelper.CSTS_FILENAME_THEMES, listeThemes);
 
-                retModel.MessageSucces = $"{model.ModeOuverture.Description()} du thème <b>{theme.Libelle}</b> réalisé avec succès.";
+                retModel.MessageSucces = $"{model.ModeOuverture.Description()} du thème <b>{theme.Libelle}</b> réalisée avec succès.";
             }
             catch (Exception ex)
             {

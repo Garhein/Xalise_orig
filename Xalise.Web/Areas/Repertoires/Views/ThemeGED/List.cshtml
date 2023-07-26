@@ -20,17 +20,17 @@ else
     <table class="table table-hover table-sm table-bordered mt-2">
         <thead class="table-dark">
             <tr>
-                <th class="@IdentifiantfHtmlElement.CLASS_COL_ACTIONS @IdentifiantfHtmlElement.CLASS_COL_CENTER"></th>
+                <th class="@IdentifiantfHtmlElement.CLASS_TR_ACTIONS @IdentifiantfHtmlElement.CLASS_TR_CENTER"></th>
                 <th>Libellé</th>
-                <th class="@IdentifiantfHtmlElement.CLASS_COL_NUM_ORDRE @IdentifiantfHtmlElement.CLASS_COL_CENTER">N°ordre</th>
-                <th class="@IdentifiantfHtmlElement.CLASS_COL_CHECKBOX @IdentifiantfHtmlElement.CLASS_COL_CENTER">Archivé</th>
+                <th class="@IdentifiantfHtmlElement.CLASS_TR_NUM_ORDRE @IdentifiantfHtmlElement.CLASS_TR_CENTER">N°ordre</th>
+                <th class="@IdentifiantfHtmlElement.CLASS_TR_CHECKBOX @IdentifiantfHtmlElement.CLASS_TR_CENTER">Archivé</th>
             </tr>
         </thead>
         <tbody>
             @foreach (ThemeDTO dto in Model.ListeThemes)
             {
                 <tr>
-                    <td class="@IdentifiantfHtmlElement.CLASS_COL_ACTIONS @IdentifiantfHtmlElement.CLASS_COL_CENTER">
+                    <td class="@IdentifiantfHtmlElement.CLASS_TR_ACTIONS @IdentifiantfHtmlElement.CLASS_TR_CENTER">
                         @if (!dto.EstArchive)
                         {
                             <xalise-action-link 
@@ -71,8 +71,8 @@ else
                         }
                     </td>
                     <td>@dto.ULibelleListeRepertoire</td>
-                    <td class="@IdentifiantfHtmlElement.CLASS_COL_NUM_ORDRE @IdentifiantfHtmlElement.CLASS_COL_CENTER">@dto.NumOrdre</td>
-                    <td class="@IdentifiantfHtmlElement.CLASS_COL_CHECKBOX @IdentifiantfHtmlElement.CLASS_COL_CENTER">
+                    <td class="@IdentifiantfHtmlElement.CLASS_TR_NUM_ORDRE @IdentifiantfHtmlElement.CLASS_TR_CENTER">@dto.NumOrdre</td>
+                    <td class="@IdentifiantfHtmlElement.CLASS_TR_CHECKBOX @IdentifiantfHtmlElement.CLASS_TR_CENTER">
                         <input asp-for="@dto.EstArchive" class="form-check-input" disabled="disabled" />
                     </td>
                 </tr>

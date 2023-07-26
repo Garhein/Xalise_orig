@@ -77,7 +77,7 @@ namespace Xalise.Web.Helpers.TagHelpers
             output.TagMode = TagMode.StartTagAndEndTag;
             output.TagName = "a";
             output.Attributes.SetAttribute("title", this.Title);
-            output.Attributes.SetAttribute("class", IdentifiantfHtmlElement.CLASS_ACTION_LINK);
+            output.Attributes.SetAttribute("class", IdentifiantfHtmlElement.CLASS_LINK_ACTION);
         }
     }
 }
