@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Xalise.Core\Xalise.Core.csproj" />
-    <ProjectReference Include="..\Xalise.Interop\Xalise.Interop.csproj" />
   </ItemGroup>
 
 </Project>
