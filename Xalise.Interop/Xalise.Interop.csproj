@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="HL7\Parser\" />
+    <Folder Include="InteropHL7\Structure\DataType\Composite\" />
   </ItemGroup>
 
   <ItemGroup>
