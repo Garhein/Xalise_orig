@@ -7,17 +7,17 @@ namespace Xalise.Interop.InteropHL7.Enums
     /// </summary>
     public enum ePrecisionFormatDate : short
     {
-        [EnumUsageValue("yyyy")]
+        [UsageValue("yyyy")]
         YEAR    = 0,
-        [EnumUsageValue("yyyyMM")]
+        [UsageValue("yyyyMM")]
         MONTH   = 1,
-        [EnumUsageValue("yyyyMMdd")]
+        [UsageValue("yyyyMMdd")]
         DAY     = 2,
-        [EnumUsageValue("yyyyMMddHH")]
+        [UsageValue("yyyyMMddHH")]
         HOUR    = 3,
-        [EnumUsageValue("yyyyMMddHHmm")]
+        [UsageValue("yyyyMMddHHmm")]
         MINUTE  = 4,
-        [EnumUsageValue("yyyyMMddHHmmss")]
+        [UsageValue("yyyyMMddHHmmss")]
         SECOND  = 5
     }
 }

@@ -83,7 +83,7 @@ namespace Xalise.Core.Extensions
         }
 
         /// <summary>
-        /// Récupère la valeur de l'attribut <seealso cref="EnumUsageValueAttribute"/> indiqué
+        /// Récupère la valeur de l'attribut <seealso cref="UsageValueAttribute"/> indiqué
         /// sur l'élément de l'énumération.
         /// </summary>
         /// <param name="enumValue"></param>
@@ -98,10 +98,10 @@ namespace Xalise.Core.Extensions
                 FieldInfo? fi = type.GetField(enumValue.ToString());
                 if (fi != null)
                 {
-                    IEnumerable<Attribute> attributes = fi.GetCustomAttributes(typeof(EnumUsageValueAttribute));
+                    IEnumerable<Attribute> attributes = fi.GetCustomAttributes(typeof(UsageValueAttribute));
                     if (attributes.IsNotEmpty())
                     {
-                        usageValue = ((EnumUsageValueAttribute)attributes.First()).Value;
+                        usageValue = ((UsageValueAttribute)attributes.First()).Value;
                     }
                 }
             }
