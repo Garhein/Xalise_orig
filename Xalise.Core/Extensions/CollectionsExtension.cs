@@ -1,7 +1,7 @@
 ﻿namespace Xalise.Core.Extensions
 {
     /// <summary>
-    /// Extensions applicables aux <see cref="IEnumerable{T}"/> et <see cref="IDictionary{TKey, TValue}"/>.
+    /// Méthodes d'extensions applicables aux <see cref="IEnumerable{T}"/> et <see cref="IDictionary{TKey, TValue}"/>.
     /// </summary>
     public static class CollectionsExtension
     {

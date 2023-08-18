@@ -1,10 +1,10 @@
 ﻿namespace Xalise.Core.Attributes
 {
     /// <summary>
-    /// Attribut permettant de définir la valeur d'usage d'un <see cref="AttributeTargets.Field"/>.
+    /// Définit la valeur d'usage d'un <see cref="AttributeTargets.Field"/>.
     /// </summary>
     /// <remarks>
-    /// Attribut utilisé par exemple pour définir la valeur d'usage des membres d'une <see cref="Enum"/>.
+    /// Utilisé par exemple pour définir la valeur d'usage des membres d'une <see cref="Enum"/>.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
     public class UsageValueAttribute : Attribute
