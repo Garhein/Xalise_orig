@@ -3,7 +3,7 @@
 namespace Xalise.Core.Helpers
 {
     /// <summary>
-    /// Fonctions utilitaires pour manipuler les numériques, quel que soit leur type (<seealso cref="int"/>, <seealso cref="decimal"/>, ...).
+    /// Fonctions utilitaires pour manipuler les numériques (<seealso cref="int"/>, <seealso cref="decimal"/>, ...).
     /// </summary>
     public static class NumberHelper
     {
@@ -32,11 +32,13 @@ namespace Xalise.Core.Helpers
         #endregion
 
         /// <summary>
-        /// Construction du format à appliquer l'export <see cref="object.ToString()"/> d'un numérique.
-        /// Les valeurs par défaut sont utilisés pour le séparateur de décimales et de groupes, à savoir :
-        ///  - <seealso cref="NumberHelper.CSTS_DEFAULT_DECIMAL_SEPARATOR"/>
-        ///  - <seealso cref="NumberHelper.CSTS_DEFAULT_GROUP_SEPARATOR"/>
+        /// Construction du format à appliquer à l'export <see cref="object.ToString()"/> d'un numérique.
         /// </summary>
+        /// <remarks>
+        /// Les valeurs par défaut sont utilisés pour le séparateur de décimales et de groupes, à savoir :<br/>
+        ///   - <seealso cref="NumberHelper.CSTS_DEFAULT_DECIMAL_SEPARATOR"/><br/>
+        ///   - <seealso cref="NumberHelper.CSTS_DEFAULT_GROUP_SEPARATOR"/>
+        /// </remarks>
         /// <param name="nbDecimales">Nombre de décimales à conserver.</param>
         /// <returns>Une instance de <seealso cref="NumberFormatInfo"/>.</returns>
         public static NumberFormatInfo GetFormatNumerique(int nbDecimales)
@@ -45,9 +47,11 @@ namespace Xalise.Core.Helpers
         }
 
         /// <summary>
-        /// Construction du format à appliquer l'export <see cref="object.ToString()"/> d'un numérique.
-        /// La valeur par défaut <seealso cref="NumberHelper.CSTS_DEFAULT_DECIMAL_SEPARATOR"/> est utilisée.
+        /// Construction du format à appliquer à l'export <see cref="object.ToString()"/> d'un numérique.
         /// </summary>
+        /// <remarks>
+        /// La valeur par défaut <seealso cref="NumberHelper.CSTS_DEFAULT_DECIMAL_SEPARATOR"/> est utilisée pour le séparateur de décimales.
+        /// </remarks>
         /// <param name="nbDecimales">Nombre de décimales à conserver.</param>
         /// <param name="sepGroupes">Séparateur des groupes de chiffres à gauche du séparateur de décimales.</param>
         /// <returns>Une instance de <seealso cref="NumberFormatInfo"/>.</returns>
@@ -57,7 +61,7 @@ namespace Xalise.Core.Helpers
         }
 
         /// <summary>
-        /// Construction du format à appliquer l'export <see cref="object.ToString()"/> d'un numérique.
+        /// Construction du format à appliquer à l'export <see cref="object.ToString()"/> d'un numérique.
         /// </summary>
         /// <param name="nbDecimales">Nombre de décimales.</param>
         /// <param name="sepDecimales">Séparateur de décimales à conserver.</param>
