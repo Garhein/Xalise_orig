@@ -61,7 +61,10 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
             try
             {
-                EnumHelper.VerifierValidite<eModeOuverture>(modeOuverture, nameof(modeOuverture));
+                if (!EnumHelper.VerifierValidite<eModeOuverture>(modeOuverture, nameof(modeOuverture)))
+                {
+                    throw new ArgumentException("Le mode d'ouverture de la fenêtre de dialogue n'est pas valide.", nameof(modeOuverture));
+                }
 
                 // =-=-=-
                 // Gestion des informations du thème et du mode d'ouverture
@@ -130,7 +133,10 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
             try
             {
-                EnumHelper.VerifierValidite<eModeOuverture>(model.ModeOuverture, nameof(model.ModeOuverture));
+                if (!EnumHelper.VerifierValidite<eModeOuverture>(model.ModeOuverture)) 
+                {
+                    throw new ArgumentException("Le mode d'ouverture de la fenêtre de dialogue n'est pas valide.", nameof(model.ModeOuverture));
+                }
 
                 if (model.ModeOuverture != eModeOuverture.CREATION)
                 {
@@ -205,7 +211,11 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
             try
             {
-                EnumHelper.VerifierValidite<eModeGestionArchivage>(modeGestion, nameof(modeGestion));
+                if (!EnumHelper.VerifierValidite<eModeGestionArchivage>(modeGestion, nameof(modeGestion)))
+                {
+                    throw new ArgumentException("Le mode de gestion de l'archivage n'est pas valide.", nameof(modeGestion));
+                }
+
                 this.VerifierThemeID(themeID, nameof(themeID));
 
                 model.ModeGestion = (eModeGestionArchivage)modeGestion;
@@ -251,7 +261,11 @@ namespace Xalise.Web.Areas.Repertoires.Controllers
 
             try
             {
-                EnumHelper.VerifierValidite<eModeGestionArchivage>(modeGestion, nameof(modeGestion));
+                if (!EnumHelper.VerifierValidite<eModeGestionArchivage>(modeGestion, nameof(modeGestion)))
+                {
+                    throw new ArgumentException("Le mode de gestion de l'archivage n'est pas valide.", nameof(modeGestion));
+                }
+
                 this.VerifierThemeID(themeID, nameof(themeID));
 
                 // =-=-=-

@@ -139,18 +139,7 @@ namespace Xalise.Interop.InteropHL7.Helpers
         /// <returns>True si le format est supporté, sinon False.</returns>
         public static bool IsSupportedFormatForDTM(ePrecisionFormatDate format)
         {
-            bool supported = true;
-
-            try
-            {
-                return EnumHelper.VerifierValidite<ePrecisionFormatDate>(format, nameof(format));
-            }
-            catch (Exception)
-            {
-                supported = false;
-            }
-
-            return supported;
+            return EnumHelper.VerifierValidite<ePrecisionFormatDate>(format);
         }
     }
 }
