@@ -1,8 +1,11 @@
 ﻿namespace Xalise.Core.Attributes
 {
     /// <summary>
-    /// Définit la ou les classe(s) CSS applicable(s) à un <see cref="AttributeTargets.Field"/>.
+    /// Définition de la ou les classe(s) CSS applicable(s) à un élément.
     /// </summary>
+    /// <remarks>
+    /// Applicable aux <see cref="AttributeTargets.Field"/>.
+    /// </remarks>
     [AttributeUsage(AttributeTargets.Field)]
     public class CssClassNameAttribute : Attribute
     {
