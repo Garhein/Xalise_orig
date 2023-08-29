@@ -14,7 +14,7 @@ namespace Xalise.Core.Helpers
         /// </summary>
         /// <param name="value">Valeur du paramètre.</param>
         /// <param name="parameterName">Nom du paramètre.</param>
-        /// <exception cref="ArgumentNullException">Si <paramref name="value"/> paramètre est <seealso langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">Si <paramref name="value"/> est <seealso langword="null"/>.</exception>
         public static void ThrowIfNull(object value, string parameterName)
         {
             if (value == null)
