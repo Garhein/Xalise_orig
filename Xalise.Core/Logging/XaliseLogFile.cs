@@ -9,41 +9,74 @@ namespace Xalise.Core.Logging
     /// <typeparam name="TEnum"></typeparam>
     public class XaliseLogFile<TEnum> : AbstractXaliseLog<TEnum> where TEnum : Enum
     {
-        private const string BASE_FILENAME  = "xaliseLog";
-        private const string EXT_FILENAME   = "log";
-        private readonly object _lockObj    = new object();
-
-        private string _baseDirectory;
-        private string _baseFilename;
-        private string _extFileName;
+        private const string CSTS_BASE_FILENAME  = "xaliseLog";
+        private const string CSTS_EXT_FILENAME   = "log";
+        private readonly object _lock            = new object();
 
         /// <summary>
-        /// Constructeur.
+        /// Chemin complet du répertoire d'écriture du fichier de log.
         /// </summary>
-        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
-        /// <param name="baseDirectory">Chemin du répertoire d'écriture du fichier de log.</param>
-        public XaliseLogFile(TEnum niveauMin, string baseDirectory) : this(niveauMin, baseDirectory, XaliseLogFile<TEnum>.BASE_FILENAME) { }
+        private string _directoryFileLog;
 
         /// <summary>
-        /// Constructeur.
+        /// Nom du fichier de log.
         /// </summary>
-        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
-        /// <param name="baseDirectory">Chemin du répertoire d'écriture du fichier de log.</param>
-        /// <param name="baseFilename">Nom de base du fichier de log.</param>
-        public XaliseLogFile(TEnum niveauMin, string baseDirectory, string baseFilename) : this(niveauMin, baseDirectory, baseFilename, XaliseLogFile<TEnum>.EXT_FILENAME) { }
+        private string _filename;
 
         /// <summary>
-        /// Constructeur.
+        /// Extension du nom du fichier de log.
         /// </summary>
-        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
-        /// <param name="baseDirectory">Chemin du répertoire d'écriture du fichier de log.</param>
-        /// <param name="baseFilename">Nom de base du fichier de log.</param>
-        /// <param name="extFilename">Extension du fichier de log.</param>
-        public XaliseLogFile(TEnum niveauMin, string baseDirectory, string baseFilename, string extFilename) : base(niveauMin)
+        private string _extFilename;
+
+        /// <summary>
+        /// Nom du fichier de log.
+        /// </summary>
+        /// <remarks>
+        /// Composé du nom de base et de la date courante au format yyyyMMdd.
+        /// </remarks>
+        public string Filename
         {
-            ArgumentHelper.ThrowIfNullOrWhiteSpace(baseDirectory, nameof(baseDirectory));
+            get
+            {
+                return $"{this._filename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFilename}";
+            }
+        }
+
+        /// <summary>
+        /// Constructeur.
+        /// </summary>
+        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
+        /// <param name="directoryFileLog">Chemin complet du répertoire d'écriture du fichier de log.</param>
+        public XaliseLogFile(TEnum niveauMin, string directoryFileLog) : this(niveauMin, directoryFileLog, XaliseLogFile<TEnum>.CSTS_BASE_FILENAME) { }
+
+        /// <summary>
+        /// Constructeur.
+        /// </summary>
+        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
+        /// <param name="directoryFileLog">Chemin complet du répertoire d'écriture du fichier de log.</param>
+        /// <param name="filename">Nom du fichier de log.</param>
+        public XaliseLogFile(TEnum niveauMin, string directoryFileLog, string filename) : this(niveauMin, directoryFileLog, filename, XaliseLogFile<TEnum>.CSTS_EXT_FILENAME) { }
+
+        /// <summary>
+        /// Constructeur.
+        /// </summary>
+        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
+        /// <param name="directoryFileLog">Chemin complet du répertoire d'écriture du fichier de log.</param>
+        /// <param name="filename">Nom du fichier de log.</param>
+        /// <param name="extFilename">Extension du fichier de log.</param>
+        /// <exception cref="ArgumentNullException">
+        /// Si <paramref name="directoryFileLog"/>, <paramref name="filename"/> ou <paramref name="extFilename"/> est <seealso langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Si <paramref name="directoryFileLog"/>, <paramref name="filename"/> ou <paramref name="extFilename"/> est vide ou composé uniquement d'espaces.
+        /// </exception>
+        /// <exception cref="DirectoryNotFoundException">Si le répertoire <paramref name="directoryFileLog"/> n'existe pas.</exception>
+        public XaliseLogFile(TEnum niveauMin, string directoryFileLog, string filename, string extFilename) : base(niveauMin)
+        {
+            ArgumentHelper.ThrowIfNullOrWhiteSpace(directoryFileLog, nameof(directoryFileLog));
+            ArgumentHelper.ThrowIfNullOrWhiteSpace(filename, nameof(filename));
             ArgumentHelper.ThrowIfNullOrWhiteSpace(extFilename, nameof(extFilename));
-            ArgumentHelper.ThrowIfDirectoryNotFound(baseDirectory);
+            ArgumentHelper.ThrowIfDirectoryNotFound(directoryFileLog);
 
             // Retrait du premier point de l'extension
             if (extFilename[0].Equals('.'))
@@ -51,9 +84,9 @@ namespace Xalise.Core.Logging
                 extFilename = extFilename.Substring(1);
             }
 
-            this._baseDirectory = baseDirectory;
-            this._baseFilename  = baseFilename;
-            this._extFileName   = extFilename;
+            this._directoryFileLog  = directoryFileLog;
+            this._filename          = filename;
+            this._extFilename       = extFilename;
         }
 
         /// <summary>
@@ -62,18 +95,19 @@ namespace Xalise.Core.Logging
         /// <param name="niveau">Niveau du message.</param>
         /// <param name="emetteur">Émetteur du message.</param>
         /// <param name="log">Message de log.</param>
-        /// <exception cref="ArgumentNullException">L'émetteur du log est NULL.</exception>
-        /// <exception cref="ArgumentException">L'émetteur du log est vide ou composé uniquement d'espaces.</exception>
+        /// <exception cref="ArgumentNullException">Si <paramref name="emetteur"/> ou <paramref name="log"/> est <seealso langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Si <paramref name="emetteur"/> ou <paramref name="log"/> est vide ou composé uniquement d'espaces.</exception>
         public override void EcrireMessage(TEnum niveau, string emetteur, string log)
         {
             ArgumentHelper.ThrowIfNullOrWhiteSpace(emetteur, nameof(emetteur));
+            ArgumentHelper.ThrowIfNullOrWhiteSpace(log, nameof(log));
 
-            if (!string.IsNullOrWhiteSpace(log) && niveau.AsInteger() >= this.NiveauMinimum.AsInteger())
+            if (niveau.AsInteger() >= this.NiveauMinimum.AsInteger())
             {
-                lock (_lockObj)
+                lock (_lock)
                 {
-                    string logPath  = Path.Combine(this._baseDirectory, $"{this._baseFilename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFileName}");
-                    string logMsg   = $"[{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")}][{niveau.ToString()}] >> {emetteur} > {log.Trim()}";
+                    string logPath  = Path.Combine(this._directoryFileLog, this.Filename);
+                    string logMsg   = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}][{niveau.ToString()}] >> {emetteur} > {log.Trim()}";
 
                     using (StreamWriter writer = new StreamWriter(logPath, true))
                     {

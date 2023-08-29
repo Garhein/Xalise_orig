@@ -6,12 +6,15 @@
     /// <typeparam name="TEnum"></typeparam>
     public abstract class AbstractXaliseLog<TEnum> where TEnum : Enum
     {
+        /// <summary>
+        /// Niveau minimum d'écriture des messages de log.
+        /// </summary>
         private TEnum _niveauMinimum;
 
         /// <summary>
         /// Constructeur.
         /// </summary>
-        /// <param name="niveauMin">Niveau minimum d'écriture.</param>
+        /// <param name="niveauMin">Niveau minimum d'écriture des messages de log.</param>
         public AbstractXaliseLog(TEnum niveauMin)
         {
             this._niveauMinimum = niveauMin;
@@ -45,8 +48,8 @@
         /// <param name="niveau">Niveau du message.</param>
         /// <param name="emetteur">Émetteur du message.</param>
         /// <param name="log">Message de log.</param>
-        /// <exception cref="ArgumentNullException">L'émetteur du log est NULL.</exception>
-        /// <exception cref="ArgumentException">L'émetteur du log est vide ou composé uniquement d'espaces.</exception>
+        /// <exception cref="ArgumentNullException">Si <paramref name="emetteur"/> ou <paramref name="log"/> est <seealso langword="null"/>.</exception>
+        /// <exception cref="ArgumentException">Si <paramref name="emetteur"/> ou <paramref name="log"/> est vide ou composé uniquement d'espaces.</exception>
         public abstract void EcrireMessage(TEnum niveau, string emetteur, string log);
 
         #endregion

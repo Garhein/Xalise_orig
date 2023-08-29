@@ -88,25 +88,42 @@ namespace Xalise.Core.Extensions
             return usageValue;
         }
 
-
-
-
         /// <summary>
-        /// Convertit une valeur d'énumération en un <see cref="int"/>.
+        /// Convertit un membre d'une énumération en un <see cref="int"/>.
         /// </summary>
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="enumValue"></param>
-        /// <returns></returns>
+        /// <exception cref="Exception">Si le type de <paramref name="enumValue"/> n'est pas compatible avec un <see cref="int"/>.</exception>
+        /// <returns>Valeur du membre de l'énumération.</returns>
         public static int AsInteger<TEnum>(this TEnum enumValue) where TEnum : Enum
         {
             if (Unsafe.SizeOf<TEnum>() != Unsafe.SizeOf<int>())
             {
-                throw new Exception("Type incompatible.");
+                throw new Exception("Type incompatible : l'énumération n'hérite pas du type 'int'.");
             }
 
             int valInt = Unsafe.As<TEnum, int>(ref enumValue);
 
             return valInt;
+        }
+
+        /// <summary>
+        /// Convertit un membre d'une énumération en un <see cref="short"/>.
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="enumValue"></param>
+        /// <exception cref="Exception">Si le type de <paramref name="enumValue"/> n'est pas compatible avec un <see cref="short"/>.</exception>
+        /// <returns>Valeur du membre de l'énumération.</returns>
+        public static int AsShort<TEnum>(this TEnum enumValue) where TEnum : Enum
+        {
+            if (Unsafe.SizeOf<TEnum>() != Unsafe.SizeOf<short>())
+            {
+                throw new Exception("Type incompatible : l'énumération n'hérite pas du type 'short'.");
+            }
+
+            short valShort = Unsafe.As<TEnum, short>(ref enumValue);
+
+            return valShort;
         }
     }
 }

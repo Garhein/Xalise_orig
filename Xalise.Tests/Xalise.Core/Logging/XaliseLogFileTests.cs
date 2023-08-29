@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Xalise.Core.Logging;
 
-namespace Xalise.Tests
+namespace Xalise.Tests.Xalise.Core.Logging
 {
     public class XaliseLogFileTests
     {
@@ -16,8 +16,8 @@ namespace Xalise.Tests
         [Test]
         public void LogFileDEBUG()
         {
-            XaliseLogFile<EnumTest> logger = new XaliseLogFile<EnumTest>(EnumTest.DEBUG, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
-            string methodName              = $"{nameof(LogFileDEBUG)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.DEBUG, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
+            string methodName               = $"{nameof(LogFileDEBUG)}()";
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
@@ -28,8 +28,8 @@ namespace Xalise.Tests
         [Test]
         public void LogFileINFORMATION()
         {
-            XaliseLogFile<EnumTest> logger = new XaliseLogFile<EnumTest>(EnumTest.INFORMATION, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
-            string methodName              = $"{nameof(LogFileINFORMATION)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.INFORMATION, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
+            string methodName               = $"{nameof(LogFileINFORMATION)}()";
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
@@ -40,8 +40,8 @@ namespace Xalise.Tests
         [Test]
         public void LogFileWARNING()
         {
-            XaliseLogFile<EnumTest> logger = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
-            string methodName              = $"{nameof(LogFileWARNING)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
+            string methodName               = $"{nameof(LogFileWARNING)}()";
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
@@ -52,8 +52,8 @@ namespace Xalise.Tests
         [Test]
         public void LogFileERROR()
         {
-            XaliseLogFile<EnumTest> logger = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
-            string methodName              = $"{nameof(LogFileERROR)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
+            string methodName               = $"{nameof(LogFileERROR)}()";
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
@@ -64,8 +64,8 @@ namespace Xalise.Tests
         [Test]
         public void LogFileSetSeuil()
         {
-            XaliseLogFile<EnumTest> logger = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
-            string methodName              = $"{nameof(LogFileSetSeuil)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
+            string methodName               = $"{nameof(LogFileSetSeuil)}()";
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau initial {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau initial {EnumTest.INFORMATION.ToString()}");
@@ -82,8 +82,8 @@ namespace Xalise.Tests
         [Test]
         public void LogFileNameAndExtension()
         {
-            XaliseLogFile<EnumTest> logger = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET", "customLogName", ".clog");
-            string methodName              = $"{nameof(LogFileNameAndExtension)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET", "customLogName", ".clog");
+            string methodName               = $"{nameof(LogFileNameAndExtension)}()";
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
