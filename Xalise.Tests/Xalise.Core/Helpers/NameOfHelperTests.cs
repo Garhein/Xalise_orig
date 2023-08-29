@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Xalise.Core.Helpers;
 
-namespace Xalise.Tests
+namespace Xalise.Tests.Xalise.Core.Helpers
 {
     public class NameOfHelperTests
     {
@@ -12,6 +12,9 @@ namespace Xalise.Tests
             public NameOfHelperDTO() { }
         }
 
+        /// <summary>
+        /// Avec un alias définit spécifiquement.
+        /// </summary>
         [Test]
         public void NameOfProperty_WithStrAlias()
         {
@@ -19,6 +22,9 @@ namespace Xalise.Tests
             Assert.AreEqual("alias.PropDTO", ret);
         }
 
+        /// <summary>
+        /// Sans alias définit spécifiquement.
+        /// </summary>
         [Test]
         public void NameOfProperty_WithoutStrAlias()
         {
@@ -26,6 +32,9 @@ namespace Xalise.Tests
             Assert.AreEqual("PropDTO", ret);
         }
 
+        /// <summary>
+        /// Avec un alias correspondant à l'expression.
+        /// </summary>
         [Test]
         public void NameOfProperty_BoolWithoutAliasTrue()
         {
@@ -33,6 +42,9 @@ namespace Xalise.Tests
             Assert.AreEqual("PropDTO", ret);
         }
 
+        /// <summary>
+        /// Sans l'alias correspondant à l'expression.
+        /// </summary>
         [Test]
         public void NameOfProperty_BoolWithoutAliasFalse()
         {

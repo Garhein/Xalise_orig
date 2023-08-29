@@ -9,16 +9,16 @@ namespace Xalise.Core.Helpers
     public static class NameOfHelper
     {
         /// <summary>
-        /// Permet d'obtenir le nom de chaîne simple avec son alias d'une variable, d'un type ou d'un membre.
+        /// Obtention du nom d'une variabme, d'un typê ou d'un membre à partir de la propriété <c>nameof</c>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name">Expression à évaluer.</param>
         /// <param name="alias">Alias à inclure dans le résultlat.</param>
-        /// <returns>Si <paramref name="alias"/> renseigné renvoie "alias.NomPropriété", sinon renvoie "NomPropriété".</returns>
-        
+        /// <returns>Si <paramref name="alias"/> renseigné renvoie <c>alias.NomPropriété</c>, sinon renvoie <c>NomPropriété</c>.</returns>
+
         public static string NameOfProperty<T>(Expression<Func<T, object>> name, string alias = "")
         {
-            if (!string.IsNullOrWhiteSpace(alias))
+            if (!alias.IsNullOrWhiteSpace())
             {
                 alias = $"{alias}.";
             }
@@ -27,24 +27,24 @@ namespace Xalise.Core.Helpers
         }
 
         /// <summary>
-        /// Permet d'obtenir le nom de chaîne simple avec son alias d'une variable, d'un type ou d'un membre.
+        /// Obtention du nom d'une variabme, d'un typê ou d'un membre à partir de la propriété <c>nameof</c>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name">Expression à évaluer.</param>
         /// <param name="sansAlias">Indique si l'alias doit être retiré ou inclu dans le résultat.</param>
-        /// <returns>Si <paramref name="sansAlias"/> renvoie "NomPropriété", sinon "alias.NomPropriété".</returns>
+        /// <returns>Si <paramref name="sansAlias"/> renvoie <c>NomPropriété</c>, sinon <c>alias.NomPropriété</c>.</returns>
         public static string NameOfProperty<T>(Expression<Func<T, object>> name, bool sansAlias)
         {
             return NameOfHelper.NameOf(name, sansAlias);
         }
 
         /// <summary>
-        /// Permet d'obtenir le nom de chaîne simple (non qualifié) d'une variable, d'un type ou d'un membre à partir de la propriété **nameof**.
+        /// Obtention du nom d'une variabme, d'un typê ou d'un membre à partir de la propriété <c>nameof</c>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name">Expression à évaluer.</param>
         /// <param name="sansAlias">Indique si l'alias doit être retiré ou inclu dans le résultat.</param>
-        /// <returns>Si <paramref name="sansAlias"/> renvoie "NomPropriété", sinon "alias.NomPropriété".</returns>
+        /// <returns>Si <paramref name="sansAlias"/> renvoie <c>NomPropriété</c>, sinon <c>alias.NomPropriété</c>.</returns>
         public static string NameOf<T>(Expression<Func<T, object>> name, bool sansAlias = false)
         {
             Expression body             = name.Body;
