@@ -17,7 +17,7 @@
         {
             if (valeurEnum <= 0)
             {
-                throw new ArgumentException("La valeur de l'énumération ne peut pas être inférieur ou égal à 0.", nomParametre);
+                throw new ArgumentException("La valeur de l'énumération ne peut pas être inférieure ou égale à 0.", nomParametre);
             }
             else if (!Enum.IsDefined(typeof(TEnum), valeurEnum))
             {
@@ -39,7 +39,7 @@
         {
             if (valeurEnum <= 0)
             {
-                throw new ArgumentException("La valeur de l'énumération ne peut pas être inférieur ou égal à 0.", nomParametre);
+                throw new ArgumentException("La valeur de l'énumération ne peut pas être inférieure ou égale à 0.", nomParametre);
             }
             else if (!Enum.IsDefined(typeof(TEnum), valeurEnum))
             {
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// Vérifie la valeur d'une valeur d'énumération.
+        /// Vérifie la validité d'une valeur d'énumération.
         /// </summary>
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="valeurEnum">Valeur à vérifier.</param>
