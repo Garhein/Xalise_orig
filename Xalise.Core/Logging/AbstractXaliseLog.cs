@@ -40,8 +40,6 @@
             this._niveauMinimum = niveauMin;
         }
 
-        #region Méthodes abstraites
-
         /// <summary>
         /// Écriture d'un message de log.
         /// </summary>
@@ -51,7 +49,5 @@
         /// <exception cref="ArgumentNullException">Si <paramref name="emetteur"/> ou <paramref name="log"/> est <seealso langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Si <paramref name="emetteur"/> ou <paramref name="log"/> est vide ou composé uniquement d'espaces.</exception>
         public abstract void EcrireMessage(TEnum niveau, string emetteur, string log);
-
-        #endregion
     }
 }

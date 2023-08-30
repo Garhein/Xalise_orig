@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using System.IO;
+using Xalise.Core.Extensions;
 using Xalise.Core.Logging;
 
 namespace Xalise.Tests.Xalise.Core.Logging
@@ -16,56 +18,74 @@ namespace Xalise.Tests.Xalise.Core.Logging
         [Test]
         public void LogFileDEBUG()
         {
-            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.DEBUG, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
             string methodName               = $"{nameof(LogFileDEBUG)}()";
-
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.DEBUG, "C:\\Users\\Xavier\\Documents\\Sources\\NET", nameof(LogFileDEBUG), "xlog");
+            
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
             logger.EcrireMessage(EnumTest.WARNING, methodName, $"Niveau {EnumTest.WARNING.ToString()}");
             logger.EcrireMessage(EnumTest.ERROR, methodName, $"Niveau {EnumTest.ERROR.ToString()}");
+
+            string[] lines = File.ReadAllLines(logger.FilePath);
+            File.Delete(logger.FilePath);
+            Assert.True(lines.IsNotEmpty() && lines.Length == 4);
         }
 
         [Test]
         public void LogFileINFORMATION()
         {
-            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.INFORMATION, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
             string methodName               = $"{nameof(LogFileINFORMATION)}()";
-
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.INFORMATION, "C:\\Users\\Xavier\\Documents\\Sources\\NET", nameof(LogFileINFORMATION), "xlog");
+            
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
             logger.EcrireMessage(EnumTest.WARNING, methodName, $"Niveau {EnumTest.WARNING.ToString()}");
             logger.EcrireMessage(EnumTest.ERROR, methodName, $"Niveau {EnumTest.ERROR.ToString()}");
+
+            string[] lines = File.ReadAllLines(logger.FilePath);
+            File.Delete(logger.FilePath);
+            Assert.True(lines.IsNotEmpty() && lines.Length == 3);
         }
 
         [Test]
         public void LogFileWARNING()
         {
-            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
             string methodName               = $"{nameof(LogFileWARNING)}()";
-
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET", nameof(LogFileWARNING), "xlog");
+            
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
             logger.EcrireMessage(EnumTest.WARNING, methodName, $"Niveau {EnumTest.WARNING.ToString()}");
             logger.EcrireMessage(EnumTest.ERROR, methodName, $"Niveau {EnumTest.ERROR.ToString()}");
+
+            string[] lines = File.ReadAllLines(logger.FilePath);
+            File.Delete(logger.FilePath);
+            Assert.True(lines.IsNotEmpty() && lines.Length == 2);
         }
 
         [Test]
         public void LogFileERROR()
         {
-            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
             string methodName               = $"{nameof(LogFileERROR)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET", nameof(LogFileERROR), "xlog");
+            
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
             logger.EcrireMessage(EnumTest.WARNING, methodName, $"Niveau {EnumTest.WARNING.ToString()}");
             logger.EcrireMessage(EnumTest.ERROR, methodName, $"Niveau {EnumTest.ERROR.ToString()}");
+
+            string[] lines = File.ReadAllLines(logger.FilePath);
+            File.Delete(logger.FilePath);
+            Assert.True(lines.IsNotEmpty() && lines.Length == 1);
         }
 
         [Test]
         public void LogFileSetSeuil()
         {
-            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET");
             string methodName               = $"{nameof(LogFileSetSeuil)}()";
+            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.ERROR, "C:\\Users\\Xavier\\Documents\\Sources\\NET", nameof(LogFileSetSeuil), "xlog");
+            
 
             logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau initial {EnumTest.DEBUG.ToString()}");
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau initial {EnumTest.INFORMATION.ToString()}");
@@ -77,18 +97,10 @@ namespace Xalise.Tests.Xalise.Core.Logging
             logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau modifié {EnumTest.INFORMATION.ToString()}");
             logger.EcrireMessage(EnumTest.WARNING, methodName, $"Niveau modifié {EnumTest.WARNING.ToString()}");
             logger.EcrireMessage(EnumTest.ERROR, methodName, $"Niveau modifié {EnumTest.ERROR.ToString()}");
-        }
 
-        [Test]
-        public void LogFileNameAndExtension()
-        {
-            XaliseLogFile<EnumTest> logger  = new XaliseLogFile<EnumTest>(EnumTest.WARNING, "C:\\Users\\Xavier\\Documents\\Sources\\NET", "customLogName", ".clog");
-            string methodName               = $"{nameof(LogFileNameAndExtension)}()";
-
-            logger.EcrireMessage(EnumTest.DEBUG, methodName, $"Niveau {EnumTest.DEBUG.ToString()}");
-            logger.EcrireMessage(EnumTest.INFORMATION, methodName, $"Niveau {EnumTest.INFORMATION.ToString()}");
-            logger.EcrireMessage(EnumTest.WARNING, methodName, $"Niveau {EnumTest.WARNING.ToString()}");
-            logger.EcrireMessage(EnumTest.ERROR, methodName, $"Niveau {EnumTest.ERROR.ToString()}");
+            string[] lines = File.ReadAllLines(logger.FilePath);
+            File.Delete(logger.FilePath);
+            Assert.True(lines.IsNotEmpty() && lines.Length == 4);
         }
     }
 }

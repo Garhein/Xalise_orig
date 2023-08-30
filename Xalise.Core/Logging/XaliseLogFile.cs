@@ -19,9 +19,9 @@ namespace Xalise.Core.Logging
         private string _directoryFileLog;
 
         /// <summary>
-        /// Nom du fichier de log.
+        /// Nom de base du fichier de log.
         /// </summary>
-        private string _filename;
+        private string _BaseFilename;
 
         /// <summary>
         /// Extension du nom du fichier de log.
@@ -32,13 +32,28 @@ namespace Xalise.Core.Logging
         /// Nom du fichier de log.
         /// </summary>
         /// <remarks>
-        /// Composé du nom de base et de la date courante au format yyyyMMdd.
+        /// Composé du nom de base, de la date courante au format yyyyMMdd et de l'extension.<br/>
+        /// Exemple : xaliseLog_20230830.log
         /// </remarks>
         public string Filename
         {
             get
             {
-                return $"{this._filename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFilename}";
+                return $"{this._BaseFilename}_{DateTime.Now.ToString("yyyyMMdd")}.{this._extFilename}";
+            }
+        }
+
+        /// <summary>
+        /// Chemin complet du fichier de log.
+        /// </summary>
+        /// <remarks>
+        /// Composé du chemin complet du répertoire d'écriture du fichier de log et de <see cref="XaliseLogFile.Filename"/>.
+        /// </remarks>
+        public string FilePath
+        {
+            get
+            {
+                return Path.Combine(this._directoryFileLog, this.Filename);
             }
         }
 
@@ -54,27 +69,27 @@ namespace Xalise.Core.Logging
         /// </summary>
         /// <param name="niveauMin">Niveau minimum d'écriture.</param>
         /// <param name="directoryFileLog">Chemin complet du répertoire d'écriture du fichier de log.</param>
-        /// <param name="filename">Nom du fichier de log.</param>
-        public XaliseLogFile(TEnum niveauMin, string directoryFileLog, string filename) : this(niveauMin, directoryFileLog, filename, XaliseLogFile<TEnum>.CSTS_EXT_FILENAME) { }
+        /// <param name="baseFilename">Nom de base du fichier de log.</param>
+        public XaliseLogFile(TEnum niveauMin, string directoryFileLog, string baseFilename) : this(niveauMin, directoryFileLog, baseFilename, XaliseLogFile<TEnum>.CSTS_EXT_FILENAME) { }
 
         /// <summary>
         /// Constructeur.
         /// </summary>
         /// <param name="niveauMin">Niveau minimum d'écriture.</param>
         /// <param name="directoryFileLog">Chemin complet du répertoire d'écriture du fichier de log.</param>
-        /// <param name="filename">Nom du fichier de log.</param>
+        /// <param name="baseFilename">Nom de base du fichier de log.</param>
         /// <param name="extFilename">Extension du fichier de log.</param>
         /// <exception cref="ArgumentNullException">
-        /// Si <paramref name="directoryFileLog"/>, <paramref name="filename"/> ou <paramref name="extFilename"/> est <seealso langword="null"/>.
+        /// Si <paramref name="directoryFileLog"/>, <paramref name="baseFilename"/> ou <paramref name="extFilename"/> est <seealso langword="null"/>.
         /// </exception>
         /// <exception cref="ArgumentException">
-        /// Si <paramref name="directoryFileLog"/>, <paramref name="filename"/> ou <paramref name="extFilename"/> est vide ou composé uniquement d'espaces.
+        /// Si <paramref name="directoryFileLog"/>, <paramref name="baseFilename"/> ou <paramref name="extFilename"/> est vide ou composé uniquement d'espaces.
         /// </exception>
         /// <exception cref="DirectoryNotFoundException">Si le répertoire <paramref name="directoryFileLog"/> n'existe pas.</exception>
-        public XaliseLogFile(TEnum niveauMin, string directoryFileLog, string filename, string extFilename) : base(niveauMin)
+        public XaliseLogFile(TEnum niveauMin, string directoryFileLog, string baseFilename, string extFilename) : base(niveauMin)
         {
             ArgumentHelper.ThrowIfNullOrWhiteSpace(directoryFileLog, nameof(directoryFileLog));
-            ArgumentHelper.ThrowIfNullOrWhiteSpace(filename, nameof(filename));
+            ArgumentHelper.ThrowIfNullOrWhiteSpace(baseFilename, nameof(baseFilename));
             ArgumentHelper.ThrowIfNullOrWhiteSpace(extFilename, nameof(extFilename));
             ArgumentHelper.ThrowIfDirectoryNotFound(directoryFileLog);
 
@@ -85,7 +100,7 @@ namespace Xalise.Core.Logging
             }
 
             this._directoryFileLog  = directoryFileLog;
-            this._filename          = filename;
+            this._BaseFilename      = baseFilename;
             this._extFilename       = extFilename;
         }
 
