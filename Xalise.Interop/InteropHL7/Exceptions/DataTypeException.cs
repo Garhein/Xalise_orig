@@ -3,7 +3,7 @@
 namespace Xalise.Interop.InteropHL7.Exceptions
 {
     /// <summary>
-    /// Exceptions levées/interceptées au niveau de la gestion des types de données.
+    /// Exception levée/interceptée au niveau de la gestion des types de données.
     /// </summary>
     [Serializable]
     public class DataTypeException : Exception

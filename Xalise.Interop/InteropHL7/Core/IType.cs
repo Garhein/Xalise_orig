@@ -6,18 +6,20 @@
     public interface IType
     {
         /// <summary>
-        /// Description de la donnée représentée par le type.
+        /// Description de la donnée.
         /// </summary>
         string Description { get; }
 
         /// <summary>
-        /// Longueur maximale autorisée de la donnée représentée par le type.
-        /// Si longueur égale à 0, la valeur de <see cref="int.MaxValue"/> est utilisée.
+        /// Longueur maximale autorisée de la donnée.
         /// </summary>
+        /// <remarks>
+        /// Si la longueur est inférieure ou égale à 0, la valeur de <see cref="int.MaxValue"/> est utilisée.
+        /// </remarks>
         int MaxLength { get; }
 
         /// <summary>
-        /// Indique si la donnée représentée par le type est obligatoire.
+        /// Indique si la donnée est obligatoire.
         /// </summary>
         bool IsRequired { get; }
 

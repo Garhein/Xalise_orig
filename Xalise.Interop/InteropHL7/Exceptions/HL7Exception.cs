@@ -3,7 +3,7 @@
 namespace Xalise.Interop.InteropHL7.Exceptions
 {
     /// <summary>
-    /// Exceptions générique levées/interceptées au niveau des traitements généraux.
+    /// Exception générique levée/interceptée au niveau des traitements généraux.
     /// </summary>
     [Serializable]
     public class HL7Exception : Exception

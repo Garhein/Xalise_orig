@@ -9,24 +9,28 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
 {
     /// <summary>
     /// DTM - Date/Time.
-    /// Notation d'horloge de 24 heures.
-    /// Formats autorisés : YYYY[MM[DD[HH[MM[SS]]]]].
     /// </summary>
+    /// <remarks>
+    /// Notation d'horloge de 24 heures.<br/>
+    /// Formats autorisés : YYYY[MM[DD[HH[MM[SS]]]]].
+    /// </remarks>
     [Serializable]
     public class DTM : AbstractTypePrimitive
     {
         /// <summary>
         /// Constructeur.
         /// </summary>
-        /// <param name="description">Description de la donnée représentée par le type.</param>
-        /// <param name="maxLength">Longueur maximale autorisée de la donnée représentée par le type.</param>
-        /// <param name="required">Indique si la donnée représentée par le type est obligatoire.</param>
+        /// <param name="description">Description de la donnée.</param>
+        /// <param name="maxLength">Longueur maximale autorisée de la donnée.</param>
+        /// <param name="required">Indique si la donnée est obligatoire.</param>
         public DTM(string description, int maxLength, bool required) : base(description, maxLength, required) { }
 
         /// <summary>
         /// Accès, en lecture et écriture, à la valeur du type de données.
-        /// La donnée est vérifiée au moment de son affectation.
         /// </summary>
+        /// <remarks>
+        /// La donnée est vérifiée au moment de son affectation.
+        /// </remarks>
         public new string Value
         {
             get
@@ -56,7 +60,6 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
                 }
 
                 // ==> Dans DateTimeHelperHL7
-                // ==> Xalise.Core.Utils.RegexUtil : définition des regex génériques (constantes : dates, number NM ? )
             }
         }
 

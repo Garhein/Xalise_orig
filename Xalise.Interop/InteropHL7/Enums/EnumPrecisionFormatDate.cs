@@ -3,8 +3,11 @@
 namespace Xalise.Interop.InteropHL7.Enums
 {
     /// <summary>
-    /// Formats des dates supportées par les champs HL7 <seealso cref="Structure.DataType.Primitive.DTM"/> et <seealso cref="Structure.DataType.Primitive.DT"/>.
+    /// Formats supportés par les types de données représentant des dates/heures.
     /// </summary>
+    /// <remarks>
+    /// Applicable aux types de données <seealso cref="Structure.DataType.Primitive.DTM"/> et <seealso cref="Structure.DataType.Primitive.DT"/>.
+    /// </remarks>
     public enum ePrecisionFormatDate : short
     {
         [UsageValue("yyyy")]

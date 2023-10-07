@@ -22,8 +22,15 @@ namespace Xalise.Interop.InteropHL7.Structure
 
         /// <summary>
         /// Constructeur vide.
-        /// Initialise le séparateur de champ et les caractères d'encodage à leur valeur par défaut.
         /// </summary>
+        /// <remarks>
+        /// Initialise le séparateur de champ et les caractères d'encodage à leur valeur par défaut.<br/>
+        ///  - séparateur de champ : <see cref="EncodingCharacters.DEF_FIELD_SEP"/><br/>
+        ///  - séparateur de composant : <see cref="EncodingCharacters.DEF_COMPONENT_SEP"/><br/>
+        ///  - séparateur de répétition : <see cref="EncodingCharacters.DEF_REPETITION_SEP"/><br/>
+        ///  - caractère d'échappement : <see cref="EncodingCharacters.DEF_ESCAPE_CHAR"/><br/>
+        ///  - séparateur de sous-composant : <see cref="EncodingCharacters.DEF_SUB_COMPONENT_SEP"/><br/>
+        /// </remarks>
         public EncodingCharacters() 
                : this(EncodingCharacters.DEF_FIELD_SEP, 
                       EncodingCharacters.DEF_COMPONENT_SEP,
@@ -48,9 +55,17 @@ namespace Xalise.Interop.InteropHL7.Structure
                : this (fieldSep, new string(new[] { componentSep, repetitionSep, escapeChar, subComponentSep })) { }
 
         /// <summary>
-        /// Séparateur.
-        /// Le séparateur de champ est initialisé à la valeur par défaut s'il s'agit d'un espace.
+        /// Constructeur.
         /// </summary>
+        /// <remarks>
+        /// Le séparateur de champ est initialisé à la valeur par défaut s'il s'agit d'un espace.<br/>
+        /// Les caractères d'encodage sont initialisés à leur valeur par défaut si <paramref name="encodingChars"/> est vide ou composé d'espaces.<br/>
+        ///  - séparateur de champ : <see cref="EncodingCharacters.DEF_FIELD_SEP"/><br/>
+        ///  - séparateur de composant : <see cref="EncodingCharacters.DEF_COMPONENT_SEP"/><br/>
+        ///  - séparateur de répétition : <see cref="EncodingCharacters.DEF_REPETITION_SEP"/><br/>
+        ///  - caractère d'échappement : <see cref="EncodingCharacters.DEF_ESCAPE_CHAR"/><br/>
+        ///  - séparateur de sous-composant : <see cref="EncodingCharacters.DEF_SUB_COMPONENT_SEP"/><br/>
+        /// </remarks>
         /// <param name="fieldSep">Séparateur de champ.</param>
         /// <param name="encodingChars">Chaîne représentant les caractères d'encodage.</param>
         /// <exception cref="HL7Exception">Si <paramref name="encodingChars"/> contient au moins un espace ou des caractères en doublons.</exception>
@@ -65,7 +80,7 @@ namespace Xalise.Interop.InteropHL7.Structure
                 this._fieldSeparator = fieldSep;
             }
 
-            if (string.IsNullOrWhiteSpace(encodingChars))
+            if (encodingChars.IsNullOrWhiteSpace())
             {
                 this._encodingCharacters    = new char[4];
                 this._encodingCharacters[0] = EncodingCharacters.DEF_COMPONENT_SEP;

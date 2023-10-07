@@ -14,16 +14,16 @@ namespace Xalise.Interop.InteropHL7.Core
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="description">Description de la donnée représentée par le type.</param>
-        /// <param name="maxLength">Longueur maximale autorisée de la donnée représentée par le type.</param>
-        /// <param name="required">Indique si la donnée représentée par le type est obligatoire.</param>
+        /// <param name="description">Description de la donnée.</param>
+        /// <param name="maxLength">Longueur maximale autorisée de la donnée.</param>
+        /// <param name="required">Indique si la donnée est obligatoire.</param>
         /// <param name="nbComponents">Nombre de composants du type de données.</param>
-        /// <exception cref="DataTypeException">Si le nombre de composants est inférieur ou égal à 0.</exception>
+        /// <exception cref="DataTypeException">Si <paramref name="nbComponents"/> est inférieur ou égal à 0.</exception>
         public AbstractTypeComposite(string description, int maxLength, bool required, int nbComponents) : base(description, maxLength, required)
         {
             if (nbComponents <= 0)
             {
-                throw new DataTypeException($"Le nombre de composants du type '{this.TypeName}' n'est pas valide.");
+                throw new DataTypeException($"Le nombre de composant du type '{this.TypeName}' n'est pas valide.");
             }
 
             this._components= new IType[nbComponents];
@@ -42,11 +42,13 @@ namespace Xalise.Interop.InteropHL7.Core
 
         /// <summary>
         /// Accès, en lecture et écriture, à un composant précis du type de données.
-        /// Les composants sont stockés à partir de l'indice 0 mais une base 1 est utilisée pour les accès.
         /// </summary>
+        /// <remarks>
+        /// Les composants sont stockés à partir de l'indice 0 mais une base 1 est utilisée pour les accès.
+        /// </remarks>
         /// <param name="index">Index du composant auquel accéder.</param>
-        /// <returns>Composant de type <see cref="IType"/>.</returns>
-        /// <exception cref="DataTypeException">Si l'index d'accès est inférieur ou égal à 0.</exception>
+        /// <returns>Un composant de type <see cref="IType"/>.</returns>
+        /// <exception cref="DataTypeException">Si <paramref name="index"/> est inférieur ou égal à 0.</exception>
         public IType this[int index] 
         { 
             get

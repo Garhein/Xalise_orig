@@ -9,28 +9,32 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
 {
     /// <summary>
     /// NM - Numeric.
-    /// Nombre représenté sous la forme d'une série de caractères numériques, composé :
-    ///  - d'un signe facultatif (<seealso cref="NumberHelper.CSTS_DEFAULT_POSITIVE_SIGN"/> ou <seealso cref="NumberHelper.CSTS_DEFAULT_NEGATIVE_SIGN"/>)
-    ///  - de chiffres
-    ///  - d'un point décimal facultatif
-    /// En l'absence de signe, le nombre est supposé positif.
-    /// S'il n'y a pas de point décimal, le nombre est supposé être un entier.
     /// </summary>
+    /// <remarks>
+    /// Nombre représenté sous la forme d'une série de caractères numériques, composé :<br/>
+    ///  - d'un signe arithmétique facultatif (<seealso cref="NumberHelper.CSTS_DEFAULT_POSITIVE_SIGN"/> ou <seealso cref="NumberHelper.CSTS_DEFAULT_NEGATIVE_SIGN"/>)<br/>
+    ///  - de chiffres<br/>
+    ///  - d'un point décimal facultatif<br/>
+    /// En l'absence de signe, le nombre est supposé positif.<br/>
+    /// S'il n'y a pas de point décimal, le nombre est supposé être un entier.
+    /// </remarks>
     [Serializable]
     public class NM : AbstractTypePrimitive
     {
         /// <summary>
         /// Constructeur.
         /// </summary>
-        /// <param name="description">Description de la donnée représentée par le type.</param>
-        /// <param name="maxLength">Longueur maximale autorisée de la donnée représentée par le type.</param>
-        /// <param name="required">Indique si la donnée représentée par le type est obligatoire.</param>
+        /// <param name="description">Description de la donnée.</param>
+        /// <param name="maxLength">Longueur maximale autorisée de la donnée.</param>
+        /// <param name="required">Indique si la donnée est obligatoire.</param>
         public NM(string description, int maxLength, bool required) : base(description, maxLength, required) { }
 
         /// <summary>
         /// Accès, en lecture et écriture, à la valeur du type de données.
-        /// La donnée est nettoyée et vérifiée au moment de son affectation.
         /// </summary>
+        /// <remarks>
+        /// La donnée est nettoyée et vérifiée au moment de son affectation.
+        /// </remarks>
         public new string Value
         {
             get
@@ -39,19 +43,21 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
             }
             set
             {
-                base.Value = NumberHelperHL7.CheckAndSanitizeNM(value);
+                this.Value = NumberHelperHL7.SanitizeAndCheckNM(value);
             }
         }
 
         /// <summary>
-        /// Détermine si la valeur du type de données est positive.
-        /// La valeur est considérée comme positive si le signe est <seealso cref="NumberHelper.CSTS_DEFAULT_POSITIVE_SIGN"/> ou n'est pas renseigné.
+        /// Détermine si la valeur est positive.
         /// </summary>
+        /// <remarks>
+        /// La valeur est considérée comme positive si le signe arithmétique est <seealso cref="NumberHelper.CSTS_DEFAULT_POSITIVE_SIGN"/> ou n'est pas renseigné.
+        /// </remarks>
         public bool IsPositive
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.Value))
+                if (this.Value.IsNullOrWhiteSpace())
                 {
                     throw new DataTypeException($"Impossible de déterminer si la valeur du type '{this.TypeName}' est positive : valeur NULL ou composée uniquement d'espaces.");
                 }
@@ -61,14 +67,16 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
         }
 
         /// <summary>
-        /// Détermine si la valeur du type de données est négative.
-        /// La valeur est considérée comme négative si le signe est <seealso cref="NumberHelper.CSTS_DEFAULT_NEGATIVE_SIGN"/>.
+        /// Détermine si la valeur est négative.
         /// </summary>
+        /// <remarks>
+        /// La valeur est considérée comme négative si le signe arithmétique est <seealso cref="NumberHelper.CSTS_DEFAULT_NEGATIVE_SIGN"/>.
+        /// </remarks>
         public bool IsNegative
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.Value))
+                if (this.Value.IsNullOrWhiteSpace())
                 {
                     throw new DataTypeException($"Impossible de déterminer si la valeur du type '{this.TypeName}' est négative : valeur NULL ou composée uniquement d'espaces.");
                 }
@@ -78,14 +86,16 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
         }
 
         /// <summary>
-        /// Détermine si la valeur du type de données est un décimal.
-        /// La valeur est considérée comme un décimal si elle contient un <seealso cref="NumberHelper.CSTS_DEFAULT_DECIMAL_SEPARATOR"/>.
+        /// Détermine si la valeur est un décimal.
         /// </summary>
+        /// <remarks>
+        /// La valeur est considérée comme un décimal si elle contient un <seealso cref="NumberHelper.CSTS_DEFAULT_DECIMAL_SEPARATOR"/>.
+        /// </remarks>
         public bool IsDecimal
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.Value))
+                if (this.Value.IsNullOrWhiteSpace())
                 {
                     throw new DataTypeException($"Impossible de déterminer si la valeur du type '{this.TypeName}' est un décimal : valeur NULL ou composée uniquement d'espaces.");
                 }
@@ -95,7 +105,7 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
         }
 
         /// <summary>
-        /// Récupère la valeur du type de données sous forme d'un <see cref="int"/>.
+        /// Récupère la valeur sous forme d'un <see cref="int"/>.
         /// </summary>
         public int GetInt
         {
@@ -105,7 +115,7 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
 
                 if (!int.TryParse(this.Value, out retInt))
                 {
-                    throw new DataTypeException($"Impossible de convertir en un entier la valeur '{this.Value}'.");
+                    throw new DataTypeException($"Impossible de convertir la valeur '{this.Value}' en un entier.");
                 }
 
                 return retInt;
@@ -113,7 +123,7 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
         }
 
         /// <summary>
-        /// Affecte un entier à la valeur du type de données.
+        /// Affecte un entier.
         /// </summary>
         /// <param name="value">Valeur à affecter.</param>
         /// <exception cref="DataTypeException">Si une erreur est détectée à la conversion en <see cref="string"/>.</exception>
@@ -125,12 +135,12 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
             }
             catch (Exception ex)
             {
-                throw new DataTypeException("Erreur de conversion vers d'un entier vers une chaîne de caractères.", ex);
+                throw new DataTypeException("Erreur de conversion d'un entier vers une chaîne de caractères.", ex);
             }
         }
 
         /// <summary>
-        /// Récupère la valeur du type de données sous forme d'un <see cref="decimal"/>.
+        /// Récupère la valeur sous forme d'un <see cref="decimal"/>.
         /// </summary>
         public decimal GetDecimal
         {
@@ -140,7 +150,7 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
 
                 if (!decimal.TryParse(this.Value, out retDecimal))
                 {
-                    throw new DataTypeException($"Impossible de convertir en un décimal la valeur '{this.Value}'.");
+                    throw new DataTypeException($"Impossible de convertir la valeur '{this.Value}' en un décimal.");
                 }
 
                 return retDecimal;
@@ -148,7 +158,7 @@ namespace Xalise.Interop.InteropHL7.Structure.DataType.Primitive
         }
 
         /// <summary>
-        /// Affecte un décimal à la valeur du type de données.
+        /// Affecte un décimal.
         /// </summary>
         /// <param name="value">Valeur à affecter.</param>
         /// <param name="nbDecimales">Nombre de décimales à conserver.</param>

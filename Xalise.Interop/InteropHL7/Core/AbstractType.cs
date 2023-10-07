@@ -4,7 +4,7 @@ using Xalise.Core.Helpers;
 namespace Xalise.Interop.InteropHL7.Core
 {
     /// <summary>
-    /// Représentation d'un type de donnée.
+    /// Représentation d'un type de données.
     /// </summary>
     [Serializable]
     public abstract class AbstractType : IType
@@ -16,9 +16,9 @@ namespace Xalise.Interop.InteropHL7.Core
         /// <summary>
         /// Constructeur.
         /// </summary>
-        /// <param name="description">Description de la donnée représentée par le type.</param>
-        /// <param name="maxLength">Longueur maximale autorisée de la donnée représentée par le type.</param>
-        /// <param name="required">Indique si la donnée représentée par le type est obligatoire.</param>
+        /// <param name="description">Description de la donnée.</param>
+        /// <param name="maxLength">Longueur maximale autorisée de la donnée.</param>
+        /// <param name="required">Indique si la donnée est obligatoire.</param>
         public AbstractType(string description, int maxLength, bool required)
         {
             this._description   = description;
@@ -27,7 +27,7 @@ namespace Xalise.Interop.InteropHL7.Core
         }
 
         /// <summary>
-        /// Description de la donnée représentée par le type.
+        /// Description de la donnée.
         /// </summary>
         public string Description
         {
@@ -38,9 +38,11 @@ namespace Xalise.Interop.InteropHL7.Core
         }
 
         /// <summary>
-        /// Longueur maximale autorisée de la donnée représentée par le type.
-        /// Si longueur égale à 0, la valeur de <see cref="int.MaxValue"/> est utilisée.
+        /// Longueur maximale autorisée de la donnée.
         /// </summary>
+        /// <remarks>
+        /// Si la longueur est inférieure ou égale à 0, la valeur de <see cref="int.MaxValue"/> est utilisée.
+        /// </remarks>
         public int MaxLength
         {
             get
@@ -50,7 +52,7 @@ namespace Xalise.Interop.InteropHL7.Core
         }
 
         /// <summary>
-        /// Indique si la donnée représentée par le type est obligatoire.
+        /// Indique si la donnée est obligatoire.
         /// </summary>
         public bool IsRequired
         {
