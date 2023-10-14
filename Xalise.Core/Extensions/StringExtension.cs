@@ -8,17 +8,27 @@
         /// <summary>
         /// Indique si la chaîne est <see langword="null"/> ou vide (<c>""</c>).
         /// </summary>
-        /// <param name="src"></param>
-        /// <returns><see langword="true"/> si la chaîne est <see langword="null"/> ou vide (<c>""</c>), sinon <see langword="false"/>.</returns>
+        /// <param name="src">Chaîne à tester.</param>
+        /// <returns><see langword="true"/> si la chaîne est <see langword="null"/> ou vide (<c>""</c>) ; sinon <see langword="false"/>.</returns>
         public static bool IsNullOrEmpty(this string src)
         {
             return string.IsNullOrEmpty(src);
         }
 
         /// <summary>
+        /// Indique si la chaîne n'est pas <see langword="null"/> ou vide (<c>""</c>).
+        /// </summary>
+        /// <param name="src">Chaîne à tester.</param>
+        /// <returns><see langword="true"/> si la chaîne n'est pas <see langword="null"/> ou vide (<c>""</c>) ; sinon <see langword="false"/>.</returns>
+        public static bool IsNotNullOrEmpty(this string src)
+        {
+            return !string.IsNullOrEmpty(src);
+        }
+
+        /// <summary>
         /// Indique si la chaîne est <see langword="null"/>, vide (<c>""</c>) ou composée uniquement d'espaces.
         /// </summary>
-        /// <param name="src"></param>
+        /// <param name="src">Chaîne à tester.</param>
         /// <returns><see langword="true"/> si la chaîne est <see langword="null"/>, vide (<c>""</c>) ou composée uniquement d'espaces ; sinon <see langword="false"/>.</returns>
         public static bool IsNullOrWhiteSpace(this string src)
         {
@@ -26,45 +36,79 @@
         }
 
         /// <summary>
-        /// Retire l'ensemble des derniers caractères d'une chaîne si ceux-ci correspondent à <paramref name="charToRemove"/>.
+        /// Indique si la chaîne n'est pas <see langword="null"/>, vide (<c>""</c>) ou composée uniquement d'espaces.
+        /// </summary>
+        /// <param name="src">Chaîne à tester.</param>
+        /// <returns><see langword="true"/> si la chaîne n'est pas <see langword="null"/>, vide (<c>""</c>) ou composée uniquement d'espaces ; sinon <see langword="false"/>.</returns>
+        public static bool IsNotNullOrWhiteSpace(this string src)
+        {
+            return !string.IsNullOrWhiteSpace(src);
+        }
+
+        /// <summary>
+        /// Retire l'ensemble des premiers ou derniers caractères d'une chaîne si ceux-ci correspondent à <paramref name="charToRemove"/>.
         /// </summary>
         /// <remarks>
-        /// La chaîne d'origine est renvoyée si elle est <seealso cref="StringExtension.IsNullOrWhiteSpace(string)"/>.
+        /// <paramref name="src"/> est renvoyée si elle est <seealso cref="StringExtension.IsNullOrEmpty(string)"/>.
         /// </remarks>
-        /// <param name="src">Chaîne d'origine.</param>
+        /// <param name="src">Chaîne à nettoyer.</param>
         /// <param name="charToRemove">Caractère à retirer.</param>
-        /// <returns>La chaîne nettoyée si elle n'est pas <seealso cref="IsNullOrWhiteSpace(string)"/>, sinon la chaîne sans modification. </returns>
-        public static string RemoveRepeatingCharsFromEnd(this string src, char charToRemove)
+        /// <param name="fromStart"><see langword="true"/> si le nettoyage doit être réalisé sur le début de la chaîne, sinon <see langword="false"/>.</param>
+        /// <returns>La chaîne nettoyée si elle n'est pas <seealso cref="StringExtension.IsNullOrEmpty(string)"/> ; sinon <paramref name="src"/> sans modification.</returns>
+        private static string RemoveRepeatingChars(this string src, char charToRemove, bool fromStart)
         {
-            if (src.IsNullOrWhiteSpace())
+            if (src.IsNullOrEmpty())
             {
                 return src;
             }
             else
             {
-                char[] chars = src.ToCharArray();
+                char[] chars    = src.ToCharArray();
+                int pos         = 0;
+                bool found      = false;
+                string retVal   = src;
 
-                // Recherche depuis la fin du 1er caractère qui ne correspond pas au caractère à retirer
-                int length = chars.Length - 1;
-                bool found = false;
-
-                while (length >= 0 && !found)
+                // Depuis le début : recherche du 1er caractère qui ne correspond pas au caractère à retirer
+                if (fromStart)
                 {
-                    if (chars[length] != charToRemove)
+                    while (pos < chars.Length - 1 && !found)
                     {
-                        found = true;
+                        if (chars[pos] != charToRemove)
+                        {
+                            found = true;
+                        }
+                        else
+                        {
+                            pos++;
+                        }
                     }
-                    else
+
+                    if (found)
                     {
-                        length--;
+                        retVal = src.Remove(0, pos);
                     }
                 }
-
-                string retVal = src;
-
-                if (found)
+                // Depuis la fin : recherche du 1er caractère qui ne correspond pas au caractère à retirer
+                else
                 {
-                    retVal = src.Remove(length + 1);
+                    pos = chars.Length - 1;
+
+                    while (pos >= 0 && !found)
+                    {
+                        if (chars[pos] != charToRemove)
+                        {
+                            found = true;
+                        }
+                        else
+                        {
+                            pos--;
+                        }
+                    }
+
+                    if (found)
+                    {
+                        retVal = src.Remove(pos + 1);
+                    }
                 }
 
                 return retVal;
@@ -72,14 +116,39 @@
         }
 
         /// <summary>
-        /// Vérifie si les caractères présents dans la chaîne sont uniques.
+        /// Retire l'ensemble des premiers caractères d'une chaîne si ceux-ci correspondent à <paramref name="charToRemove"/>.
         /// </summary>
         /// <remarks>
-        /// Une exception <see cref="ArgumentException"/> est levée si <paramref name="src"/> est NULL, vide ou composé uniquement d'espaces.
+        /// <paramref name="src"/> est renvoyée si elle est <seealso cref="StringExtension.IsNullOrWhiteSpace(string)"/>.
         /// </remarks>
-        /// <param name="src"></param>
-        /// <returns><see langword="true"/> si les caractères  de <paramref name="src"/> sont uniques, sinon <see langword="false"/>.</returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <param name="src">Chaîne à nettoyer.</param>
+        /// <param name="charToRemove">Caractère à retirer.</param>
+        /// <returns>La chaîne nettoyée si elle n'est pas <seealso cref="StringExtension.IsNullOrWhiteSpace(string)"/> ; sinon <paramref name="src"/> sans modification.</returns>
+        public static string RemoveRepeatingCharsFromStart(this string src, char charToRemove)
+        {
+            return src.RemoveRepeatingChars(charToRemove, true);
+        }
+
+        /// <summary>
+        /// Retire l'ensemble des derniers caractères d'une chaîne si ceux-ci correspondent à <paramref name="charToRemove"/>.
+        /// </summary>
+        /// <remarks>
+        /// <paramref name="src"/> est renvoyée si elle est <seealso cref="StringExtension.IsNullOrWhiteSpace(string)"/>.
+        /// </remarks>
+        /// <param name="src">Chaîne à nettoyer.</param>
+        /// <param name="charToRemove">Caractère à retirer.</param>
+        /// <returns>La chaîne nettoyée si elle n'est pas <seealso cref="StringExtension.IsNullOrWhiteSpace(string)"/> ; sinon <paramref name="src"/> sans modification.</returns>
+        public static string RemoveRepeatingCharsFromEnd(this string src, char charToRemove)
+        {
+            return src.RemoveRepeatingChars(charToRemove, false);
+        }
+
+        /// <summary>
+        /// Vérifie si les caractères présents dans <paramref name="src"/> sont uniques.
+        /// </summary>
+        /// <param name="src">Chaîne à vérifier</param>
+        /// <returns><see langword="true"/> si les caractères de <paramref name="src"/> sont uniques ; sinon <see langword="false"/>.</returns>
+        /// <exception cref="ArgumentException">Si <paramref name="src"/> est NULL, vide ou composé uniquement d'espaces.</exception>
         public static bool ContainsUniqueChars(this string src)
         {
             if (src.IsNullOrWhiteSpace())
